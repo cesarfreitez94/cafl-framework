@@ -1,0 +1,16 @@
+---
+name: odoo-delivery
+description: Use when preparing Odoo module delivery reports, evidence, acceptance acts, deployment checklists and future backlog.
+---
+
+# Odoo Delivery
+
+Prepara cierre de modulo y evidencia de entrega.
+
+## Debe Producir
+
+- Reporte de entrega.
+- Evidencias.
+- Checklist de despliegue.
+- Acta de aceptacion.
+- Backlog futuro.

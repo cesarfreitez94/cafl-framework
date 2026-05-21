@@ -1,0 +1,17 @@
+{
+  "profile": "testing",
+  "description": "Ejecucion de tests, validaciones y generacion de evidencia.",
+  "permissions": {
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "rm *": "deny",
+      "git reset *": "deny",
+      "git checkout -- *": "deny"
+    },
+    "webfetch": "ask"
+  }
+}

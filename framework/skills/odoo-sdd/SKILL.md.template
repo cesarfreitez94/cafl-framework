@@ -1,0 +1,21 @@
+---
+name: odoo-sdd
+description: Use when designing Odoo v18 Community technical solutions, models, security, views, data, integrations, migrations and test strategy.
+---
+
+# Odoo SDD
+
+Genera diseno tecnico Odoo v18 Community desde PRD y contratos funcionales.
+
+## Debe Cubrir
+
+- Modelos.
+- Campos.
+- Seguridad.
+- Vistas.
+- Datos.
+- Integraciones.
+- Migraciones.
+- Testing.
+- Performance.
+- Riesgos.

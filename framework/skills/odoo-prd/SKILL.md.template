@@ -1,0 +1,20 @@
+---
+name: odoo-prd
+description: Use when generating or validating PRDs for Odoo v18 modules from elicitation records, documents, processes or brief ideas.
+---
+
+# Odoo PRD
+
+Genera y valida PRD de modulos Odoo.
+
+## Debe Cubrir
+
+- Problema.
+- Objetivos.
+- Alcance.
+- Exclusiones.
+- Usuarios.
+- Casos de uso.
+- Reglas de negocio.
+- Criterios de aceptacion.
+- Riesgos.

@@ -1,0 +1,18 @@
+---
+name: odoo-development
+description: Use when implementing Odoo v18 Community modules according to PRD, SDD, contracts, official standards and project gates.
+---
+
+# Odoo Development
+
+Guia implementacion de modulos Odoo v18 Community.
+
+## Estandares
+
+- ORM correcto.
+- Seguridad explicita.
+- Vistas y UX Odoo.
+- Datos reproducibles.
+- Internacionalizacion.
+- Performance.
+- Mantenibilidad.

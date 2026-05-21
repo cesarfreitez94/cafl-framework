@@ -1,0 +1,17 @@
+{
+  "profile": "delivery",
+  "description": "Preparacion de entrega, reportes, evidencias y checklist de despliegue.",
+  "permissions": {
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "rm *": "deny",
+      "git reset *": "deny",
+      "git checkout -- *": "deny"
+    },
+    "webfetch": "ask"
+  }
+}

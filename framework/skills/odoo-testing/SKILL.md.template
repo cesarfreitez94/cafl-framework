@@ -1,0 +1,18 @@
+---
+name: odoo-testing
+description: Use when designing, running or reviewing Odoo backend, tours, OWL/QUnit, Playwright, migration, security and performance tests.
+---
+
+# Odoo Testing
+
+Define y ejecuta estrategia de pruebas para modulos Odoo.
+
+## Pruebas Obligatorias
+
+- Python/Odoo.
+- HttpCase/Tours.
+- OWL/QUnit cuando aplique.
+- Playwright E2E.
+- Migracion/update.
+- Seguridad.
+- Performance basica.

@@ -1,0 +1,16 @@
+---
+name: odoo-rag
+description: Use when consulting, ingesting, citing or validating official Odoo v18 and curated official regulatory knowledge sources.
+---
+
+# Odoo RAG
+
+Gestiona consulta e ingesta de conocimiento oficial.
+
+## Debe Exigir
+
+- Fuente oficial.
+- Snapshot auditable.
+- Fecha.
+- Version/hash.
+- Cita en decisiones tecnicas relevantes.
