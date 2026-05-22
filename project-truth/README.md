@@ -1,6 +1,6 @@
 # Project Truth
 
-Status: bootstrap, not-approved
+Status: bootstrap + CRIT-02 approved / CRIT-03 to CRIT-07 pending
 
 ## Proposito
 
@@ -23,7 +23,7 @@ Status: bootstrap, not-approved
 - [accepted] No contiene gates finales.
 - [accepted] No contiene agentes ejecutables.
 - [accepted] No instala ni configura OpenSpec u otra herramienta.
-- [draft] No define todavia el alcance V1 real, salvo las restricciones explicitas del owner en este bootstrap.
+- [accepted] No define todavia el alcance V1 real, salvo restricciones explicitas aceptadas en CRIT-01 y decisiones de flujo aceptadas en CRIT-02.
 
 ## Uso Antes De Implementar
 
@@ -40,8 +40,9 @@ Status: bootstrap, not-approved
 - [accepted] No se crean agentes ejecutables, comandos, contratos finales ni gates finales durante este bootstrap.
 - [accepted] Este bootstrap solo crea archivos bajo `project-truth/`.
 
-## Estado Inicial
+## Estado Actual
 
-- [accepted] Estado inicial: bootstrap.
-- [accepted] Aprobacion del contenido: no aprobado todavia.
-- [draft] Proximo paso recomendado: verificacion independiente del Truth Bootstrap antes de iniciar las sesiones de elicitacion.
+- [accepted] CRIT-01 Intent And Scope esta approved.
+- [accepted] CRIT-02 Operating Flow esta approved.
+- [accepted] CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07 siguen pendientes.
+- [accepted] No se debe implementar en `framework/` hasta resolver los puntos criticos minimos restantes con el owner.

@@ -31,24 +31,24 @@ Status: approved
 | Inputs reviewed | [accepted] Respuestas y aclaraciones CRIT-01 del owner como fuente primaria; `project-truth/` como bootstrap; repo previo solo como evidencia secundaria. |
 | Expected outputs | [accepted] Declaracion de intencion, decisiones aceptadas/rechazadas, pendientes derivados, riesgos y glosario actualizados. |
 | Acceptance criteria | [accepted] Verificacion independiente CRIT-01: APPROVED; CRIT-01 queda approved para intencion y alcance del producto. |
-| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-01; CRIT-02 a CRIT-07 siguen sin resolverse. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-01; CRIT-03 a CRIT-07 siguen sin resolverse. |
 | Dependencies | [accepted] CRIT-01 alimenta CRIT-02, CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07, pero no los resuelve. |
 
 ## CRIT-02: Operating Flow
 
-Status: draft
+Status: approved
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir el flujo operativo desde idea hasta entrega sin asumir el pipeline actual. |
-| Why it is critical | [draft] El flujo determina que artefactos, agentes, decisiones humanas, gates y evidencias son necesarios. |
-| What must be decided | [open-question] Fases, entradas, salidas, puntos de control, handoffs, re-trabajo, aprobaciones y reglas de avance. |
-| What must NOT be decided yet | [draft] Implementacion de comandos, nombres definitivos de agentes, schemas finales y CI/CD final. |
-| Inputs to review | [draft] `ROADMAP.md`, `PROJECT_CONTROL.md`, `framework/ARCHITECTURE.md`, `framework/commands/*.command.md`. |
-| Expected outputs | [draft] Mapa operativo aceptado o candidato, con fases minimas y reglas de avance pendientes. |
-| Acceptance criteria | [draft] Cada fase tiene proposito, entrada, salida, responsable conceptual, condicion de avance y condicion de bloqueo. |
-| Open questions | [open-question] El flujo debe ser secuencial, adaptativo, mixto o distinto segun tipo de modulo? |
-| Dependencies | [draft] Depende de CRIT-01 y alimenta CRIT-03, CRIT-04, CRIT-05 y CRIT-06. |
+| Purpose | [accepted] Definir el flujo operativo desde idea del owner hasta modulo Odoo listo para produccion tecnica, sin asumir el pipeline actual. |
+| Why it is critical | [accepted] El flujo determina que artefactos, roles funcionales, decisiones humanas, gates y evidencias seran necesarios en sesiones posteriores. |
+| What was answered | [accepted] CAFL usara flujo hibrido controlado; jerarquia modulo -> capability/feature -> tarea verificable; PRD y SDD ligeros obligatorios; task/context packet y DoR obligatorios; context routing y token budget; bloqueo selectivo por contexto critico; funciones minimas; shift-left verification; risk-based testing; rework acotado; cierre verificable; OpenCode spikes derivados a CRIT-07. |
+| What must NOT be decided yet | [accepted] Agentes finales, contratos finales, gates finales, trazabilidad final, arquitectura OpenCode, planificacion detallada, comandos ejecutables, CI/CD final y formatos finales. |
+| Inputs reviewed | [accepted] CRIT-01 approved, `project-truth/` y respuesta del owner a CRIT-02 como fuente primaria; repo previo solo como evidencia secundaria. |
+| Expected outputs | [accepted] Mapa operativo aprobado, con decisiones de flujo y derivaciones explicitas a CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
+| Acceptance criteria | [accepted] Cada fase/tarea debe tener salida esperada, evidencia minima, criterios de aceptacion, condicion de bloqueo, rework acotado y cierre verificable. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-02; implementacion concreta queda derivada a CRIT-03 a CRIT-07. |
+| Dependencies | [accepted] Depende de CRIT-01 approved y alimenta CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
 
 ## CRIT-03: Agent Responsibilities
 

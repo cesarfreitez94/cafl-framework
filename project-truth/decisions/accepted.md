@@ -1,6 +1,6 @@
 # Accepted Decisions
 
-Status: bootstrap + CRIT-01 approved
+Status: bootstrap + CRIT-02 approved
 
 | ID | Decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Status: bootstrap + CRIT-01 approved
 | DEC-ACCEPTED-009 | No se usara informacion de conversaciones externas. | Prompt del owner | accepted | Solo documentos disponibles y prompt actual. |
 | DEC-ACCEPTED-010 | No se inventaran decisiones del owner ni se convertiran hipotesis en decisiones. | Prompt del owner | accepted | Las hipotesis quedan como `assumption` u `open-question`. |
 | DEC-ACCEPTED-011 | Toda afirmacion relevante debe marcarse por estado. | Prompt del owner | accepted | Estados permitidos: `accepted`, `draft`, `assumption`, `open-question`, `rejected`, `superseded`. |
-| DEC-ACCEPTED-012 | Estado inicial de `project-truth/`: bootstrap, no aprobado todavia. | Prompt del owner | accepted | CRIT-01 queda answered / pending verification, no approved. |
+| DEC-ACCEPTED-012 | El estado inicial de `project-truth/` fue bootstrap, no aprobado todavia. | Prompt del owner | accepted | Decision historica de bootstrap; CRIT-01 y CRIT-02 approvals ya fueron registrados despues. |
 | DEC-ACCEPTED-013 | CAFL es un framework/plataforma operativo sobre OpenCode para desarrollar soluciones empresariales Odoo con asistencia de IA en todo el ciclo de vida. | CRIT-01 owner | accepted | Define naturaleza del producto a nivel de intencion. |
 | DEC-ACCEPTED-014 | El problema principal es permitir que un owner individual opere con capacidades equivalentes a un equipo de ingenieria especializado. | CRIT-01 owner | accepted | Responde el dolor central de una empresa con un solo trabajador. |
 | DEC-ACCEPTED-015 | El usuario inicial de CAFL es el owner. | CRIT-01 owner | accepted | No se define V1 para clientes, equipos externos o desarrolladores externos. |
@@ -38,3 +38,23 @@ Status: bootstrap + CRIT-01 approved
 | DEC-ACCEPTED-032 | El plazo objetivo inicial es de 2 meses para una primera version util del framework con apoyo de IA. | CRIT-01 owner | accepted | Debe actuar como restriccion de alcance. |
 | DEC-ACCEPTED-033 | CAFL debe evitar flujos infinitos o tareas interminables; cada tarea o fase debe tener objetivo, alcance, salida, aceptacion, bloqueo y cierre. | CRIT-01 owner | accepted | El diseno detallado se resuelve en CRIT-02, CRIT-04, CRIT-05 y CRIT-07. |
 | DEC-ACCEPTED-034 | CRIT-01 Intent and Scope approved. | independent CRIT-01 verification | accepted | Resultado: APPROVED. Alcance: intencion y alcance del producto. Limite: no aprueba todavia flujo operativo, agentes, contratos, gates, trazabilidad ni planificacion detallada. |
+| DEC-ACCEPTED-035 | CRIT-02 Operating Flow approved como decision de flujo operativo. | CRIT-02 owner | accepted | No aprueba agentes finales, contratos finales, gates finales, trazabilidad final, arquitectura OpenCode ni planificacion detallada. |
+| DEC-ACCEPTED-036 | CAFL operara con flujo hibrido controlado. | CRIT-02 owner | accepted | Fases minimas obligatorias, iteraciones acotadas, avance por evidencia y retrabajo controlado. |
+| DEC-ACCEPTED-037 | La unidad de control sera jerarquica: modulo -> capability/feature -> tarea tecnica verificable. | CRIT-02 owner | accepted | Debe permitir trazabilidad desde idea hasta codigo, pruebas, documentacion y evidencia. |
+| DEC-ACCEPTED-038 | CAFL debe aceptar una idea breve del owner y convertirla mediante elicitacion en PRD minimo antes del diseno tecnico. | CRIT-02 owner | accepted | No exige requerimientos perfectos al owner, pero bloquea diseno e implementacion sin PRD suficiente. |
+| DEC-ACCEPTED-039 | SDD ligero es obligatorio antes de escribir codigo y se amplia solo por riesgo, complejidad o impacto arquitectonico. | CRIT-02 owner | accepted | ADR minimo queda aceptado para decisiones tecnicas relevantes sin burocracia pesada. |
+| DEC-ACCEPTED-040 | PRD y SDD son obligatorios en version ligera; CDD y TDD quedan como capacidades internas ligeras cuando aporten valor. | CRIT-02 owner | accepted | TDD se acepta como diseno, validacion y planificacion de pruebas, no como Test-Driven Development estricto universal. |
+| DEC-ACCEPTED-041 | Ninguna unidad operativa debe iniciar sin task/context packet y Definition of Ready minimo. | CRIT-02 owner | accepted | Mecanismo base para reducir tokens, evitar lectura innecesaria del repo y controlar contexto. |
+| DEC-ACCEPTED-042 | CAFL usara context routing obligatorio por autoridad documental y token budget por fase/tarea. | CRIT-02 owner | accepted | Debe distinguir fuente autoritativa, contexto aplicable, evidencia secundaria y documento prohibido/no relevante; queda prohibido leer todo el repo por defecto. |
+| DEC-ACCEPTED-043 | CAFL bloqueara selectivamente por falta de contexto critico. | CRIT-02 owner | accepted | Bloquea si afecta alcance, legal/compliance, seguridad, arquitectura, datos, pruebas, aceptacion o riesgo relevante; no convierte dudas menores en microgestion. |
+| DEC-ACCEPTED-044 | CRIT-02 acepta funciones minimas de flujo sin decidir agentes finales. | CRIT-02 owner | accepted | Owner, coordinacion/orquestacion, analisis funcional, diseno tecnico, construccion, verificacion/testing, seguridad/riesgo/compliance y evidencia/cierre. |
+| DEC-ACCEPTED-045 | Seguridad/riesgo/compliance incluye compliance legal y normativo como funcion minima del flujo. | CRIT-02 owner | accepted | Ajuste obligatorio del owner; no implica agente separado todavia. |
+| DEC-ACCEPTED-046 | CAFL usara shift-left verification en transiciones importantes y verificacion tecnica final antes del cierre. | CRIT-02 owner | accepted | Risk-based testing queda aprobado como principio operativo; gates finales y criterios exactos quedan para CRIT-05. |
+| DEC-ACCEPTED-047 | CAFL solo debe avanzar con salida esperada, evidencia minima y criterios de aceptacion cumplidos. | CRIT-02 owner | accepted | Rework debe ser acotado, trazable y con escalamiento ante fallas repetidas o cambio de alcance. |
+| DEC-ACCEPTED-048 | CAFL no debe permitir tareas interminables ni cierre basado solo en opinion del ejecutor. | CRIT-02 owner | accepted | El cierre debe ser verificable. |
+| DEC-ACCEPTED-049 | CRIT-02 deriva a CRIT-07 spikes acotados y obligatorios sobre OpenCode. | CRIT-02 owner | accepted | Deben cubrir subagentes, comandos, contexto, permisos, aprobaciones, estado, archivos fuente vs runtime, limites de tokens y ejecucion verificable. |
+| DEC-ACCEPTED-050 | Los spikes de OpenCode no reabren la decision de que OpenCode es runtime principal. | CRIT-02 owner | accepted | Solo validan como operarlo correctamente. |
+| DEC-ACCEPTED-051 | ATDD parcial queda aceptado mediante criterios de aceptacion testeables. | CRIT-02 owner | accepted | No implica herramienta formal ni formato final en CRIT-02. |
+| DEC-ACCEPTED-052 | Definition of Ready y Definition of Done quedan aceptadas como principios operativos. | CRIT-02 owner | accepted | DoD verificable y detalle de evidencia se definen en CRIT-05 y CRIT-07. |
+| DEC-ACCEPTED-053 | Context engineering, human-in-the-loop approval para decisiones criticas, escalation policies, verification loops y rework loops acotados quedan aceptados como principios operativos. | CRIT-02 owner | accepted | Su implementacion concreta se deriva a sesiones posteriores. |
+| DEC-ACCEPTED-054 | BDD formal queda diferido como obligacion general de V1. | CRIT-02 owner | accepted | Puede usarse en features con comportamiento complejo o cuando aporte claridad funcional. |

@@ -1,6 +1,6 @@
 # Glossary
 
-Status: CRIT-01 answered / pending verification
+Status: CRIT-02 approved / downstream decisions pending
 
 | Term | Definition | Status | Notes |
 | --- | --- | --- | --- |
@@ -31,3 +31,21 @@ Status: CRIT-01 answered / pending verification
 | verification | Actividad que comprueba si un artefacto, decision o entrega cumple criterios definidos. | draft | Puede ser manual, automatizada o mixta segun decisiones futuras. |
 | critical point | Area de decision que puede bloquear implementacion si queda sin resolver. | accepted | IDs iniciales: CRIT-01 a CRIT-07. |
 | elicitation session | Sesion estructurada para obtener decisiones del owner sin asumir respuestas desde el repo actual. | accepted | Las plantillas iniciales estan en `project-truth/elicitation/`. |
+| operating flow | Flujo operativo que transforma una idea del owner en modulo Odoo listo para produccion tecnica. | accepted | CRIT-02 aprobo flujo hibrido controlado; no aprueba agentes, contratos, gates ni implementacion final. |
+| flujo hibrido controlado | Forma de trabajo con fases minimas obligatorias, iteraciones acotadas, avance por evidencia y retrabajo controlado. | accepted | Aprobado en CRIT-02 como forma del flujo end-to-end. |
+| capability/feature | Unidad funcional intermedia dentro de un modulo Odoo, mayor que una tarea y menor que el modulo completo. | accepted | Parte de la jerarquia modulo -> capability/feature -> tarea verificable aprobada en CRIT-02. |
+| tarea verificable | Unidad tecnica de trabajo con salida esperada, evidencia minima, criterios de aceptacion, bloqueo y cierre. | accepted | Parte de la jerarquia operativa aprobada en CRIT-02. |
+| PRD ligero | Definicion funcional minima suficiente antes del diseno tecnico. | accepted | Obligatorio por CRIT-02; formato final queda para CRIT-04. |
+| SDD ligero | Diseno tecnico minimo suficiente antes de escribir codigo. | accepted | Obligatorio por CRIT-02; se amplia por riesgo, complejidad o impacto arquitectonico. |
+| CDD | Capacidad interna ligera orientada a construccion cuando aporte valor. | accepted | Aprobado por CRIT-02; significado y formato final quedan para CRIT-04. |
+| TDD | Capacidad interna ligera de diseno, validacion y planificacion de pruebas. | accepted | CRIT-02 no lo aprueba como Test-Driven Development estricto universal. |
+| ADR | Registro minimo de decisiones tecnicas significativas. | accepted | Aprobado por CRIT-02 sin burocracia pesada; formato final queda para sesiones posteriores. |
+| Definition of Ready | Criterio minimo para iniciar una unidad operativa con contexto suficiente. | accepted | CRIT-02 la hizo obligatoria junto al task/context packet. |
+| task/context packet | Paquete de contexto minimo por unidad de trabajo. | accepted | Debe reducir tokens, evitar lectura innecesaria del repo y controlar fuentes aplicables; campos finales quedan para CRIT-04. |
+| context routing | Regla para seleccionar contexto segun autoridad documental y aplicabilidad. | accepted | Debe distinguir fuente autoritativa, contexto aplicable, evidencia secundaria y documento prohibido/no relevante. |
+| token budget | Presupuesto de contexto por fase o tarea. | accepted | CRIT-02 prohibio leer todo el repo por defecto. |
+| shift-left verification | Verificacion temprana en transiciones importantes antes de llegar al cierre final. | accepted | Aprobada por CRIT-02 como principio de flujo; gates finales quedan para CRIT-05. |
+| risk-based testing | Enfoque de pruebas proporcional a riesgo, alcance e impacto. | accepted | Aprobado por CRIT-02 sin reducir el principio de testing obligatorio. |
+| rework loop | Ciclo de retrabajo acotado, trazable y con escalamiento si falla repetidamente o cambia el alcance. | accepted | Aprobado por CRIT-02 para evitar tareas interminables. |
+| human-in-the-loop approval | Aprobacion humana reservada para decisiones criticas. | accepted | CRIT-02 lo acepta como principio operativo, no como microgestion constante. |
+| seguridad/riesgo/compliance | Funcion minima del flujo que cubre seguridad tecnica, riesgo operacional y compliance legal/normativo. | accepted | Ajuste obligatorio aprobado en CRIT-02; no implica agente separado todavia. |
