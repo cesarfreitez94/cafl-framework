@@ -52,19 +52,19 @@ Status: approved
 
 ## CRIT-03: Agent Responsibilities
 
-Status: draft
+Status: approved
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir responsabilidades, limites y autoridad de agentes antes de crear o modificar agentes. |
-| Why it is critical | [draft] Agentes ambiguos generan duplicacion, brechas, decisiones opacas y handoffs debiles. |
-| What must be decided | [open-question] Lista de roles necesarios, granularidad, autoridad, entradas, salidas, no-responsabilidades y escalamiento. |
-| What must NOT be decided yet | [draft] Prompt final, formato runtime, permisos tecnicos finales y nombres exactos de archivos. |
-| Inputs to review | [draft] `framework/AGENT_CONTRACTS.md`, `framework/agents/*.agent.md`, `BACKLOG.md`, `RISKS.md`. |
-| Expected outputs | [draft] Matriz candidata de agentes o roles, con limites y dudas abiertas. |
-| Acceptance criteria | [draft] Cada rol candidato tiene razon de existir, no-responsabilidades y handoff principal. |
-| Open questions | [open-question] Deben existir agentes especialistas por area Odoo o agentes generalistas con checklists? |
-| Dependencies | [draft] Depende de CRIT-01 y CRIT-02; alimenta CRIT-04, CRIT-05 y CRIT-07. |
+| Purpose | [accepted] Definir responsabilidades, autoridad conceptual, limites, handoffs y mecanismo candidato por responsabilidad antes de crear o modificar agentes. |
+| Why it is critical | [accepted] Evita agents-only, duplicacion, brechas, decisiones opacas, handoffs debiles y uso de prompts como control operativo. |
+| What was answered | [accepted] CAFL usara modelo mixto; capacidades minimas consolidadas; owner solo en decisiones criticas; orquestacion mixta; backend base y frontend condicional; QA mixto; seguridad/riesgo/compliance explicito; context routing/token budget separados; task/context packet y DoR obligatorios; rework default 2 ciclos con excepciones escaladas; commands como entradas repetibles; control deterministico futuro para estado, evidencia, tests, permisos, token budget, DoR/DoD estructural y rework counters. |
+| What must NOT be decided yet | [accepted] Agentes ejecutables finales, prompts finales, commands finales, SDK/server/scripts implementados, permisos tecnicos finales, contratos finales, gates finales, arquitectura OpenCode final y archivos runtime definitivos. |
+| Inputs reviewed | [accepted] `project-truth/spikes/spike-oc-crit03-opencode-responsibility-mapping.md` como input tecnico; `framework/AGENT_CONTRACTS.md` y `framework/agents/*.agent.md` solo como evidencia secundaria; documentos raiz solo como evidencia secundaria. |
+| Expected outputs | [accepted] Matriz de responsabilidades conceptuales, mecanismos candidatos, autoridad, handoffs, limites y revision preliminar de agentes actuales. |
+| Acceptance criteria | [accepted] CRIT-03 queda aprobado como decision de responsabilidades y mecanismo candidato; no eleva `framework/agents` a verdad oficial ni crea implementacion runtime. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-03; implementacion concreta y criterios finales quedan derivados a CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
+| Dependencies | [accepted] Depende de CRIT-01 y CRIT-02; alimenta CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
 
 ## CRIT-04: Contracts
 

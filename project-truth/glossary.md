@@ -1,6 +1,6 @@
 # Glossary
 
-Status: CRIT-02 approved / downstream decisions pending
+Status: CRIT-03 approved / downstream decisions pending
 
 | Term | Definition | Status | Notes |
 | --- | --- | --- | --- |
@@ -11,6 +11,9 @@ Status: CRIT-02 approved / downstream decisions pending
 | Odoo | Dominio unico objetivo de CAFL. | accepted | CAFL nace especificamente para soluciones empresariales Odoo. |
 | modulo Odoo | Entregable tecnico funcional construido sobre el framework de Odoo. | accepted | V1 debe validar un modulo real, completo pero acotado. |
 | OpenCode | Runtime principal de CAFL. | accepted | CRIT-07 definira restricciones de entorno y setup operativo, no si OpenCode es runtime. |
+| OpenCode agents | Capacidad de OpenCode para definir asistentes IA especializados con prompt, modelo, modo y permisos; pueden ser primary, subagent o all. | draft | Termino tecnico del spike SPIKE-OC-CRIT03; no implica agentes finales aprobados para CAFL. |
+| OpenCode commands | Capacidad de OpenCode para definir slash commands como plantillas de prompt repetibles con argumentos, agente/modelo opcional y referencias de contexto. | draft | Termino tecnico del spike SPIKE-OC-CRIT03; no implica commands finales aprobados para CAFL. |
+| OpenCode SDK/server | Capacidad de OpenCode para exponer un server HTTP/OpenAPI y un SDK JS/TS para interactuar programaticamente con sesiones, comandos, mensajes, archivos, eventos y permisos. | draft | Termino tecnico del spike SPIKE-OC-CRIT03; su uso final corresponde a CRIT-07. |
 | OpenSpec | Herramienta externa que no forma parte del producto CAFL ni es dependencia funcional de su flujo. | accepted | Puede evaluarse como herramienta auxiliar para desarrollar o coordinar el proyecto fuera del producto. |
 | OpenProject | Herramienta externa que no forma parte del producto CAFL ni es dependencia funcional de su flujo. | accepted | Puede evaluarse como herramienta auxiliar para desarrollar o coordinar el proyecto fuera del producto. |
 | framework | Conjunto operativo de capacidades, artefactos, reglas y automatizacion para ejecutar el ciclo de desarrollo Odoo con IA. | accepted | `framework/` actual sigue siendo evidencia secundaria hasta validacion especifica. |
@@ -22,7 +25,11 @@ Status: CRIT-02 approved / downstream decisions pending
 | Definition of Done | Criterio minimo para considerar completa una solucion, incluyendo funcionalidad, validacion Odoo, pruebas, documentacion, evidencia, trazabilidad, revision proporcional y aceptacion. | accepted | DoD verificable se define en CRIT-05 y CRIT-07. |
 | testing obligatorio | Principio de que CAFL no debe omitir ni minimizar pruebas para un modulo generado. | accepted | Nivel exacto de pruebas se define en CRIT-05 y CRIT-07. |
 | documentacion obligatoria | Principio de que CAFL debe documentar que se construyo, por que, como se usa, como se valida y que limites tiene. | accepted | No es accesorio opcional. |
-| agent | Rol automatizado o semi-automatizado con responsabilidades, entradas, salidas, limites y autoridad definidos. | draft | No implica agente ejecutable final; se define en CRIT-03. |
+| agent | Rol automatizado o semi-automatizado con responsabilidades, entradas, salidas, limites y autoridad definidos. | accepted | CRIT-03 aprobo responsabilidades conceptuales y mecanismos candidatos; no aprobo agentes ejecutables finales. |
+| responsibility capability | Capacidad funcional u operativa de CAFL con responsabilidades, no-responsabilidades, entradas, salidas, autoridad y handoffs definidos. | accepted | CRIT-03 aprobo capacidades minimas consolidadas, no una correspondencia uno-a-uno con agentes. |
+| candidate mechanism | Mecanismo conceptual propuesto para resolver una responsabilidad: human, agent, command, SDK-server-script, rule-config-skill o mixed. | accepted | CRIT-03 aprueba mecanismos candidatos; CRIT-07 decide implementacion runtime concreta. |
+| deterministic control | Control operativo verificable y reproducible que no depende solo de razonamiento LLM, por ejemplo validacion de estado, permisos, ejecucion de tests, conteo de rework o chequeos estructurales. | accepted | CRIT-03 lo aprobo como mecanismo candidato; implementacion concreta queda para CRIT-07. |
+| mixed responsibility model | Modelo en que una responsabilidad CAFL puede mapearse a humano, agente, command, SDK/server/script, rule/config/skill o combinacion de mecanismos. | accepted | CRIT-03 aprobo este modelo y rechazo agents-only. No es arquitectura OpenCode final. |
 | contract | Acuerdo formal interno entre fases, roles o artefactos que define entradas, salidas y criterios de suficiencia. | draft | Los contratos finales no existen en este bootstrap; se definen en CRIT-04. |
 | gate | Punto de decision interno que verifica criterios y evidencia para avanzar, bloquear, replanificar o escalar. | draft | Los gates finales no existen en este bootstrap; se definen en CRIT-05. |
 | evidence | Prueba documental o tecnica que respalda una decision, resultado, verificacion o entrega. | draft | Su formato minimo se decide en CRIT-06 y CRIT-05. |
@@ -49,3 +56,12 @@ Status: CRIT-02 approved / downstream decisions pending
 | rework loop | Ciclo de retrabajo acotado, trazable y con escalamiento si falla repetidamente o cambia el alcance. | accepted | Aprobado por CRIT-02 para evitar tareas interminables. |
 | human-in-the-loop approval | Aprobacion humana reservada para decisiones criticas. | accepted | CRIT-02 lo acepta como principio operativo, no como microgestion constante. |
 | seguridad/riesgo/compliance | Funcion minima del flujo que cubre seguridad tecnica, riesgo operacional y compliance legal/normativo. | accepted | Ajuste obligatorio aprobado en CRIT-02; no implica agente separado todavia. |
+| explicit compliance responsibility | Regla CRIT-03 que impide diluir compliance legal/normativo dentro de QA generico o seguridad tecnica sin visibilidad propia. | accepted | Puede implementarse despues como agente, skill, checklist, reviewer o capacidad combinada; no aprueba motor legal completo V1. |
+| orchestration | Capacidad de coordinar alcance, estado conceptual, riesgos, avance, bloqueo, rework, handoffs y cierre. | accepted | CRIT-03 aprobo orquestacion mixta; estado real, evidencia, gates y rework counters son candidatos a control deterministico posterior. |
+| LLM reasoning responsibility | Responsabilidad adecuada para juicio, ambiguedad, analisis, diseno, generacion, diagnostico, revision o redaccion asistida por LLM. | accepted | CRIT-03 la separa de control deterministico. |
+| command candidate | Responsabilidad candidata a command repetible para iniciar o estructurar una fase/tarea, sin autoridad final de gate o cierre. | accepted | CRIT-03 aprobo commands candidatos, no commands runtime finales. |
+| QA planning/review | Parte de verificacion adecuada para LLM: planificar pruebas, diagnosticar fallas, revisar resultados y redactar reporte. | accepted | CRIT-03 la separa de ejecucion/captura de evidencia. |
+| test execution/evidence capture | Parte de verificacion que debe ser candidata a command/script/control deterministico para ejecutar pruebas y capturar evidencia reproducible. | accepted | CRIT-03 no aprueba comandos reales; CRIT-07 debe decidir implementacion y entorno. |
+| rework default limit | Limite operativo por defecto de 2 ciclos de retrabajo por tarea bajo el mismo alcance. | accepted | CRIT-03 aprobo que no es regla absoluta; excepciones requieren justificacion, trazabilidad y escalamiento. |
+| source policy | Responsabilidad de clasificar fuentes aplicables, secundarias, prohibidas/no relevantes y excepciones de contexto. | accepted | CRIT-03 la vincula a context routing/token budget; modelo de fuentes y auditoria queda para CRIT-06. |
+| RAG scope | Alcance de recuperacion/ingesta de conocimiento y fuentes oficiales. | accepted | CRIT-03 no aprueba RAG completo para V1 salvo justificacion posterior en CRIT-07. |
