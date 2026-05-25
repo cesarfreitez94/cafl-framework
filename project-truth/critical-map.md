@@ -17,6 +17,7 @@ Status: draft
 - [draft] Granularidad de agentes pertenece a CRIT-03, no a implementacion.
 - [draft] Formato de contratos pertenece a CRIT-04, no a tooling.
 - [draft] Evidencia, fuentes y trazabilidad pertenecen a CRIT-06, aunque alimenten gates y contratos.
+- [draft] CRIT-04, CRIT-05, CRIT-06 y CRIT-07 permanecen not-started y sus plantillas quedan alineadas al modelo mixto aprobado por CRIT-03.
 
 ## CRIT-01: Intent And Scope
 
@@ -68,64 +69,64 @@ Status: approved
 
 ## CRIT-04: Contracts
 
-Status: draft
+Status: not-started
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir que contratos son necesarios para coordinar fases, agentes y entregables. |
+| Purpose | [draft] Definir la estructura contractual para coordinar fases, entregables y mecanismos mixtos. |
 | Why it is critical | [draft] Contratos incompletos permiten avanzar con entradas ambiguas y salidas no verificables. |
-| What must be decided | [open-question] Tipos de contratos, nivel de detalle, campos minimos, formato, versionado y relacion con trazabilidad. |
-| What must NOT be decided yet | [draft] Contenido final de cada contrato, schemas definitivos y tooling de validacion. |
-| Inputs to review | [draft] `framework/CONTRACT_CATALOG.md`, plantillas en `framework/templates/contracts/`, `framework/PRE_PLANNING_ELICITATION.md`. |
-| Expected outputs | [draft] Inventario de contratos candidatos y reglas para decidir cuales son obligatorios. |
-| Acceptance criteria | [draft] Cada contrato candidato tiene proposito, consumidor, productor, entrada, salida y criterio de suficiencia. |
-| Open questions | [open-question] Que contrato minimo evita perder control sin crear burocracia excesiva? |
+| What must be decided | [open-question] Tipos de contratos, task/context packet, Definition of Ready, producer/consumer/validator, contexto autorizado/excluido, token budget, campos minimos, formato, versionado y relacion con trazabilidad. |
+| What must NOT be decided yet | [draft] Contenido final de cada contrato, gates finales, schemas definitivos, estado persistente, runtime y tooling de validacion. |
+| Inputs to review | [draft] CRIT-01/02/03 approved, `project-truth/spikes/spike-oc-crit03-opencode-responsibility-mapping.md`, `framework/CONTRACT_CATALOG.md`, plantillas en `framework/templates/contracts/`, `framework/PRE_PLANNING_ELICITATION.md` como evidencia secundaria. |
+| Expected outputs | [draft] Inventario de contratos candidatos y estructura contractual para agent, command, SDK/server/script, rule/config, skill/playbook, human/owner y mixed. |
+| Acceptance criteria | [draft] Cada contrato candidato tiene proposito, producer, consumer, validator, entrada, salida, contexto, token budget, evidencia, criterio de suficiencia y criterio de rechazo. |
+| Open questions | [open-question] Que contrato minimo evita perder control del modelo mixto sin crear burocracia excesiva? |
 | Dependencies | [draft] Depende de CRIT-01, CRIT-02 y CRIT-03; alimenta CRIT-05 y CRIT-06. |
 
 ## CRIT-05: Gates And Verification
 
-Status: draft
+Status: not-started
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir como se decide avanzar, bloquear, replanificar o escalar. |
+| Purpose | [draft] Definir modelo de gates verificables para avanzar, bloquear, replanificar, aceptar deuda o escalar. |
 | Why it is critical | [draft] Gates debiles o no verificables crean confianza falsa y no controlan riesgo. |
-| What must be decided | [open-question] Gates minimos, severidades, evidencias, criterios verificables, acciones por fallo y responsabilidad de decision. |
-| What must NOT be decided yet | [draft] Implementacion automatizada, scripts CI finales, comandos locales y cobertura tecnica exhaustiva. |
+| What must be decided | [open-question] Gates minimos, recommendation vs verification vs decision, severidades, categorias, evidencia reproducible, testing suficiente/aplicable, rework default 2 ciclos, deuda, escalamiento y acciones por fallo. |
+| What must NOT be decided yet | [draft] Arquitectura OpenCode final, implementacion automatizada, scripts CI finales, commands locales, gates finales y cobertura tecnica no soportada por recursos. |
 | Inputs to review | [draft] `framework/GATE_CATALOG.md`, `framework/ci/contract/PIPELINE_CONTRACT.md`, `RISKS.md`, `PROJECT_CONTROL.md`. |
-| Expected outputs | [draft] Mapa de gates candidatos con evidencias requeridas y consecuencias operativas. |
-| Acceptance criteria | [draft] Cada gate candidato puede responder que verifica, con que evidencia, quien decide y que pasa si falla. |
+| Expected outputs | [draft] Mapa de gates candidatos con recommendation source, verification method, decision owner, evidencias reproducibles y consecuencias operativas. |
+| Acceptance criteria | [draft] Cada gate candidato puede responder que recomienda, que verifica, con que evidencia reproducible, quien decide y que pasa si falla. |
 | Open questions | [open-question] Que fallas bloquean siempre y cuales pueden registrarse como deuda aceptada? |
 | Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-04 y CRIT-06; alimenta CRIT-07. |
 
 ## CRIT-06: State, Evidence And Traceability
 
-Status: draft
+Status: not-started
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir como se conserva estado, evidencia, decisiones y trazabilidad sin depender de memoria o conversaciones externas. |
+| Purpose | [draft] Definir modelo persistente y auditable de estado, evidencia, fuentes, contexto, decisiones y trazabilidad sin depender de memoria, conversaciones externas o narrativa LLM. |
 | Why it is critical | [draft] Sin trazabilidad se pierden causas de decisiones, fuentes, riesgos, aprobaciones y cambios. |
-| What must be decided | [open-question] Ubicacion del estado, IDs, fuentes, evidencia minima, matriz de trazabilidad, decision log y politica de cambios. |
-| What must NOT be decided yet | [draft] Herramientas finales de almacenamiento, schemas definitivos, automatizacion RAG o dashboards. |
+| What must be decided | [open-question] Estado autoritativo, IDs, decision log, evidence log, source log, context log, excluded/prohibited context log, rework history, token budget usage, fuentes, evidencia minima, matriz de trazabilidad y politica de cambios. |
+| What must NOT be decided yet | [draft] Herramientas finales de almacenamiento, schemas definitivos, tooling, automatizacion RAG o dashboards. |
 | Inputs to review | [draft] `DECISIONS.md`, `ELICITATION_RECORD.md`, `PROJECT_CONTROL.md`, templates de trazabilidad, RAG y CI. |
-| Expected outputs | [draft] Modelo minimo de estado y evidencia con reglas de actualizacion y auditoria. |
-| Acceptance criteria | [draft] Una decision puede rastrearse a fuente, fecha, estado, impacto, riesgos y artefactos afectados. |
+| Expected outputs | [draft] Modelo minimo de estado, evidencia, fuentes, contexto, rework y token budget con reglas de actualizacion y auditoria. |
+| Acceptance criteria | [draft] Una decision o entrega puede rastrearse a fuente, contexto usado/excluido, evidencia, fecha, estado, impacto, riesgos y artefactos afectados. |
 | Open questions | [open-question] Que evidencia es obligatoria para aceptar una decision o entrega? |
 | Dependencies | [draft] Depende de CRIT-01 y CRIT-02; alimenta CRIT-04, CRIT-05 y CRIT-07. |
 
 ## CRIT-07: Implementation Risks And Resources
 
-Status: draft
+Status: not-started
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Validar recursos, restricciones, herramientas y riesgos antes de comprometer implementacion. |
+| Purpose | [draft] Validar setup operativo, recursos, restricciones, riesgos, secuencia y recortes para implementar el modelo mixto aprobado sin reabrir OpenCode como runtime principal. |
 | Why it is critical | [draft] Integrar herramientas o prometer automatizacion sin recursos disponibles puede consumir la V1 sin validar valor. |
-| What must be decided | [open-question] Entorno Odoo, restricciones de entorno de desarrollo, setup operativo del runtime OpenCode, herramientas auxiliares fuera del producto si aportan valor, RAG, CI/CD, Playwright, permisos, datos, esfuerzo, secuencia, recortes de alcance y modulo piloto exacto. |
-| What must NOT be decided yet | [draft] Codigo, instaladores finales, configuracion activa, infraestructura productiva y optimizaciones. |
+| What must be decided | [open-question] Entorno Odoo real, instalacion/carga/actualizacion de modulo, tests aplicables, setup operativo OpenCode, agents, commands, SDK/server/scripts, permissions, config, skills, rules/AGENTS.md, operacion local/global, source-vs-runtime, evidencia ejecutable, RAG, CI/CD, Playwright, esfuerzo, secuencia, recortes de alcance y modulo piloto exacto. |
+| What must NOT be decided yet | [draft] Codigo, implementacion antes de CRIT-04/05/06, instaladores finales, configuracion activa, runtime files, infraestructura productiva y optimizaciones. |
 | Inputs to review | [draft] `framework/INSTALLATION_MODEL.md`, `framework/rag/`, `framework/ci/`, `framework/examples/`, `RISKS.md`. |
-| Expected outputs | [draft] Mapa de recursos, restricciones, riesgos bloqueantes y secuencia candidata de implementacion. |
-| Acceptance criteria | [draft] Cada herramienta candidata tiene justificacion, prerequisito, costo, riesgo y decision de incluir/excluir/postergar. |
-| Open questions | [open-question] Que recursos, restricciones y herramientas auxiliares son necesarios para construir V1 en 2 meses sin convertirlas en dependencias funcionales del producto CAFL? |
+| Expected outputs | [draft] Mapa de recursos, setup operativo candidato, restricciones, riesgos bloqueantes, recortes y secuencia candidata de implementacion. |
+| Acceptance criteria | [draft] Cada mecanismo/herramienta candidata tiene justificacion, prerequisito, costo, riesgo, evidencia esperada y decision futura de incluir/excluir/postergar. |
+| Open questions | [open-question] Que setup operativo, recursos, restricciones, recortes y herramientas auxiliares son necesarios para construir V1 en 2 meses sin convertirlas en dependencias funcionales del producto CAFL? |
 | Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-05 y CRIT-06; desbloquea planificacion tecnica. |
