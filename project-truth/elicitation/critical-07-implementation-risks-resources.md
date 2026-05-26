@@ -17,6 +17,8 @@ Status: not-started
 - [draft] El setup operativo debe cubrir OpenCode agents, commands, SDK/server/scripts, permissions, config, skills, rules/AGENTS.md, operacion local/global y evidencia ejecutable.
 - [draft] CRIT-07 no adelanta implementacion antes de que CRIT-04, CRIT-05 y CRIT-06 definan contratos, gates y estado/evidencia/trazabilidad.
 - [draft] CRIT-07 debe definir la materializacion tecnica de CRIT-04 contracts, CRIT-05 gates y CRIT-06 state/evidence/traceability en schemas finales, validators, commands, SDK/server/scripts, permissions, rutas/ubicaciones runtime y ejecucion reproducible.
+- [accepted] CRIT-06 ya aprobo el modelo logico/conceptual de estado autoritativo, logs, IDs, trazabilidad, evidence/source/context governance, Knowledge Gap, Curation Request, Curation Mode y bootstrap incremental.
+- [draft] CRIT-07 debe decidir como materializar fisicamente Knowledge Gap, Curation Request, Curation Mode, source policy, source usage, snapshots/versiones, knowledge artifacts e integration knowledge packs sin asumir RAG/base vectorial por defecto.
 - [draft] CRIT-07 define el cierre de elicitacion critica antes del Consolidated Truth Review y no propone CRIT-08.
 - [draft] RAG, pgvector, CI/CD, Playwright y herramientas auxiliares deben validarse contra valor, recursos, secuencia y plazo de 2 meses.
 - [draft] El plazo de 2 meses es restriccion de alcance para recursos, tooling operativo, recortes y secuencia.
@@ -41,7 +43,9 @@ Status: not-started
 - [open-question] La base de conocimiento curada se implementara con RAG o sin RAG?
 - [open-question] Se usara base vectorial, pgvector, PostgreSQL, SQLite, archivos curados, JSON, YAML, JSONL, Markdown u otro mecanismo?
 - [open-question] Que schemas finales de knowledge artifacts, source registry, source snapshots, source usage y knowledge domains se necesitan?
+- [open-question] Que schema/registro final necesita Knowledge Gap y Curation Request para bloquear implementacion hasta curaduria/aprobacion suficiente?
 - [open-question] Que validators finales deben validar fuentes, snapshots, freshness/vigencia, applicability, knowledge artifacts y knowledge packs?
+- [open-question] Como se implementara source policy para aprobar dominios, URLs base, documentos entregados por owner, repositorios oficiales y Swagger/OpenAPI/PDFs tecnicos candidatos antes de Curation Mode?
 - [open-question] Que commands de ingesta, actualizacion, validacion, consulta y reporte de knowledge base se requieren?
 - [open-question] Que scripts o tooling se requieren para procesar Swagger/OpenAPI, PDFs tecnicos, documentacion de autenticacion, endpoints, payloads, errores, seguridad, datos sensibles, compliance, ejemplos oficiales y pruebas recomendadas?
 - [open-question] Que scripts o tooling se requieren para snapshots/versiones, hashes, vigencia y deprecacion de fuentes?
@@ -49,6 +53,7 @@ Status: not-started
 - [open-question] Que source-vs-runtime layout y rutas/ubicaciones runtime deben existir para knowledge packs, indices, caches, snapshots, artifacts, logs y evidencia?
 - [open-question] Como consultaran agents/commands/scripts la base de conocimiento y como se registrara source usage?
 - [open-question] Como se bloqueara ejecucion o decision cuando falte conocimiento autorizado suficiente?
+- [open-question] Cual sera el alcance fisico minimo del bootstrap incremental para el modulo piloto sin cargar toda la documentacion Odoo/OWL/Playwright/integraciones desde el dia 1?
 - [open-question] Como se materializan dominios extensibles y como se agregan dominios futuros como legal-compliance, tax-regulation, public-sector-processes, accounting, industry-specific-rules y regulatory-reporting sin redisenar el framework?
 - [open-question] Que OpenSpec/OpenProject u otras herramientas auxiliares aportan valor sin convertirse en producto CAFL ni dependencia funcional?
 - [open-question] Que recursos existen para CI/CD y pruebas end-to-end?
@@ -75,6 +80,8 @@ Status: not-started
 - [open-question] Commands y scripts de ingesta, actualizacion, validacion, consulta, snapshots/versiones, Swagger/OpenAPI, PDFs tecnicos y reportes.
 - [open-question] Integracion con OpenCode agents, commands, skills/playbooks, SDK/server/scripts, permissions, context routing y bloqueo por falta de conocimiento autorizado.
 - [open-question] Politica fisica de actualizacion, vigencia, deprecacion, rutas runtime y source-vs-runtime layout.
+- [open-question] Materializacion fisica de Knowledge Gap, Curation Request, Curation Mode y source policy con aprobacion owner/source policy.
+- [open-question] Alcance fisico del bootstrap incremental de knowledge base para el modulo piloto.
 - [open-question] Materializacion de knowledge domains extensibles para integraciones externas y dominios futuros legales/regulatorios.
 - [open-question] Secuencia de implementacion candidata.
 - [open-question] Modulo piloto exacto y recortes compatibles con 2 meses.
@@ -114,6 +121,8 @@ Status: not-started
 - [draft] Knowledge base fisica sin validators permite usar fuentes desactualizadas, no oficiales o no aplicables.
 - [draft] Scripts para Swagger/OpenAPI, PDFs o API docs mal definidos producen conocimiento incorrecto pero aparentemente autorizado.
 - [draft] Bloqueo por falta de conocimiento autorizado no se implementa o queda solo en prompts.
+- [draft] Curation Mode queda solo en politica documental si CRIT-07 no define enforcement de fuentes aprobadas, source policy, permissions y logs.
+- [draft] Bootstrap incremental puede volverse demasiado amplio o demasiado laxo si CRIT-07 no define alcance fisico minimo y criterios de bloqueo.
 
 ## Output Format
 
@@ -125,6 +134,7 @@ Status: not-started
 - [draft] Schemas finales candidatos, validators, commands y scripts para knowledge artifacts, source registry, source snapshots, knowledge packs, ingesta, actualizacion, validacion, consulta, Swagger/OpenAPI, PDFs tecnicos y source usage.
 - [draft] Layout source-vs-runtime y rutas/ubicaciones runtime candidatas para knowledge domains, snapshots, artifacts, indices/caches, logs, permissions y evidencia.
 - [draft] Politica candidata de actualizacion, vigencia, deprecacion, consulta desde agents/commands/scripts y bloqueo por falta de conocimiento autorizado.
+- [draft] Politica candidata de Knowledge Gap, Curation Request, Curation Mode, source policy, aprobacion de fuentes y bootstrap incremental fisico.
 - [draft] Plan candidato de entorno Odoo real, instalacion/carga/actualizacion, tests aplicables y evidencia ejecutable.
 - [draft] Lista de recursos, riesgos, recortes, alcance RAG V1 o diferimiento, modulo piloto exacto, plan de implementacion y secuencia candidata compatible con 2 meses.
 - [draft] Lista de bloqueadores tecnicos antes de implementar.
@@ -142,6 +152,7 @@ Status: not-started
 - [draft] RAG/base vectorial/archivos curados quedan incluidos, excluidos, postergados o pendientes con razon, costo, riesgo y dependencia.
 - [draft] Schemas, validators, commands y scripts de ingesta/actualizacion/validacion de knowledge base quedan definidos como decisiones de implementacion futura, sin crearlos todavia.
 - [draft] La integracion con OpenCode agents/commands/skills/scripts y el bloqueo por falta de conocimiento autorizado quedan definidos operacionalmente, sin reabrir OpenCode como runtime principal.
+- [draft] Knowledge Gap, Curation Request, Curation Mode, source policy y bootstrap incremental quedan materializados como decisiones de implementacion futura sin crear implementacion.
 - [draft] La extensibilidad de knowledge domains futuros queda resuelta a nivel de plan implementable sin proponer CRIT-08.
 - [draft] No queda dependencia tecnica critica sin dueno ni mitigacion.
 - [draft] La secuencia de implementacion no requiere asumir recursos no confirmados.

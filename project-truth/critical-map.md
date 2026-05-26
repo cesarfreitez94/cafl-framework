@@ -1,6 +1,6 @@
 # Critical Map
 
-Status: draft
+Status: draft + CRIT-06 approved / CRIT-07 not-started
 
 ## Regla De Uso
 
@@ -16,11 +16,11 @@ Status: draft
 - [draft] Aprobaciones automaticas pertenecen a CRIT-02 si afectan flujo operativo y a CRIT-05 si dependen de gates.
 - [draft] Granularidad de agentes pertenece a CRIT-03, no a implementacion.
 - [draft] Formato de contratos pertenece a CRIT-04, no a tooling.
-- [draft] Evidencia, fuentes, storage logico, logs, IDs conceptuales, gate log y trazabilidad contract -> gate -> evidence pertenecen a CRIT-06, aunque alimenten gates y contratos.
+- [accepted] Evidencia, fuentes, storage logico, logs, IDs conceptuales, gate log y trazabilidad contract -> gate -> evidence pertenecen a CRIT-06, aunque alimenten gates y contratos.
 - [draft] Schemas finales, validators, commands, SDK/server/scripts, permissions, runtime, rutas/ubicaciones runtime y materializacion tecnica de CRIT-04/05/06 pertenecen a CRIT-07.
-- [draft] Knowledge/source governance logico, source registry, curated documentation registry, source snapshots/versiones, trust/freshness/applicability, source usage y bloqueo por falta de fuente autorizada suficiente pertenecen a CRIT-06.
+- [accepted] Knowledge/source governance logico, source registry, curated documentation registry, source snapshots/versiones, trust/freshness/applicability, source usage, Curation Mode, Knowledge Gap y bloqueo por falta de fuente autorizada suficiente pertenecen a CRIT-06.
 - [draft] Implementacion fisica/runtime de knowledge base, RAG/base vectorial si aplica, archivos curados, schemas, validators, commands, scripts de ingesta/actualizacion, rutas runtime e integracion con OpenCode pertenecen a CRIT-07.
-- [accepted] CRIT-04 queda approved como modelo contractual conceptual; CRIT-05 queda approved como modelo conceptual de gates y verificacion; CRIT-06 y CRIT-07 permanecen not-started.
+- [accepted] CRIT-04 queda approved como modelo contractual conceptual; CRIT-05 queda approved como modelo conceptual de gates y verificacion; CRIT-06 queda approved como modelo logico/conceptual de estado/evidencia/trazabilidad/knowledge governance; CRIT-07 permanece not-started.
 
 ## CRIT-01: Intent And Scope
 
@@ -99,24 +99,24 @@ Status: approved
 | Inputs reviewed | [accepted] CRIT-01/02/03/04 approved, CRIT-05 Gates and Verification Technical Elicitation, aprobacion del owner y fuentes primarias en `project-truth/`; `framework/` y documentos raiz solo como evidencia secundaria. |
 | Expected outputs | [accepted] Modelo conceptual de gates con recommendation source, verification method, decision owner, evidencias reproducibles y consecuencias operativas. |
 | Acceptance criteria | [accepted] Cada gate conceptual puede responder que recomienda, que verifica, con que evidencia reproducible, quien decide y que pasa si falla; CRIT-05 no crea gates finales ejecutables. |
-| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-05 como modelo conceptual; CRIT-06 y CRIT-07 conservan sus decisiones pendientes. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-05 como modelo conceptual; CRIT-06 ya resolvio estado/evidencia/trazabilidad logica y CRIT-07 conserva decisiones de implementacion pendientes. |
 | Dependencies | [accepted] Depende de CRIT-01, CRIT-02, CRIT-03 y CRIT-04; alimenta CRIT-06 y CRIT-07. |
 
-## CRIT-06: State, Evidence And Traceability
+## CRIT-06: State, Evidence, Traceability And Knowledge Governance
 
-Status: not-started
+Status: approved
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir modelo logico/conceptual persistente y auditable de storage, estado autoritativo, evidencia, fuentes, contexto, decisiones, logs, trazabilidad y knowledge/source governance sin depender de memoria, conversaciones externas, busqueda web libre o narrativa LLM. |
-| Why it is critical | [draft] Sin trazabilidad y governance de fuentes se pierden causas de decisiones, fuentes, vigencia, riesgos, aprobaciones, cambios y autoridad del conocimiento usado por CAFL. |
-| What must be decided | [open-question] Storage logico, persistencia conceptual, estado autoritativo, IDs conceptuales, decision log, evidence log, source log, context log, excluded/prohibited context log, gate log, rework history, token/context usage, fuentes, evidencia minima, matriz modulo -> capability/feature -> tarea, relacion contract -> gate -> evidence, knowledge governance logico, source registry, curated knowledge artifacts, source snapshots/versiones, trust/freshness/applicability, source usage, prohibited sources y bloqueo por falta de conocimiento autorizado suficiente. |
-| What must NOT be decided yet | [draft] Schemas finales, validators finales, commands finales, storage fisico, configuracion runtime, tooling, automatizacion RAG, RAG final, base vectorial final, base de datos final, ingesta, scripts, dashboards o resolucion de CRIT-07. |
-| Inputs to review | [draft] `DECISIONS.md`, `ELICITATION_RECORD.md`, `PROJECT_CONTROL.md`, templates de trazabilidad, RAG y CI. |
-| Expected outputs | [draft] Modelo minimo de storage logico, estado autoritativo, IDs conceptuales, decision/evidence/source/context/excluded-prohibited/gate logs, rework, token/context usage, trazabilidad contract -> gate -> evidence y knowledge/source governance logico con reglas de actualizacion, vigencia, auditoria y bloqueo. |
-| Acceptance criteria | [draft] Una decision o entrega puede rastrearse a fuente, contexto usado/excluido/prohibido, evidence log, gate log, contract relacionado, fecha, estado, impacto, riesgos, knowledge artifact y artefactos afectados; narrativa LLM, busqueda web libre y estado autoritativo quedan diferenciados. |
-| Open questions | [open-question] Que evidencia es obligatoria para aceptar una decision o entrega y que conocimiento autorizado minimo se requiere para implementar sin inventar? |
-| Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-04 y CRIT-05; alimenta CRIT-07. |
+| Purpose | [accepted] Definir modelo logico/conceptual persistente y auditable de storage logico, estado autoritativo, evidencia, fuentes, contexto, decisiones, logs, IDs, trazabilidad y knowledge/source governance sin depender de memoria, conversaciones externas, busqueda web libre o narrativa LLM. |
+| Why it is critical | [accepted] Sin trazabilidad y governance de fuentes se pierden causas de decisiones, fuentes, vigencia, riesgos, aprobaciones, cambios y autoridad del conocimiento usado por CAFL. |
+| What was answered | [accepted] Estado autoritativo en registros logicos versionables y trazables; narrativa LLM no es estado; persistencia conceptual de estado, decisiones, contratos/packets, gates, evidencia, fuentes, contexto, token/context usage, rework, deuda, approvals, knowledge artifacts, snapshots, source usage, integration packs y cambios de estado; IDs obligatorios y condicionales; logs obligatorios y condicionales; trazabilidad modulo -> capability/feature -> tarea y contract -> gate -> evidence; evidencia reproducible; source registry; knowledge artifacts; integration knowledge packs; Curation Mode; Knowledge Gap; bootstrap incremental; Python solo aplicado a Odoo; extensibilidad a dominios futuros. |
+| What must NOT be decided yet | [accepted] Schemas finales, validators finales, commands finales, scripts, storage fisico, configuracion runtime, tooling, automatizacion RAG, RAG final, base vectorial final, base de datos final, ingesta, dashboards, ejecucion reproducible real o resolucion de CRIT-07. |
+| Inputs reviewed | [accepted] CRIT-01/02/03/04/05 approved, CRIT-06 Technical Elicitation y aprobacion del owner; fuentes primarias en `project-truth/`; `framework/` y documentos raiz solo como evidencia secundaria. |
+| Expected outputs | [accepted] Modelo logico de estado, storage logico, persistencia conceptual, IDs, logs, evidencia, fuentes, contexto, rework, deuda, approvals, trazabilidad y knowledge/source governance; handoff explicito a CRIT-07 para implementacion fisica/runtime. |
+| Acceptance criteria | [accepted] Una decision o entrega puede rastrearse a fuente, contexto usado/excluido/prohibido, evidence log, gate log, contract relacionado, fecha, estado, impacto, riesgos, knowledge artifact y artefactos afectados; narrativa LLM, busqueda web libre y estado autoritativo quedan diferenciados. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-06 como modelo logico/conceptual; implementacion fisica/runtime queda derivada a CRIT-07. |
+| Dependencies | [accepted] Depende de CRIT-01, CRIT-02, CRIT-03, CRIT-04 y CRIT-05; alimenta CRIT-07. |
 
 ## CRIT-07: Implementation Risks And Resources
 
@@ -132,4 +132,4 @@ Status: not-started
 | Expected outputs | [draft] Mapa de recursos, setup operativo candidato, schemas finales, validators, commands, SDK/server/scripts, permissions, rutas/ubicaciones runtime, implementacion fisica candidata de knowledge base, restricciones, riesgos bloqueantes, recortes y secuencia candidata de implementacion compatible con 2 meses. |
 | Acceptance criteria | [draft] Cada mecanismo/herramienta candidata tiene justificacion, prerequisito, costo, riesgo, evidencia esperada y decision futura de incluir/excluir/postergar; la materializacion tecnica de CRIT-04/05/06 y de la knowledge base queda definida sin crear implementacion, cerrando la elicitacion critica antes del Consolidated Truth Review y sin proponer CRIT-08. |
 | Open questions | [open-question] Que setup operativo, recursos, restricciones, recortes, herramientas auxiliares y mecanismo fisico de knowledge base son necesarios para construir V1 en 2 meses sin convertirlos en dependencias funcionales no justificadas del producto CAFL? |
-| Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-05 y CRIT-06; desbloquea planificacion tecnica. |
+| Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-03, CRIT-04, CRIT-05 y CRIT-06; desbloquea planificacion tecnica. |

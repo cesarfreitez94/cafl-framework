@@ -1,6 +1,6 @@
 # Project Truth
 
-Status: bootstrap + CRIT-05 approved / CRIT-06 to CRIT-07 pending
+Status: bootstrap + CRIT-06 approved / CRIT-07 pending
 
 ## Proposito
 
@@ -23,11 +23,11 @@ Status: bootstrap + CRIT-05 approved / CRIT-06 to CRIT-07 pending
 - [accepted] No contiene gates finales.
 - [accepted] No contiene agentes ejecutables.
 - [accepted] No instala ni configura OpenSpec u otra herramienta.
-- [accepted] No define todavia el alcance V1 real, salvo restricciones explicitas aceptadas en CRIT-01, decisiones de flujo aceptadas en CRIT-02, responsabilidades conceptuales aprobadas en CRIT-03, modelo contractual conceptual aprobado en CRIT-04 y modelo conceptual de gates/verificacion aprobado en CRIT-05.
+- [accepted] No define todavia el alcance V1 real, salvo restricciones explicitas aceptadas en CRIT-01, decisiones de flujo aceptadas en CRIT-02, responsabilidades conceptuales aprobadas en CRIT-03, modelo contractual conceptual aprobado en CRIT-04, modelo conceptual de gates/verificacion aprobado en CRIT-05 y modelo logico/conceptual de estado/evidencia/trazabilidad/knowledge governance aprobado en CRIT-06.
 
 ## Uso Antes De Implementar
 
-- [accepted] Antes de implementar en `framework/`, se deben resolver los puntos criticos minimos definidos en `critical-map.md`.
+- [accepted] Antes de implementar en `framework/`, se deben resolver los puntos criticos minimos definidos en `critical-map.md`; despues de CRIT-06 queda pendiente CRIT-07.
 - [accepted] Cada afirmacion relevante debe usar uno de estos estados: `accepted`, `draft`, `assumption`, `open-question`, `rejected`, `superseded`.
 - [accepted] Las decisiones firmes deben registrarse en `decisions/accepted.md`.
 - [accepted] Las decisiones no resueltas deben registrarse en `decisions/pending.md`.
@@ -47,5 +47,6 @@ Status: bootstrap + CRIT-05 approved / CRIT-06 to CRIT-07 pending
 - [accepted] CRIT-03 Agent Responsibilities esta approved como decision de responsabilidades y mecanismos candidatos, no como implementacion runtime.
 - [accepted] CRIT-04 Contracts esta approved como modelo contractual conceptual, no como contratos finales, schemas finales, gates, commands ni runtime.
 - [accepted] CRIT-05 Gates And Verification esta approved como modelo conceptual, no como gates finales ejecutables, schemas finales, validators, commands, scripts ni runtime.
-- [accepted] CRIT-06 y CRIT-07 siguen pendientes.
-- [accepted] No se debe implementar en `framework/` hasta resolver los puntos criticos minimos restantes con el owner.
+- [accepted] CRIT-06 State, Evidence, Traceability And Knowledge Governance esta approved como modelo logico/conceptual, no como schemas finales, validators, commands, scripts, RAG final, base vectorial, storage fisico, runtime ni implementacion.
+- [accepted] CRIT-07 Implementation Risks And Resources sigue not-started.
+- [accepted] No se debe implementar en `framework/` hasta resolver CRIT-07 y completar el cierre de elicitacion critica aprobado por el owner.

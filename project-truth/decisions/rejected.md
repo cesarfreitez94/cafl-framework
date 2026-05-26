@@ -1,6 +1,6 @@
 # Rejected Decisions
 
-Status: bootstrap + CRIT-05 approved
+Status: bootstrap + CRIT-06 approved
 
 | ID | Rejected decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |
@@ -26,3 +26,11 @@ Status: bootstrap + CRIT-05 approved
 | DEC-REJECTED-020 | Tratar deuda funcional sobre alcance comprometido como deuda aceptable para produccion tecnica. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | Funcionalidad comprometida incompleta requiere rework, block, escalation o replan/reduce scope explicito y trazable. |
 | DEC-REJECTED-021 | Aceptar evidencia solo narrativa LLM como suficiente para gate o cierre. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | La narrativa LLM puede explicar, pero no sustituye evidencia reproducible. |
 | DEC-REJECTED-022 | Usar como escala principal de severidades una taxonomia incompatible con `blocker`, `critical`, `high`, `medium`, `low`, `warning/info`. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | La alternativa `blocker`, `critical`, `major`, `minor`, `info` no queda como escala principal CRIT-05. |
+| DEC-REJECTED-023 | Tratar narrativa LLM, memoria o conversacion externa como estado autoritativo de CAFL. | CRIT-06 owner | rejected | CRIT-06 aprobo que el estado autoritativo vive en registros logicos versionables y trazables. |
+| DEC-REJECTED-024 | Implementar, disenar o decidir con conocimiento autorizado insuficiente. | CRIT-06 owner | rejected | La ausencia de conocimiento autorizado genera Knowledge Gap, Curation Request y bloqueo de implementacion. |
+| DEC-REJECTED-025 | Usar busqueda web libre como fuente directa de implementacion. | CRIT-06 owner | rejected | La busqueda externa solo puede ocurrir en Curation Mode, con fuentes aprobadas por owner o source policy. |
+| DEC-REJECTED-026 | Usar Wikipedia, blogs no autorizados, StackOverflow o soluciones copiadas de terceros como fuente tecnica autoritativa. | CRIT-06 owner | rejected | Pueden existir como contexto no autorizado solo si una politica futura lo permite; no son autoridad directa para implementar. |
+| DEC-REJECTED-027 | Ampliar fuentes, dominios o URLs base durante Curation Mode sin aprobacion del owner o source policy previa. | CRIT-06 owner | rejected | Si no existe source policy aprobada o fuente autorizada, debe escalar al owner antes de buscar. |
+| DEC-REJECTED-028 | Incluir Python generico, Django, FastAPI, Flask o patrones Python que contradigan Odoo como conocimiento objetivo de CAFL V1. | CRIT-06 owner | rejected | Python queda incluido solo como conocimiento aplicado a Odoo. |
+| DEC-REJECTED-029 | Asumir que CRIT-06 aprueba RAG final, base vectorial, base de datos final, storage fisico, schemas, validators, commands, scripts o runtime OpenCode. | CRIT-06 owner | rejected | CRIT-06 aprueba solo modelo logico/conceptual; implementacion fisica queda para CRIT-07. |
+| DEC-REJECTED-030 | Crear o proponer CRIT-08 para resolver knowledge governance. | CRIT-06 owner | rejected | CRIT-06 aprobo el modelo logico y CRIT-07 debe resolver la implementacion fisica/runtime; CRIT-08 no existe. |
