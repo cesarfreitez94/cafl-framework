@@ -1,6 +1,6 @@
 # Critical Map
 
-Status: CRIT-07 approved / critical elicitation complete
+Status: READY_FOR_TARGET_OPERATING_MODEL
 
 ## Regla De Uso
 
@@ -140,5 +140,7 @@ Status: approved
 ## Elicitacion Critica Completa
 
 - [accepted] CRIT-01..CRIT-07 quedan completos.
+- [accepted] Consolidated Truth Review quedo `READY_FOR_TARGET_OPERATING_MODEL`.
+- [accepted] El siguiente artefacto recomendado es Target Operating Model.
 - [accepted] CRIT-08 no existe.
 - [accepted] El siguiente paso debe definirse formalmente a partir de las decisiones aprobadas, sin imponer en este mapa una secuencia detallada post-CRIT-07.

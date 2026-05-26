@@ -1,6 +1,6 @@
 # Project Truth
 
-Status: bootstrap + CRIT-07 approved / critical elicitation complete
+Status: READY_FOR_TARGET_OPERATING_MODEL
 
 ## Proposito
 
@@ -51,3 +51,6 @@ Status: bootstrap + CRIT-07 approved / critical elicitation complete
 - [accepted] CRIT-07 Implementation Risks, Resources, Runtime And Feasibility esta approved como cierre de elicitacion critica, viabilidad, runtime candidate direction, riesgos, recursos, recortes V1 y criterios para implementacion posterior.
 - [accepted] CRIT-01..CRIT-07 quedan completos.
 - [accepted] CRIT-08 no existe.
+- [accepted] Consolidated Truth Review esta completado.
+- [accepted] Estado actual: `READY_FOR_TARGET_OPERATING_MODEL`.
+- [accepted] Siguiente paso: Target Operating Model.

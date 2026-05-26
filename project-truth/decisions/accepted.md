@@ -1,6 +1,6 @@
 # Accepted Decisions
 
-Status: bootstrap + CRIT-07 approved / critical elicitation complete
+Status: READY_FOR_TARGET_OPERATING_MODEL
 
 | ID | Decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |
@@ -162,3 +162,4 @@ Status: bootstrap + CRIT-07 approved / critical elicitation complete
 | DEC-ACCEPTED-156 | V1 debe demostrar un flujo end-to-end verificable de modulo Odoo 18. | CRIT-07 Technical Elicitation + owner approval | accepted | No se acepta V1 basada solo en recomendaciones narrativas. |
 | DEC-ACCEPTED-157 | Capacidades no incluidas en V1 quedan diferidas a V2/post-V1, no rechazadas. | CRIT-07 Technical Elicitation + owner approval | accepted | Incluye RAG/vector DB, SDK/server, dashboard/UI, CI/CD completo, integraciones reales, legal-compliance avanzado, KB amplia, OpenAPI/PDF automatico, DB avanzada, multiusuario, plugins/MCP, curation avanzada, OWL avanzado y Playwright si no aplican al piloto. |
 | DEC-ACCEPTED-158 | Technical validations/spikes post-CRIT-07 deben definirse formalmente por el proceso correspondiente. | CRIT-07 Technical Elicitation + owner approval | accepted | CRIT-07 registra necesidad; no ejecuta ni cierra resultados. |
+| DEC-ACCEPTED-159 | Consolidated Truth Review completed. | Consolidated Truth Review post-fix verification | accepted | Resultado: READY_FOR_TARGET_OPERATING_MODEL. Implicacion: el proyecto puede pasar a Target Operating Model. Limite: no aprueba TOM, Blueprint, backlog ni implementacion. |

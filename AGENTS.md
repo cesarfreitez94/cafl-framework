@@ -1,33 +1,37 @@
 # AGENTS.md
 
 ## Scope
-- This repo is the source/control repo for the CAFL Odoo AI Factory Framework, not an installed OpenCode runtime or an Odoo addon repo.
-- Default project language is Spanish tecnico for artifacts, agents, reports, and control docs; preserve the existing ASCII style.
 
-## Source Vs Runtime
-- Do not create `.opencode/agents`, `.opencode/skills`, or `.opencode/opencode.json` under `framework/`; source lives outside runtime discovery on purpose.
-- Future installer mapping is `framework/agents/*.agent.md -> .opencode/agents/*.md`, `framework/skills/*/SKILL.md.template -> .opencode/skills/*/SKILL.md`, and `framework/config/opencode.runtime.json.template -> .opencode/opencode.json`.
-- `framework/config/opencode.runtime.json.template` is a runtime template, not active config for this source repo.
+Estas reglas aplican a cualquier agente que trabaje en este repo. Su objetivo es mantener el trabajo alineado con `project-truth/` sin introducir decisiones nuevas, fuentes paralelas ni implementacion prematura.
 
-## Current State
-- `framework/MANIFEST.md` marks the framework as `0.0.0-source` and non-installable; files marked `draft`, `candidato`, or `pendiente` are specifications to complete, not implemented behavior.
-- Before detailed implementation planning, `ROADMAP.md` requires meta-elicitation/revalidation of agent responsibilities, contracts, gates, install model, permissions, and automatic approvals.
-- `framework/examples/simple_odoo_module/` is a placeholder pilot for V1 validation, not a runnable Odoo module yet.
+## Fuente De Verdad
 
-## Flow
-- Conceptual module flow is elicitation -> PRD -> PRD gate -> SDD -> SDD gate -> contracts -> plan/backlog -> development -> testing -> final gates -> delivery.
-- `framework/commands/*.command.md` files describe future OpenCode commands; they are not executable local commands.
+- Antes de actuar, leer el contexto aplicable en `project-truth/`.
+- Tratar `project-truth/` como la unica fuente de verdad aprobada.
+- Usar como referencias de autoridad `project-truth/critical-map.md`, `project-truth/risks.md`, `project-truth/decisions/accepted.md`, `project-truth/decisions/pending.md`, `project-truth/decisions/rejected.md` y `project-truth/decisions/superseded.md`.
+- Mantener trazabilidad hacia decisiones, riesgos y pendientes en `project-truth/`.
+- No duplicar decisiones que ya viven en `project-truth/`.
+- No crear documentos raiz paralelos que compitan con `project-truth/`.
 
-## Verification
-- There are currently no repo-level build, lint, format, typecheck, or test manifests (`package.json`, `pyproject.toml`, `Makefile`, or CI workflows).
-- `framework/ci/local/COMMANDS.md` contains candidate future commands such as `cafl-odoo validate-structure` and `cafl-odoo test-backend`; they depend on an existing Odoo environment and are not implemented here.
-- Module approval requires all applicable tests to pass: Python/Odoo, HttpCase/Tours, OWL/QUnit when applicable, Playwright E2E, migration/update, security, and basic performance.
+## Modo De Trabajo
 
-## RAG And Sources
-- V1 knowledge must prioritize official Odoo v18 sources; Chilean regulatory sources are only future/base structure in V1.
-- Relevant technical decisions should cite official source, version/hash, confidence, and warnings per `framework/rag/queries/QUERY_CONTRACT.md`.
-- Exact official URLs, embeddings, table schema, and ingestion commands are still pending; do not invent them.
+- Ejecutar solo el objetivo solicitado por el prompt vigente.
+- No ampliar alcance por iniciativa propia.
+- No crear ni modificar artefactos fuera del alcance autorizado.
+- No convertir recomendaciones en implementacion sin autorizacion explicita.
+- Si falta contexto suficiente para cumplir una tarea, reportar el gap y pedir autorizacion o decision; no inventar.
+- Si una tarea corresponde a Target Operating Model, Implementation Blueprint, backlog o implementacion, ejecutarla solo cuando el prompt lo solicite explicitamente y con los limites definidos en `project-truth/`.
 
-## Gates And Risk
-- Gate severities are `blocker`, `critical`, `major`, `minor`, and `info`; categories include legal, seguridad, datos, operacion, UX, performance, tecnica, comercial, and alcance.
-- Legal critical risk, normative contradictions, or insufficient official sources should block/escalate; V1 excludes a full Chilean legal engine.
+## Documentacion
+
+- Todo documento fuera de `project-truth/` debe ser vigente, derivado de `project-truth/` y util para el estado actual del proyecto.
+- Si un documento raiz necesita cambiar, reescribirlo completo desde `project-truth/`; no aplicar micro-ediciones que dejen documentos hibridos.
+- No conservar documentos como evidencia secundaria fuera de `project-truth/`.
+- No crear carpetas historical, archive o legacy.
+
+## Limites
+
+- No disenar Target Operating Model, Implementation Blueprint ni backlog salvo instruccion explicita.
+- No implementar runtime salvo instruccion explicita posterior y trazable.
+- No definir agentes finales, commands finales, schemas finales, validators finales, scripts, RAG, base vectorial ni configuracion OpenCode salvo instruccion explicita posterior y trazable.
+- No introducir decisiones no trazadas a `project-truth/`.

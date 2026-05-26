@@ -1,6 +1,6 @@
 # Pending Decisions
 
-Status: bootstrap + CRIT-07 approved / critical elicitation complete
+Status: READY_FOR_TARGET_OPERATING_MODEL
 
 ## CRIT-01: Intent And Scope
 
@@ -49,10 +49,10 @@ Status: bootstrap + CRIT-07 approved / critical elicitation complete
 
 ## Post-CRIT-07 Work To Define
 
-- [pending] Consolidated Truth Review debe definirse formalmente a partir de CRIT-01..CRIT-07 aprobados.
-- [pending] Target Operating Model debe definirse formalmente a partir de CRIT-01..CRIT-07 aprobados.
+- [accepted] Consolidated Truth Review esta completado con resultado READY_FOR_TARGET_OPERATING_MODEL.
+- [pending] Target Operating Model debe definirse formalmente a partir de CRIT-01..CRIT-07 aprobados y Consolidated Truth Review completado.
 - [pending] Implementation Blueprint debe definirse formalmente sin usar `framework/` como input y sin convertir recomendaciones en implementacion prematura.
-- [pending] Technical validations/spikes deben definirse formalmente, incluyendo OpenCode permissions, OpenCode commands/skills, SDK/server go/no-go, scripts/CLI language, schema/validator toolchain, storage/log convention, source policy enforcement, knowledge without RAG, Odoo 18 local environment, Odoo 18 install/update/test execution, evidence capture y secrets handling.
-- [pending] Backlog tecnico debe definirse formalmente despues del blueprint correspondiente.
+- [pending] Technical validations/spikes deben definirse formalmente.
+- [pending] Backlog tecnico debe definirse formalmente.
 - [pending] Implementacion controlada debe ejecutarse solo despues de los pasos formales que correspondan y con scope V1 aprobado.
 - [accepted] Esta lista no impone una secuencia detallada post-CRIT-07 ni crea CRIT-08.
