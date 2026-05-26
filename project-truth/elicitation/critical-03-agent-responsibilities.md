@@ -14,7 +14,7 @@ Status: approved
 - [accepted] Se aprueba que CAFL no sea agents-only.
 - [accepted] Se aprueba un modelo mixto con agents, commands, control deterministico futuro, rules/config/skills y owner para decisiones criticas.
 - [accepted] Se aprueba autoridad conceptual para avanzar, bloquear, replanificar, escalar y cerrar segun responsabilidad.
-- [accepted] Se aprueba clasificacion preliminar de agentes actuales solo como evidencia secundaria y candidatos.
+- [superseded] La clasificacion preliminar de agentes existentes se conserva solo como registro historico de CRIT-03; CRIT-07 elimino `framework/` y supersedio cualquier uso de esos agentes como evidencia secundaria utilizable o candidatos por supervivencia.
 
 ## Non-Approvals
 
@@ -27,7 +27,7 @@ Status: approved
 - [accepted] CRIT-03 no aprueba gates finales.
 - [accepted] CRIT-03 no aprueba arquitectura OpenCode final.
 - [accepted] CRIT-03 no aprueba archivos runtime definitivos.
-- [accepted] `framework/agents/*.agent.md` sigue siendo evidencia secundaria, no verdad oficial.
+- [superseded] En CRIT-03, `framework/agents/*.agent.md` se trato solo como evidencia secundaria; CRIT-07 supersedio esa lectura: `framework/` fue eliminado como artefacto contaminado y no es evidencia secundaria utilizable ni input de TOM/Blueprint.
 
 ## Sources Reviewed
 
@@ -38,8 +38,7 @@ Status: approved
 - [accepted] `project-truth/decisions/pending.md`.
 - [accepted] `project-truth/risks.md`.
 - [accepted] `project-truth/glossary.md`.
-- [accepted] `framework/agents/*.agent.md` solo como evidencia secundaria.
-- [accepted] `framework/AGENT_CONTRACTS.md` solo como evidencia secundaria.
+- [superseded] `framework/agents/*.agent.md` y `framework/AGENT_CONTRACTS.md` fueron revisados solo como evidencia historica durante CRIT-03; CRIT-07 supersedio su uso y prohibe usarlos como input de TOM/Blueprint.
 - [accepted] Documentos raiz del repo solo como evidencia secundaria.
 
 ## Accepted Decisions
@@ -158,20 +157,22 @@ Status: approved
 | Coordinacion/orquestacion | mixed | Coordinar flujo, handoffs, bloqueos, rework y escalamiento | Reemplazar estado/gates finales por narrativa LLM | PRD, SDD, packets, riesgos, evidencia | Handoffs, bloqueo, replanificacion, decision request | Avanza con DoR/DoD; bloquea; escala; propone cierre | Todos los roles | Estado autoritativo queda para CRIT-06 |
 | Analisis funcional | agent + command + human | Elicitar negocio, alcance, actores, reglas y PRD minimo | Disenar arquitectura o escribir codigo | Idea owner, contexto de negocio | PRD ligero, scope in/out, criterios, dudas | Bloquea por falta de contexto funcional critico | Arquitectura, owner | Formato PRD queda para CRIT-04 |
 | Diseno tecnico Odoo | agent + rule-config-skill | Producir SDD, decisiones tecnicas y riesgos | Implementar como responsabilidad primaria o cerrar gates finales | PRD aprobado, fuentes oficiales, restricciones | SDD ligero, ADR minimo, riesgos | Bloquea por fuente insuficiente o riesgo tecnico critico | Builders, QA, riesgo | Politica de fuentes queda para CRIT-06 |
-| Construccion Odoo backend | agent + command + permissions later | Implementar backend segun SDD y packet | Cambiar alcance, autocerrar u omitir SDD | SDD, packet, DoR | Codigo, notas, evidencia local | Edita solo con packet ready | QA, orquestacion | Permissions tecnicos quedan para CRIT-07 |
-| Construccion frontend/OWL condicional | agent conditional | Implementar OWL/JS/assets/tours cuando aplique | Crear frontend sin necesidad funcional/SDD | SDD frontend, packet | Codigo frontend y pruebas aplicables | Puede rechazar packet frontend insuficiente | QA, backend, arquitectura | Criterio OWL queda pendiente |
-| Verificacion/testing | mixed | Planificar, diagnosticar, ejecutar/verificar pruebas y reportar evidencia | Confiar solo en opinion LLM o autocerrar modulo | PRD, SDD, codigo, entorno, criterios | Plan, resultados, reporte QA, rework | Rechaza entrega y exige rework | Builder, orquestacion, evidencia | Comandos reales quedan para CRIT-07 |
+| Construccion Odoo backend | agent + command + permissions later | Implementar backend segun SDD y packet | Cambiar alcance, autocerrar u omitir SDD | SDD, packet, DoR | Codigo, notas, evidencia local | Edita solo con packet ready | QA, orquestacion | Permissions tecnicos quedan para validations/spikes post-CRIT-07 |
+| Construccion frontend/OWL condicional | agent conditional | Implementar OWL/JS/assets/tours cuando aplique | Crear frontend sin necesidad funcional/SDD | SDD frontend, packet | Codigo frontend y pruebas aplicables | Puede rechazar packet frontend insuficiente | QA, backend, arquitectura | Criterio OWL queda para Blueprint/piloto posterior |
+| Verificacion/testing | mixed | Planificar, diagnosticar, ejecutar/verificar pruebas y reportar evidencia | Confiar solo en opinion LLM o autocerrar modulo | PRD, SDD, codigo, entorno, criterios | Plan, resultados, reporte QA, rework | Rechaza entrega y exige rework | Builder, orquestacion, evidencia | Commands reales quedan para Blueprint/spikes post-CRIT-07 |
 | Seguridad/riesgo/compliance | mixed | Revisar seguridad, datos, riesgo operativo y compliance | Reemplazar asesoria legal humana o motor legal completo V1 | PRD, SDD, fuentes, evidencia | Riesgos, blockers, advertencias | Bloquea/escalada riesgo legal/compliance critico | Owner, orquestacion, arquitectura, QA | Severidades finales quedan para CRIT-05 |
 | Evidencia/cierre | mixed | Consolidar evidencia, trazabilidad y reporte | Cerrar sin tests o sin aceptacion requerida | Resultados QA, decisiones, riesgos | Paquete de cierre, gaps, decision request | Propone cierre; no reemplaza owner en modulo final | Owner, orquestacion | Modelo de evidencia queda para CRIT-06 |
-| Context routing/token budget | rule-config-skill + SDK-server-script + agent | Seleccionar contexto minimo y clasificar fuentes | Leer todo el repo por defecto | Objetivo, fase, fuente de verdad, packet | Contexto permitido/excluido y budget | Rechaza contexto excesivo o insuficiente | Todos los roles | Enforcement queda para CRIT-07 |
+| Context routing/token budget | rule-config-skill + SDK-server-script + agent | Seleccionar contexto minimo y clasificar fuentes | Leer todo el repo por defecto | Objetivo, fase, fuente de verdad, packet | Contexto permitido/excluido y budget | Rechaza contexto excesivo o insuficiente | Todos los roles | Enforcement queda para Blueprint/spikes post-CRIT-07 |
 | Task/context packet / DoR | mixed | Generar y validar readiness | Iniciar trabajo con packet generico | PRD/SDD, objetivo, restricciones, fuentes | Packet ready o rechazo DoR | Receptor rechaza; orquestacion arbitra | Builders, QA, riesgo | Campos finales quedan para CRIT-04 |
 | DoD y cierre | mixed + human | Validar tarea, feature y modulo con evidencia | Cierre por opinion del ejecutor | Evidencia, tests, criterios, riesgos | Cierre o rework | QA/orquestacion cierran niveles operativos; owner acepta modulo final | Owner, evidencia | DoD verificable queda para CRIT-05 |
 | Rework/escalamiento | mixed + SDK-server-script later | Contar ciclos, limitar loops y escalar | Reintentar indefinidamente | Fallas QA, blockers, cambios | Rework plan, escalamiento | 2 ciclos default; owner excepciones | Builder, QA, owner | Politica final queda para CRIT-05 |
-| Commands de fase | command + agent | Estandarizar entrada de fases y tareas | Ser gate final o validacion deterministica | Argumentos, paths, packet | Sesion estructurada, salida esperada | Invoca flujo; no decide verdad final | Orquestacion, roles | Catalogo final queda para CRIT-07 |
-| Control deterministico futuro | SDK-server-script | Estado, checks estructurales, tests, evidencia, permisos, rework counters | Juicio funcional o tecnico ambiguo | Artefactos, repo, entorno | Resultados reproducibles, logs, evidencias | Enforcement tecnico posterior | Orquestacion, QA, CRIT-07 | Viabilidad queda para CRIT-07 |
-| Rules/config/skills | rule-config-skill | Invariantes globales, playbooks on-demand y fuentes | Cargar toda la metodologia siempre | Politicas aceptadas, fase, tarea | Instrucciones minimas, skills activables | Condicionan comportamiento; no cierran gates finales | Todos los roles | Contenido final queda para CRIT-07 |
+| Commands de fase | command + agent | Estandarizar entrada de fases y tareas | Ser gate final o validacion deterministica | Argumentos, paths, packet | Sesion estructurada, salida esperada | Invoca flujo; no decide verdad final | Orquestacion, roles | Catalogo final queda para Blueprint post-CRIT-07 |
+| Control deterministico futuro | SDK-server-script | Estado, checks estructurales, tests, evidencia, permisos, rework counters | Juicio funcional o tecnico ambiguo | Artefactos, repo, entorno | Resultados reproducibles, logs, evidencias | Enforcement tecnico posterior | Orquestacion, QA, CRIT-07 | Viabilidad base aprobada en CRIT-07; implementacion queda para Blueprint/spikes |
+| Rules/config/skills | rule-config-skill | Invariantes globales, playbooks on-demand y fuentes | Cargar toda la metodologia siempre | Politicas aceptadas, fase, tarea | Instrucciones minimas, skills activables | Condicionan comportamiento; no cierran gates finales | Todos los roles | Contenido final queda para TOM/Blueprint post-CRIT-07 |
 
 ## Current Agent Review
+
+- [superseded] Esta revision de nombres existentes se conserva solo como registro historico de CRIT-03. Por CRIT-07, `framework/` fue eliminado como artefacto contaminado y no debe usarse para layout, agents, commands, contracts, gates, schemas, validators, runtime ni knowledge base; no es input de TOM/Blueprint ni candidato de supervivencia.
 
 | Existing agent | Observed purpose | Candidate action | Reason | Risk |
 | --- | --- | --- | --- | --- |
@@ -189,8 +190,8 @@ Status: approved
 - [accepted] CRIT-04 debe definir contratos internos, task/context packet, campos, formatos, DoR y criterios de suficiencia.
 - [accepted] CRIT-05 debe definir gates, severidades, evidencia, DoD verificable, testing suficiente y politica concreta de avance/bloqueo/rework.
 - [accepted] CRIT-06 debe definir estado, fuentes, evidencia, trazabilidad, auditoria y registro de decisiones.
-- [accepted] CRIT-07 debe definir arquitectura OpenCode final, runtime config, permissions, commands reales, SDK/server/scripts, entorno Odoo, ejecucion verificable, recursos, secuencia y plan de 2 meses.
-- [accepted] RAG completo no queda aprobado para V1 salvo justificacion posterior en CRIT-07.
+- [accepted] CRIT-07 aprobo direccion candidata de runtime y viabilidad; arquitectura exacta, runtime config, permissions, commands reales, SDK/server/scripts si aplican, entorno Odoo y ejecucion verificable quedan para TOM/Blueprint/technical validations post-CRIT-07.
+- [accepted] RAG completo no queda aprobado para V1; CRIT-07 lo difirio a V2/post-V1 salvo decision futura explicita.
 
 ## Acceptance Criteria Result
 

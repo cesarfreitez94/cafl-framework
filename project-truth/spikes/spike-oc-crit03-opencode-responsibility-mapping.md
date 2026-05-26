@@ -20,8 +20,7 @@ Decision status: evidencia tecnica solamente; no es decision final de arquitectu
 
 - [accepted] Documentacion oficial de OpenCode: Agents, Commands, SDK, Server, Permissions, Rules, Skills, Config, CLI, Tools, Plugins y MCP servers.
 - [accepted] Documentos disponibles en `project-truth/` al momento del spike.
-- [accepted] `framework/agents/*.agent.md` solo como evidencia secundaria.
-- [accepted] Documentos raiz y documentos de control bajo `framework/` solo como evidencia secundaria.
+- [superseded] `framework/agents/*.agent.md` y documentos bajo `framework/` fueron evidencia secundaria historica para este spike; CRIT-07 supersedio su uso: `framework/` fue eliminado como artefacto contaminado y no es evidencia secundaria utilizable ni input de TOM/Blueprint.
 
 ### Limites
 
@@ -38,11 +37,11 @@ Decision status: evidencia tecnica solamente; no es decision final de arquitectu
 | primary agents | Asistentes principales usados directamente en la sesion. Built-ins: Build y Plan. | Separar planificacion de construccion. | Garantizar control final si permissions siguen siendo aprobables. | Utiles para separar plan/build. | Plan/build no debe ser el unico mecanismo de gobierno. |
 | subagents | Asistentes especializados invocados manualmente o por Task. Built-ins: General, Explore y Scout. | Investigacion paralela, exploracion read-only y consulta externa. | Autoridad final u orquestacion con estado. | Utiles para investigacion y revision enfocada. | Un subagent oculto puede seguir siendo invocado por el modelo si permissions lo permiten; el usuario puede invocar subagents directamente. |
 | commands | Slash commands que envian plantillas de prompt reutilizables, con argumentos, agente/modelo opcional, referencias a archivos y salida shell. | Flujos repetibles y entradas controladas. | Control deterministico o validacion final. | Candidatos para iniciar fases como elicitacion, PRD, SDD, testing y revision de gates. | Siguen siendo prompt-driven; pueden inyectar demasiado contexto; pueden sobrescribir built-ins. |
-| SDK/server/OpenAPI | Interfaz programatica HTTP/server y SDK JS/TS generado desde OpenAPI. | Automatizacion de sesiones, salida estructurada, inspeccion de estado, invocacion de commands, eventos, lectura/busqueda de archivos y respuesta a permisos. | Reemplazar juicio funcional o tecnico. | Candidato futuro para control de flujo, validacion, evidencia y reduccion de tokens. | Requiere diseno de seguridad; exposicion del server y auth pertenecen a CRIT-07. |
+| SDK/server/OpenAPI | Interfaz programatica HTTP/server y SDK JS/TS generado desde OpenAPI. | Automatizacion de sesiones, salida estructurada, inspeccion de estado, invocacion de commands, eventos, lectura/busqueda de archivos y respuesta a permisos. | Reemplazar juicio funcional o tecnico. | Candidato futuro para control de flujo, validacion, evidencia y reduccion de tokens. | Requiere diseno de seguridad; CRIT-07 dejo SDK/server fuera de core V1 salvo spike favorable. |
 | permissions | Reglas runtime `allow`, `ask` y `deny`, globales o por agent, con patrones granulares. | Separar planificacion, edicion, bash, subagent invocation, skills y acceso externo. | Definir responsabilidades de negocio o gates por si solas. | Soporte esencial para autoridad de roles una vez CRIT-03 defina limites conceptuales. | OpenCode parte de defaults permisivos; patrones malos pueden sobrepermitir o bloquear indebidamente. |
 | rules/AGENTS.md | Instrucciones de proyecto/global incluidas en contexto del modelo. | Reglas invariantes, autoridad documental y convenciones de proyecto. | Cargar toda la metodologia CAFL. | Utiles para reglas globales y source-of-truth. | Contexto global excesivo contamina sesiones y consume tokens. |
 | skills | Paquetes de instrucciones reutilizables cargados on-demand por la herramienta skill. | Playbooks modulares y context routing. | Estado, permissions o validacion deterministica. | Buen candidato para guias especificas por tarea sin cargar todo por defecto. | Descripciones malas o exceso de skills degradan routing; permissions deben controlarse. |
-| config | Configuracion runtime mergeada para agents, commands, permissions, modelos, compaction, sharing, instructions, plugins y MCP. | Politica runtime y defaults. | Decidir roles y responsabilidades CAFL. | CRIT-03 puede identificar config como mecanismo candidato; CRIT-07 debe decidir configuracion concreta. | Precedencia y overrides pueden generar drift. |
+| config | Configuracion runtime mergeada para agents, commands, permissions, modelos, compaction, sharing, instructions, plugins y MCP. | Politica runtime y defaults. | Decidir roles y responsabilidades CAFL. | CRIT-03 puede identificar config como mecanismo candidato; CRIT-07 aprobo direccion candidata y la configuracion concreta queda para Blueprint/spikes post-CRIT-07. | Precedencia y overrides pueden generar drift. |
 | run/headless/non-interactive | `opencode run`, `opencode serve`, attach mode y salida JSON. | Automatizacion, scripting, ejecucion repetible y flujos tipo CI. | Flujos largos autonomos sin estado/gates explicitos. | Candidato para ejecucion futura de framework autonomo. | Auto-aprobacion peligrosa o auth debil rompe control. |
 | tools/MCP/plugins | Tools built-in, herramientas MCP externas y hooks/custom tools via plugins. | Integraciones, hooks y helpers deterministas futuros. | Habilitar demasiadas herramientas por defecto. | Posible soporte futuro para RAG, validacion y protecciones. | Bloat de contexto por MCP/tools y mayor superficie de riesgo. |
 
@@ -56,7 +55,7 @@ Decision status: evidencia tecnica solamente; no es decision final de arquitectu
 | Construccion | agent + command + permissions | Builders solo despues de PRD/SDD/task packet suficiente. | La generacion de codigo sirve con limites claros. | Scope creep y edicion prematura. | Definir granularidad de builders y autoridad de edicion. |
 | Verificacion/testing | mixed | QA agent para plan/diagnostico/reporte; commands/scripts deterministas para evidencia de ejecucion. | Las pruebas deben ejecutarse, no solo describirse. | Falsa confianza si no se ejecutan tests. | Definir autoridad QA para rechazar o enviar a rework. |
 | Seguridad/riesgo/compliance | agent + human + rule-config | Revision especializada con escalamiento humano para riesgo legal/compliance critico. | CRIT-01/CRIT-02 hacen compliance central. | Falsa seguridad legal o bloqueos excesivos. | Definir alcance y autoridad de escalamiento. |
-| Evidencia/cierre | mixed | LLM puede redactar evidencia; checks deterministas deben validar existencia/consistencia en CRIT-07. | El cierre debe ser auditable. | Evidencia narrativa sin trazabilidad. | Definir quien propone, valida y acepta cierre. |
+| Evidencia/cierre | mixed | LLM puede redactar evidencia; checks deterministas deben validar existencia/consistencia en Blueprint/spikes post-CRIT-07. | El cierre debe ser auditable. | Evidencia narrativa sin trazabilidad. | Definir quien propone, valida y acepta cierre. |
 | Context routing | rule-config + SDK-server-script + agent | Separar de la ejecucion; LLM puede recomendar, control futuro puede hacer cumplir. | CRIT-02 prohibe leer todo el repo por defecto. | Contaminacion de contexto y bloat de tokens. | Definir dueno y autoridad de routing. |
 | Token budget | rule-config + SDK-server-script + command | Tratar como regla operativa, no preferencia del agent. | Los agents tienden a leer de mas sin limites. | Costo, latencia y contexto irrelevante. | Definir quien fija y quien puede exceder budget. |
 | Task/context packet generation | mixed | Agent puede generar; receptor o capa de control valida readiness. | El packet requiere juicio y estructura. | Packets genericos crean falsa readiness. | Definir productor, consumidor y autoridad de rechazo. |
@@ -76,7 +75,7 @@ Decision status: evidencia tecnica solamente; no es decision final de arquitectu
 
 - [draft] Si. Un mixed responsibility model es el candidato mas robusto.
 - [draft] CRIT-03 debe decidir responsabilidades y mecanismos candidatos a nivel conceptual.
-- [accepted] CRIT-07 debe decidir setup runtime concreto, configuracion OpenCode, SDK/server/scripts, permissions y viabilidad de implementacion.
+- [accepted] CRIT-07 aprobo direccion candidata de runtime y viabilidad; setup runtime concreto, configuracion OpenCode, SDK/server/scripts si aplican y permissions quedan para Blueprint/spikes post-CRIT-07.
 
 ### Mejor Ajuste Para LLM Reasoning
 
@@ -103,7 +102,7 @@ Decision status: evidencia tecnica solamente; no es decision final de arquitectu
 - [open-question] Que responsabilidades se mapean a human, agent, command, SDK-server-script, rule-config o mixed?
 - [open-question] Que autoridad tiene cada rol para avanzar, bloquear, pedir contexto, replanificar, escalar o cerrar?
 - [open-question] Que responsabilidades no deben resolverse con agents?
-- [open-question] Que limites deben quedar para implementacion tecnica en CRIT-07?
+- [superseded] Los limites de implementacion tecnica fueron tratados por CRIT-07; la materializacion concreta queda para TOM/Blueprint/spikes post-CRIT-07.
 
 ### Queda Para CRIT-07
 

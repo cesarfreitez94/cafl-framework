@@ -14,8 +14,8 @@ Status: approved
 - [accepted] CRIT-03 Agent Responsibilities esta approved.
 - [accepted] CRIT-03 aprobo modelo mixto: agents, commands, SDK/server/scripts/control deterministico, rules/config, skills/playbooks y owner/human segun responsabilidad.
 - [accepted] PRD ligero, SDD ligero, task/context packet, Definition of Ready, context routing, token budget y rework acotado son obligatorios por CRIT-02/CRIT-03.
-- [accepted] `framework/CONTRACT_CATALOG.md`, `framework/AGENT_CONTRACTS.md` y `framework/agents/*.agent.md` siguen siendo evidencia secundaria; no son autoridad oficial.
-- [accepted] CRIT-04 define estructura contractual; CRIT-05 decidira gates, severidades y acciones por fallo; CRIT-06 decidira estado/evidencia/trazabilidad persistente; CRIT-07 decidira implementacion/runtime.
+- [superseded] `framework/CONTRACT_CATALOG.md`, `framework/AGENT_CONTRACTS.md` y `framework/agents/*.agent.md` fueron evidencia secundaria historica durante CRIT-04; CRIT-07 supersedio su uso: `framework/` fue eliminado como artefacto contaminado y no es evidencia secundaria utilizable ni input de TOM/Blueprint.
+- [accepted] CRIT-04 define estructura contractual; CRIT-05 ya aprobo gates conceptuales, CRIT-06 ya aprobo estado/evidencia/trazabilidad logica y CRIT-07 ya aprobo direccion candidata de implementacion/runtime.
 
 ## Owner Approval
 
@@ -102,7 +102,7 @@ Status: approved
 | consumer | yes | Declarar quien ejecuta o recibe | Productor | Orquestacion | No hay receptor claro | Consumidor puede rechazar |
 | validator | yes | Declarar quien valida suficiencia o salida | Productor | Orquestacion | Riesgo de autocierre | Puede ser conceptual en CRIT-04 |
 | authorized_sources | yes | Definir fuentes permitidas/prioritarias | Context routing/productor | Receptor | Contexto insuficiente o contaminado | `project-truth/` manda en el framework |
-| secondary_sources | conditional | Permitir evidencia secundaria controlada | Context routing/productor | Receptor | Uso secundario no trazado | No eleva `framework/` a verdad |
+| secondary_sources | conditional | Permitir evidencia secundaria controlada | Context routing/productor | Receptor | Uso secundario no trazado | No autoriza usar `framework/`; por CRIT-07 no es fuente secundaria utilizable |
 | prohibited_or_not_relevant_sources | yes | Evitar lectura innecesaria o fuente invalida | Context routing/productor | Receptor | Se puede leer contexto indebido | Incluye no leer todo el repo |
 | context_applicability | yes | Explicar por que una fuente aplica | Context routing/productor | Receptor | Fuente usada sin justificacion | Campo breve |
 | token_budget_class | yes | Limitar costo/contexto | Context routing/productor | Receptor | Bloat de tokens | Numeros finales CRIT-07 |
@@ -133,7 +133,7 @@ Status: approved
 - [accepted] Human: requiere decision pack breve, opciones, recomendacion, riesgos y decision requerida.
 - [accepted] Agent: requiere objetivo, contexto autorizado limitado, restricciones, outputs esperados y criterio de rechazo.
 - [accepted] Command: requiere entrada repetible, argumentos, contexto minimo declarado y salida esperada; no es autoridad final.
-- [accepted] SDK/server/script: requiere inputs estructurados, salida reproducible, logs/evidencia y reglas de error; implementacion queda para CRIT-07.
+- [accepted] SDK/server/script: requiere inputs estructurados, salida reproducible, logs/evidencia y reglas de error; CRIT-07 aprobo direccion candidata y la implementacion concreta queda para Blueprint/spikes post-CRIT-07.
 - [accepted] Rule/config/skill: requiere alcance de aplicacion, invariantes o playbook, y condiciones de uso; no reemplaza estado ni gates.
 - [accepted] Mixed: requiere separar que parte razona, que parte valida, que parte ejecuta y que parte registra evidencia.
 
@@ -146,13 +146,13 @@ Status: approved
 - [accepted] No crear JSON Schema final.
 - [accepted] No implementar validadores.
 - [accepted] No convertir plantillas candidatas en implementacion.
-- [accepted] No elevar `framework/AGENT_CONTRACTS.md`, `framework/CONTRACT_CATALOG.md` ni `framework/agents/*.agent.md` a verdad oficial.
+- [accepted] No elevar ni reutilizar `framework/AGENT_CONTRACTS.md`, `framework/CONTRACT_CATALOG.md` ni `framework/agents/*.agent.md`; por CRIT-07 no son evidencia secundaria utilizable ni input de TOM/Blueprint.
 
 ## Downstream Handoff
 
 - [accepted] CRIT-05 debe definir gates, severidades, categorias, acciones por fallo, DoD verificable, testing suficiente/aplicable, deuda aceptable, consecuencias de rework y politica concreta de avance/bloqueo.
 - [accepted] CRIT-06 debe definir estado autoritativo, IDs finales, decision log, evidence log, source log, context log, excluded/prohibited context log, trazabilidad persistente, historial de rework y registro real de token/context usage.
-- [accepted] CRIT-07 debe definir schemas finales si aplican, validators, implementacion runtime, OpenCode setup, agents finales, commands, SDK/server/scripts, permissions, rutas source-vs-runtime, entorno Odoo y ejecucion reproducible.
+- [accepted] CRIT-07 aprobo direccion candidata de schemas V1 minimos, validators, runtime, OpenCode, agents/commands futuros, SDK/server condicional, permissions, rutas, entorno Odoo y ejecucion reproducible; su materializacion exacta queda para TOM/Blueprint/technical validations post-CRIT-07.
 
 ## Acceptance Criteria Result
 
@@ -162,4 +162,4 @@ Status: approved
 - [accepted] Task/context packet y Definition of Ready quedan modelados como estructura contractual conceptual.
 - [accepted] Contexto autorizado, excluido/prohibido/no relevante, token budget, inputs, outputs, evidencia, blockers condicionales y criterio de suficiencia quedan contemplados.
 - [accepted] Los contratos V1 quedan clasificados como `always-required` y `conditional-required`.
-- [accepted] Los formatos finales, schemas finales, estado persistente, gates finales, validators y runtime quedan derivados a CRIT-05, CRIT-06 y CRIT-07 segun corresponda.
+- [accepted] CRIT-05, CRIT-06 y CRIT-07 ya aprobaron los modelos conceptuales/direccion candidata correspondientes; formatos finales, schemas, estado persistente fisico, gates finales, validators y runtime quedan para TOM/Blueprint/technical validations post-CRIT-07 segun corresponda.

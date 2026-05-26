@@ -13,7 +13,7 @@ Status: approved
 - [accepted] CRIT-02 Operating Flow esta approved.
 - [accepted] CRIT-03 Agent Responsibilities esta approved.
 - [accepted] CRIT-04 Contracts esta approved como modelo contractual conceptual.
-- [accepted] `framework/GATE_CATALOG.md` existe como catalogo preliminar y evidencia secundaria; no es autoridad oficial.
+- [superseded] `framework/GATE_CATALOG.md` fue catalogo preliminar y evidencia secundaria historica durante CRIT-05; CRIT-07 supersedio su uso: `framework/` fue eliminado como artefacto contaminado y no es evidencia secundaria utilizable ni input de TOM/Blueprint.
 - [accepted] CRIT-02/CRIT-03 aprobaron shift-left verification, risk-based testing, testing aplicable, rework acotado y seguridad/riesgo/compliance como responsabilidad explicita.
 - [accepted] CRIT-04 aprobo que contratos no equivalen a gates; CRIT-05 define verificacion, severidad y acciones por fallo.
 - [accepted] El rework default es 2 ciclos; excepciones y tercer ciclo significativo requieren justificacion y escalamiento.
@@ -24,7 +24,7 @@ Status: approved
 - [accepted] Ajuste obligatorio 1: la escala principal de severidades sera `blocker`, `critical`, `high`, `medium`, `low` y `warning/info`.
 - [accepted] Ajuste obligatorio 2: los gates V1 se separan entre gates minimos independientes, checks transversales obligatorios dentro de gates y gates condicionales por riesgo o evento.
 - [accepted] Ajuste obligatorio 3: deuda tecnica menor puede aceptarse si es documentada, acotada, con impacto conocido y aceptacion explicita; deuda funcional sobre alcance comprometido no permite declarar produccion tecnica.
-- [accepted] Ajuste obligatorio 4: CRIT-06 define modelo logico de estado/evidencia/logs/trazabilidad y CRIT-07 define implementacion fisica/runtime/schemas/validators/commands/SDK/server/scripts/permissions/OpenCode/Odoo.
+- [accepted] Ajuste obligatorio 4: CRIT-06 aprobo modelo logico de estado/evidencia/logs/trazabilidad y CRIT-07 aprobo direccion candidata de implementacion fisica/runtime/schemas/validators/commands/SDK/server/scripts/permissions/OpenCode/Odoo.
 
 ## Approved Decisions
 
@@ -163,8 +163,8 @@ Status: approved
 ## Boundaries With CRIT-06 And CRIT-07
 
 - [accepted] CRIT-06 debe definir modelo logico de estado, evidencia, logs, IDs, trazabilidad, persistencia conceptual, decision log, evidence log, source log, context log, gate log y rework history.
-- [accepted] CRIT-07 debe definir implementacion fisica/runtime, schemas finales, validators, commands, SDK/server/scripts, permissions, OpenCode setup, rutas source-vs-runtime, entorno Odoo, ejecucion reproducible y tooling operativo.
-- [accepted] CRIT-05 prepara CRIT-06 y CRIT-07, pero no los resuelve.
+- [accepted] CRIT-07 aprobo direccion candidata de implementacion fisica/runtime, schemas V1 minimos, validators, commands, SDK/server condicional, permissions, OpenCode setup, rutas, entorno Odoo y ejecucion reproducible; la materializacion exacta queda para TOM/Blueprint/technical validations post-CRIT-07.
+- [superseded] CRIT-05 preparo CRIT-06 y CRIT-07; ambas sesiones ya fueron aprobadas posteriormente sin crear implementacion.
 
 ## Non-Goals Confirmed
 
@@ -178,7 +178,7 @@ Status: approved
 - [accepted] No configurar OpenSpec.
 - [accepted] No implementar runtime.
 - [accepted] No definir storage/evidence log/gate log final.
-- [accepted] No elevar `framework/` a verdad oficial.
+- [accepted] No elevar ni reutilizar `framework/`; por CRIT-07 no es evidencia secundaria utilizable ni input de TOM/Blueprint.
 
 ## Acceptance Criteria Result
 
@@ -188,6 +188,6 @@ Status: approved
 - [accepted] La deuda tecnica menor queda permitida condicionalmente.
 - [accepted] La deuda funcional no queda permitida para produccion tecnica sobre alcance comprometido.
 - [accepted] Testing minimo, evidencia, documentacion minima, instalacion/carga, seguridad critica y compliance critico no pueden omitirse como deuda aceptable.
-- [accepted] CRIT-06 define modelo logico de estado/evidencia/logs/trazabilidad.
-- [accepted] CRIT-07 define implementacion fisica/runtime/schemas/validators/commands/SDK/server/scripts/permissions/OpenCode/Odoo.
-- [accepted] CRIT-06 y CRIT-07 quedan preparados, no resueltos.
+- [accepted] CRIT-06 aprobo modelo logico de estado/evidencia/logs/trazabilidad.
+- [accepted] CRIT-07 aprobo direccion candidata de implementacion fisica/runtime/schemas/validators/commands/SDK/server/scripts/permissions/OpenCode/Odoo.
+- [superseded] La frase historica de CRIT-05 sobre CRIT-06 y CRIT-07 preparados/no resueltos queda superada por sus approvals posteriores.

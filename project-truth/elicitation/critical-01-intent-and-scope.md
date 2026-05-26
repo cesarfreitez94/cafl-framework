@@ -12,7 +12,7 @@ Status: approved
 - [accepted] Fuente primaria: respuestas y aclaraciones del owner durante CRIT-01.
 - [accepted] Si existe conflicto entre las respuestas del owner y documentos previos del repo, prevalece el owner.
 - [accepted] `project-truth/` conserva autoridad bootstrap para registrar la verdad del proyecto.
-- [accepted] El repo previo, `README.md`, `framework/` y documentos existentes son evidencia secundaria hasta validacion explicita.
+- [superseded] En CRIT-01 el repo previo, `README.md`, `framework/` y documentos existentes fueron tratados como evidencia secundaria hasta validacion explicita; CRIT-07 supersedio esa regla para `framework/`: fue eliminado como artefacto contaminado y no es evidencia secundaria utilizable ni input de TOM/Blueprint.
 
 ## Intent Statement
 
@@ -67,7 +67,7 @@ Status: approved
 - [accepted] El primer modulo debe ser un modulo Odoo completo pero acotado, elegido para validar el flujo end-to-end del framework.
 - [accepted] El primer modulo no debe ser un modulo empresarial grande.
 - [accepted] El primer modulo debe ser suficientemente pequeno para completarse dentro del marco de desarrollo inicial y suficientemente real para probar levantamiento de idea, definicion funcional, diseno tecnico, contratos/tareas, implementacion, testing, documentacion, validacion y evidencia.
-- [open-question] El modulo exacto para validar el flujo end-to-end se definira despues.
+- [accepted] La seleccion final del modulo piloto queda para el Blueprint posterior; CRIT-07 registro como candidato preferido solicitudes internas/aprobaciones simples.
 
 ## Out Of Scope Initial
 
@@ -123,14 +123,14 @@ Status: approved
 - [accepted] OpenSpec y OpenProject no son parte del producto CAFL Framework.
 - [accepted] OpenSpec y OpenProject pueden considerarse ideas o herramientas auxiliares para organizar el desarrollo del framework, pero no dependencias funcionales de CAFL.
 
-## Deferred Topics
+## Deferred Topics Resueltos Posteriormente
 
-- [open-question] CRIT-02 debe definir flujo operativo, fases, reglas de avance, bloqueo, retrabajo, cierre y escalamiento.
-- [open-question] CRIT-03 debe definir responsabilidades, limites y autoridad de roles/agentes.
-- [open-question] CRIT-04 debe definir contratos minimos, formato, campos y versionado.
-- [open-question] CRIT-05 debe definir gates, severidades, evidencia, DoD verificable y criterios de testing.
-- [open-question] CRIT-06 debe definir estado, evidencia, fuentes y trazabilidad.
-- [open-question] CRIT-07 debe definir recursos, entorno Odoo, restricciones del runtime OpenCode, setup operativo, secuencia de implementacion y ajuste al plazo de 2 meses.
+- [superseded] CRIT-02 ya resolvio flujo operativo, fases, reglas de avance, bloqueo, retrabajo, cierre y escalamiento como operating flow approved.
+- [superseded] CRIT-03 ya resolvio responsabilidades, limites, autoridad conceptual y mecanismos candidatos.
+- [superseded] CRIT-04 ya resolvio el modelo contractual conceptual, sin crear contratos finales.
+- [superseded] CRIT-05 ya resolvio el modelo conceptual de gates, severidades, evidencia, DoD verificable y criterios de testing.
+- [superseded] CRIT-06 ya resolvio el modelo logico/conceptual de estado, evidencia, fuentes, trazabilidad y knowledge governance.
+- [superseded] CRIT-07 ya aprobo viabilidad, direccion candidata de runtime, recortes V1 y criterios post-CRIT-07; no existe CRIT-08.
 
 ## Non-Goals For This Session
 
@@ -143,6 +143,6 @@ Status: approved
 ## Acceptance Criteria Status
 
 - [accepted] La intencion central, usuario inicial, dominio, resultado esperado, autonomia, no-alcance inicial, criterios de exito y riesgos principales quedaron respondidos por el owner.
-- [accepted] Las decisiones operativas o tecnicas no resueltas quedaron derivadas a CRIT-02, CRIT-03, CRIT-04, CRIT-05, CRIT-06 o CRIT-07.
+- [accepted] Las decisiones operativas o tecnicas que CRIT-01 derivo a CRIT-02..07 ya fueron resueltas segun el alcance aprobado de cada sesion; los detalles fisicos quedan para trabajos post-CRIT-07 sin crear CRIT-08.
 - [accepted] Ninguna hipotesis del repo actual queda elevada a verdad sin validacion del owner.
 - [accepted] Verificacion independiente CRIT-01: APPROVED; CRIT-01 queda approved para intencion y alcance del producto.

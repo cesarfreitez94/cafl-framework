@@ -17,8 +17,9 @@ Status: approved
 - [accepted] CRIT-05 Gates And Verification esta approved como modelo conceptual de gates y verificacion.
 - [accepted] La unidad de control aprobada es modulo -> capability/feature -> tarea verificable.
 - [accepted] Context routing, token budget, contexto excluido/prohibido, evidencia, testing y rework acotado son obligatorios por CRIT-02/CRIT-03/CRIT-04/CRIT-05.
-- [accepted] `project-truth/` mantiene autoridad sobre verdad del proyecto; `framework/` y documentos raiz siguen siendo evidencia secundaria hasta validacion explicita.
-- [accepted] CRIT-07 definira la materializacion fisica/runtime de CRIT-06.
+- [accepted] `project-truth/` mantiene autoridad sobre verdad del proyecto.
+- [superseded] En CRIT-06, `framework/` y documentos raiz fueron tratados como evidencia secundaria hasta validacion explicita; CRIT-07 supersedio especificamente el uso de `framework/`: fue eliminado como artefacto contaminado y no es evidencia secundaria utilizable ni input de TOM/Blueprint.
+- [accepted] CRIT-07 aprobo direccion candidata para la materializacion fisica/runtime de CRIT-06; la materializacion exacta queda para TOM/Blueprint/technical validations post-CRIT-07.
 
 ## Owner Approval
 
@@ -34,13 +35,13 @@ Status: approved
 
 - [accepted] DEC-CRIT06-01: El estado autoritativo de CAFL vive en registros logicos autoritativos, versionables y trazables; la narrativa LLM puede explicar, recomendar o resumir, pero nunca constituye estado autoritativo por si sola.
 - [accepted] DEC-CRIT06-02: Deben persistirse conceptualmente estado, decisiones, contratos/packets, gates, evidencia, fuentes, contexto usado/excluido/prohibido, token/context usage, rework, deuda, aprobaciones, knowledge artifacts, source snapshots, source usage, integration knowledge packs y cambios de estado.
-- [accepted] DEC-CRIT06-03: CAFL usara IDs conceptuales para todos los elementos necesarios de trazabilidad, diferenciando IDs obligatorios siempre e IDs obligatorios cuando aplique; formato fisico, nomenclatura final y schemas quedan para CRIT-07.
+- [accepted] DEC-CRIT06-03: CAFL usara IDs conceptuales para todos los elementos necesarios de trazabilidad, diferenciando IDs obligatorios siempre e IDs obligatorios cuando aplique; formato fisico, nomenclatura final y schemas quedan para Blueprint/spikes post-CRIT-07.
 - [accepted] DEC-CRIT06-04: CAFL usara logs minimos V1 obligatorios y condicionales; todos forman parte del modelo logico, pero no todos deben generar entrada independiente en cada tarea.
 - [accepted] DEC-CRIT06-05: La trazabilidad jerarquica modulo -> capability/feature -> tarea verificable es la columna vertebral del estado operativo.
 - [accepted] DEC-CRIT06-06: Todo gate result debe enlazar contrato/packet aplicable, verificacion, decision, evidencia y consecuencia operativa; un contrato completo no aprueba por si solo un gate.
 - [accepted] DEC-CRIT06-07: La evidencia auditable debe registrar tipo, origen, accion/comando/test si aplica, resultado, timestamp logico, relacion con tarea/gate/contrato, fuentes usadas, limitaciones y narrativa explicativa secundaria.
 - [accepted] DEC-CRIT06-08: Deben registrarse fuentes usadas, autorizadas, secundarias, excluidas, prohibidas/no relevantes, excepciones, aplicabilidad, vigencia/freshness y trust level.
-- [accepted] DEC-CRIT06-09: Token/context usage debe registrarse a nivel conceptual con budget class, contexto asignado, contexto usado, excepciones, razon de expansion e impacto estimado; medicion runtime final queda para CRIT-07.
+- [accepted] DEC-CRIT06-09: Token/context usage debe registrarse a nivel conceptual con budget class, contexto asignado, contexto usado, excepciones, razon de expansion e impacto estimado; medicion runtime final queda para Blueprint/spikes post-CRIT-07.
 - [accepted] DEC-CRIT06-10: Rework, deuda aceptada y aprobaciones del owner deben registrarse como logs enlazados a tarea, gate, evidencia previa, evidencia nueva, causa, severidad, aprobacion, condicion de pago y escalamiento.
 - [accepted] DEC-CRIT06-11: El modelo de conocimiento debe usar knowledge domain, subdomain, sources, artifacts, applicability, patterns, anti-patterns, examples, recommendations y policies; V1 es Odoo, pero el modelo debe permitir dominios futuros sin redisenar el framework.
 - [accepted] DEC-CRIT06-12: Debe existir un modelo logico de source registry con official source, curated source, secondary source, prohibited source, source snapshot/version, trust level, freshness/vigencia, applicability y stewardship.
@@ -49,7 +50,7 @@ Status: approved
 - [accepted] DEC-CRIT06-15: Las integraciones externas deben modelarse como integration knowledge packs con proveedor, tipo, fuentes oficiales, snapshots/versiones, ambientes, autenticacion/autorizacion, certificados/tokens/firmas si aplica, endpoints, payloads, errores, rate limits si aplica, datos sensibles, seguridad, compliance, ejemplos oficiales, pruebas recomendadas, vigencia, riesgos y trazabilidad hacia PRD/SDD/task/test/gate/evidence.
 - [accepted] DEC-CRIT06-16: Deben existir politicas logicas de update, validation, deprecation y stewardship para knowledge/source governance.
 - [accepted] DEC-CRIT06-17: La ausencia de conocimiento autorizado suficiente debe generar Knowledge Gap, Curation Request y bloqueo de implementacion hasta que exista fuente/artifact/pack autorizado suficiente; busqueda externa solo puede ocurrir en Curation Mode controlado.
-- [accepted] DEC-CRIT06-18: CRIT-06 define modelo logico/conceptual; CRIT-07 define schemas finales, validators, commands, SDK/server/scripts, permissions, OpenCode runtime setup, rutas, storage fisico, RAG o no RAG, base vectorial o no, archivos curados o base de datos, ingesta/actualizacion, procesamiento Swagger/OpenAPI/PDFs y ejecucion reproducible real.
+- [accepted] DEC-CRIT06-18: CRIT-06 define modelo logico/conceptual; CRIT-07 aprobo direccion candidata y recortes V1. Schemas finales, validators, commands, SDK/server/scripts si aplican, permissions, OpenCode runtime setup, rutas, storage fisico, RAG o no RAG, base vectorial o no, archivos curados o base de datos, ingesta/actualizacion, procesamiento Swagger/OpenAPI/PDFs y ejecucion reproducible real quedan para trabajos post-CRIT-07 segun corresponda.
 
 ## Mandatory ID Classification
 
@@ -118,11 +119,11 @@ Status: approved
 | Gate Log | Registrar recommendation, verification y decision | QA, reviewer, orquestacion, owner | Orquestacion, owner | Autoritativo para avance/bloqueo | contract -> gate -> evidence -> action | CRIT-05, CRIT-06 | Incluye severidad y accion |
 | Evidence Log | Registrar evidencia auditable | QA, scripts futuros, agents, owner | Gates, closure, owner | Autoritativo como soporte | task, gate, contract, source, limitation | CRIT-05, CRIT-06 | Narrativa es secundaria |
 | Source Registry | Clasificar fuentes | Knowledge steward, curator | Agents, architect, QA | Autoritativo para fuente permitida | source, domain, trust, freshness, applicability | CRIT-06, CRIT-07 | Incluye official/curated/secondary/prohibited |
-| Source Snapshot Registry | Registrar version/captura de fuente | Curator, tooling futuro | Knowledge artifacts, evidence | Autoritativo para version usada | source -> snapshot -> artifact | CRIT-06, CRIT-07 | Fisico queda CRIT-07 |
+| Source Snapshot Registry | Registrar version/captura de fuente | Curator, tooling futuro | Knowledge artifacts, evidence | Autoritativo para version usada | source -> snapshot -> artifact | CRIT-06, CRIT-07 | Fisico queda para Blueprint/spikes post-CRIT-07 |
 | Source Usage Log | Registrar uso de fuente/artifact | Agents, curator, orquestacion | Gates, evidence, audit | Autoritativo para trazabilidad | source/artifact -> decision/output | CRIT-06 | Evita fuente invisible |
 | Context Log | Registrar contexto asignado/usado | Context routing capability | Receptor, gate | Autoritativo para contexto usado | packet, sources, files, reason | CRIT-04, CRIT-06 | No leer todo el repo por defecto |
 | Excluded/Prohibited Context Log | Registrar contexto excluido/prohibido | Context routing, curator | Receptor, QA | Autoritativo para exclusion | packet, source, reason, risk | CRIT-04, CRIT-06 | Condicional segun existencia de exclusion relevante |
-| Token/Context Usage Log | Registrar budget class y excepciones | Context routing, runtime futuro | Orquestacion, owner | Autoritativo conceptual | packet, budget, expansion reason | CRIT-04, CRIT-06, CRIT-07 | Medicion exacta queda CRIT-07 |
+| Token/Context Usage Log | Registrar budget class y excepciones | Context routing, runtime futuro | Orquestacion, owner | Autoritativo conceptual | packet, budget, expansion reason | CRIT-04, CRIT-06, CRIT-07 | Medicion exacta queda para Blueprint/spikes post-CRIT-07 |
 | Rework History | Registrar ciclos y causas | QA, orquestacion | Builder, owner | Autoritativo para limite de rework | gate failure -> rework -> new evidence | CRIT-05, CRIT-06 | Default 2 ciclos |
 | Debt Log | Registrar deuda tecnica aceptada | QA, orquestacion, owner | Closure, owner | Autoritativo si aprobada | debt -> impact -> approval -> pay condition | CRIT-05, CRIT-06 | Condicional; no deuda funcional |
 | Approval Log | Registrar aprobaciones owner/autoridad | Owner, orquestacion | Gates, closure | Autoritativo para decisiones criticas | approval -> decision/gate/debt/replan | CRIT-05, CRIT-06 | Evita aprobaciones en memoria |
@@ -212,11 +213,11 @@ Status: approved
 - [accepted] No crear base de datos final.
 - [accepted] No configurar OpenCode.
 - [accepted] No configurar OpenSpec.
-- [accepted] No modificar `framework/`.
+- [accepted] No reintroducir, modificar ni usar `framework/` como input de diseno.
 - [accepted] No modificar codigo.
-- [accepted] No resolver CRIT-07.
+- [superseded] No resolver CRIT-07 durante CRIT-06; CRIT-07 fue aprobado posteriormente como direccion candidata sin implementar runtime.
 - [accepted] No crear CRIT-08.
-- [accepted] No elevar `framework/` a verdad oficial.
+- [accepted] No elevar ni reutilizar `framework/`; por CRIT-07 no es evidencia secundaria utilizable ni input de TOM/Blueprint.
 
 ## Acceptance Criteria Result
 
