@@ -16,8 +16,9 @@ Status: draft
 - [draft] Aprobaciones automaticas pertenecen a CRIT-02 si afectan flujo operativo y a CRIT-05 si dependen de gates.
 - [draft] Granularidad de agentes pertenece a CRIT-03, no a implementacion.
 - [draft] Formato de contratos pertenece a CRIT-04, no a tooling.
-- [draft] Evidencia, fuentes y trazabilidad pertenecen a CRIT-06, aunque alimenten gates y contratos.
-- [accepted] CRIT-04 queda approved como modelo contractual conceptual; CRIT-05, CRIT-06 y CRIT-07 permanecen not-started.
+- [draft] Evidencia, fuentes, storage logico, logs, IDs conceptuales, gate log y trazabilidad contract -> gate -> evidence pertenecen a CRIT-06, aunque alimenten gates y contratos.
+- [draft] Schemas finales, validators, commands, SDK/server/scripts, permissions, runtime, rutas/ubicaciones runtime y materializacion tecnica de CRIT-04/05/06 pertenecen a CRIT-07.
+- [accepted] CRIT-04 queda approved como modelo contractual conceptual; CRIT-05 queda approved como modelo conceptual de gates y verificacion; CRIT-06 y CRIT-07 permanecen not-started.
 
 ## CRIT-01: Intent And Scope
 
@@ -80,24 +81,24 @@ Status: approved
 | Inputs reviewed | [accepted] CRIT-01/02/03 approved, CRIT-04 Contracts Technical Elicitation, aprobacion del owner y `project-truth/spikes/spike-oc-crit03-opencode-responsibility-mapping.md`; `framework/CONTRACT_CATALOG.md`, `framework/AGENT_CONTRACTS.md`, `framework/agents/*.agent.md` y otros documentos del repo solo como evidencia secundaria. |
 | Expected outputs | [accepted] Modelo contractual conceptual, inventario V1 `always-required` y `conditional-required`, matriz contractual conceptual, campos candidatos del task/context packet y handoff a CRIT-05/06/07. |
 | Acceptance criteria | [accepted] Cada contrato candidato tiene proposito, producer, consumer, validator, entrada, salida, contexto, token budget, evidencia, criterio de suficiencia y criterio de rechazo; el modelo cubre human, agent, command, SDK/server/script, rule/config/skill y mixed sin implementar runtime. |
-| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-04 como modelo contractual conceptual; los detalles finales quedan derivados a CRIT-05, CRIT-06 y CRIT-07. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-04 como modelo contractual conceptual; CRIT-05 ya aprobo gates conceptuales y los detalles finales de estado/runtime quedan derivados a CRIT-06 y CRIT-07. |
 | Dependencies | [accepted] Depende de CRIT-01, CRIT-02 y CRIT-03; alimenta CRIT-05, CRIT-06 y CRIT-07. |
 
 ## CRIT-05: Gates And Verification
 
-Status: not-started
+Status: approved
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir modelo de gates verificables para avanzar, bloquear, replanificar, aceptar deuda o escalar. |
-| Why it is critical | [draft] Gates debiles o no verificables crean confianza falsa y no controlan riesgo. |
-| What must be decided | [open-question] Gates minimos, recommendation vs verification vs decision, severidades, categorias, evidencia reproducible, testing suficiente/aplicable, rework default 2 ciclos, deuda, escalamiento y acciones por fallo. |
-| What must NOT be decided yet | [draft] Arquitectura OpenCode final, implementacion automatizada, scripts CI finales, commands locales, gates finales y cobertura tecnica no soportada por recursos. |
-| Inputs to review | [draft] `framework/GATE_CATALOG.md`, `framework/ci/contract/PIPELINE_CONTRACT.md`, `RISKS.md`, `PROJECT_CONTROL.md`. |
-| Expected outputs | [draft] Mapa de gates candidatos con recommendation source, verification method, decision owner, evidencias reproducibles y consecuencias operativas. |
-| Acceptance criteria | [draft] Cada gate candidato puede responder que recomienda, que verifica, con que evidencia reproducible, quien decide y que pasa si falla. |
-| Open questions | [open-question] Que fallas bloquean siempre y cuales pueden registrarse como deuda aceptada? |
-| Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-04 y CRIT-06; alimenta CRIT-07. |
+| Purpose | [accepted] Definir modelo conceptual de gates verificables para avanzar, bloquear, replanificar, aceptar deuda o escalar. |
+| Why it is critical | [accepted] Gates debiles o no verificables crean confianza falsa y no controlan riesgo. |
+| What was answered | [accepted] CAFL V1 usara modelo hibrido: gates minimos independientes, checks transversales obligatorios dentro de gates y gates condicionales por riesgo/evento; separa gate recommendation, gate verification y gate decision; severidades `blocker`, `critical`, `high`, `medium`, `low`, `warning/info`; acciones por fallo; DoD verificable por task/capability-feature/module; testing suficiente/aplicable risk-based; shift-left verification; evidencia reproducible conceptual; seguridad/riesgo/compliance transversal; deuda tecnica menor aceptable condicionada; deuda funcional no aceptable para produccion tecnica; rework default 2 ciclos y tercer ciclo significativo con escalamiento. |
+| What must NOT be decided yet | [accepted] Arquitectura OpenCode final, implementacion automatizada, scripts CI finales, commands locales, gates finales ejecutables, schemas finales, validators finales, storage/logs finales y cobertura tecnica no soportada por recursos. |
+| Inputs reviewed | [accepted] CRIT-01/02/03/04 approved, CRIT-05 Gates and Verification Technical Elicitation, aprobacion del owner y fuentes primarias en `project-truth/`; `framework/` y documentos raiz solo como evidencia secundaria. |
+| Expected outputs | [accepted] Modelo conceptual de gates con recommendation source, verification method, decision owner, evidencias reproducibles y consecuencias operativas. |
+| Acceptance criteria | [accepted] Cada gate conceptual puede responder que recomienda, que verifica, con que evidencia reproducible, quien decide y que pasa si falla; CRIT-05 no crea gates finales ejecutables. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-05 como modelo conceptual; CRIT-06 y CRIT-07 conservan sus decisiones pendientes. |
+| Dependencies | [accepted] Depende de CRIT-01, CRIT-02, CRIT-03 y CRIT-04; alimenta CRIT-06 y CRIT-07. |
 
 ## CRIT-06: State, Evidence And Traceability
 
@@ -105,15 +106,15 @@ Status: not-started
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir modelo persistente y auditable de estado, evidencia, fuentes, contexto, decisiones y trazabilidad sin depender de memoria, conversaciones externas o narrativa LLM. |
+| Purpose | [draft] Definir modelo logico/conceptual persistente y auditable de storage, estado autoritativo, evidencia, fuentes, contexto, decisiones, logs y trazabilidad sin depender de memoria, conversaciones externas o narrativa LLM. |
 | Why it is critical | [draft] Sin trazabilidad se pierden causas de decisiones, fuentes, riesgos, aprobaciones y cambios. |
-| What must be decided | [open-question] Estado autoritativo, IDs, decision log, evidence log, source log, context log, excluded/prohibited context log, rework history, token budget usage, fuentes, evidencia minima, matriz de trazabilidad y politica de cambios. |
-| What must NOT be decided yet | [draft] Herramientas finales de almacenamiento, schemas definitivos, tooling, automatizacion RAG o dashboards. |
+| What must be decided | [open-question] Storage logico, persistencia conceptual, estado autoritativo, IDs conceptuales, decision log, evidence log, source log, context log, excluded/prohibited context log, gate log, rework history, token/context usage, fuentes, evidencia minima, matriz modulo -> capability/feature -> tarea y relacion contract -> gate -> evidence. |
+| What must NOT be decided yet | [draft] Schemas finales, validators finales, commands finales, storage fisico, configuracion runtime, tooling, automatizacion RAG, dashboards o resolucion de CRIT-07. |
 | Inputs to review | [draft] `DECISIONS.md`, `ELICITATION_RECORD.md`, `PROJECT_CONTROL.md`, templates de trazabilidad, RAG y CI. |
-| Expected outputs | [draft] Modelo minimo de estado, evidencia, fuentes, contexto, rework y token budget con reglas de actualizacion y auditoria. |
-| Acceptance criteria | [draft] Una decision o entrega puede rastrearse a fuente, contexto usado/excluido, evidencia, fecha, estado, impacto, riesgos y artefactos afectados. |
+| Expected outputs | [draft] Modelo minimo de storage logico, estado autoritativo, IDs conceptuales, decision/evidence/source/context/excluded-prohibited/gate logs, rework, token/context usage y trazabilidad contract -> gate -> evidence con reglas de actualizacion y auditoria. |
+| Acceptance criteria | [draft] Una decision o entrega puede rastrearse a fuente, contexto usado/excluido/prohibido, evidence log, gate log, contract relacionado, fecha, estado, impacto, riesgos y artefactos afectados; narrativa LLM y estado autoritativo quedan diferenciados. |
 | Open questions | [open-question] Que evidencia es obligatoria para aceptar una decision o entrega? |
-| Dependencies | [draft] Depende de CRIT-01 y CRIT-02; alimenta CRIT-04, CRIT-05 y CRIT-07. |
+| Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-04 y CRIT-05; alimenta CRIT-07. |
 
 ## CRIT-07: Implementation Risks And Resources
 
@@ -121,12 +122,12 @@ Status: not-started
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Validar setup operativo, recursos, restricciones, riesgos, secuencia y recortes para implementar el modelo mixto aprobado sin reabrir OpenCode como runtime principal. |
+| Purpose | [draft] Validar setup operativo, schemas finales, validators, commands, SDK/server/scripts, permissions, runtime, rutas, recursos, restricciones, riesgos, secuencia y recortes para implementar el modelo mixto aprobado sin reabrir OpenCode como runtime principal. |
 | Why it is critical | [draft] Integrar herramientas o prometer automatizacion sin recursos disponibles puede consumir la V1 sin validar valor. |
-| What must be decided | [open-question] Entorno Odoo real, instalacion/carga/actualizacion de modulo, tests aplicables, setup operativo OpenCode, agents, commands, SDK/server/scripts, permissions, config, skills, rules/AGENTS.md, operacion local/global, source-vs-runtime, evidencia ejecutable, RAG, CI/CD, Playwright, esfuerzo, secuencia, recortes de alcance y modulo piloto exacto. |
-| What must NOT be decided yet | [draft] Codigo, implementacion antes de CRIT-04/05/06, instaladores finales, configuracion activa, runtime files, infraestructura productiva y optimizaciones. |
+| What must be decided | [open-question] Schemas finales, validators, commands, SDK/server/scripts, permissions, OpenCode runtime setup, rutas/ubicaciones runtime, entorno Odoo real, instalacion/carga/actualizacion de modulo, tests aplicables, ejecucion reproducible, tooling operativo, source-vs-runtime, materializacion tecnica de CRIT-04 contracts, CRIT-05 gates y CRIT-06 state/evidence/traceability, evidencia ejecutable, RAG, CI/CD, Playwright, recursos, riesgos, plan, secuencia, recortes de alcance, modulo piloto exacto y plazo de 2 meses como restriccion. |
+| What must NOT be decided yet | [draft] Codigo, implementacion efectiva, archivos runtime activos, instaladores finales, infraestructura productiva, optimizaciones, reapertura de OpenCode como runtime principal o propuesta de CRIT-08. |
 | Inputs to review | [draft] `framework/INSTALLATION_MODEL.md`, `framework/rag/`, `framework/ci/`, `framework/examples/`, `RISKS.md`. |
-| Expected outputs | [draft] Mapa de recursos, setup operativo candidato, restricciones, riesgos bloqueantes, recortes y secuencia candidata de implementacion. |
-| Acceptance criteria | [draft] Cada mecanismo/herramienta candidata tiene justificacion, prerequisito, costo, riesgo, evidencia esperada y decision futura de incluir/excluir/postergar. |
+| Expected outputs | [draft] Mapa de recursos, setup operativo candidato, schemas finales, validators, commands, SDK/server/scripts, permissions, rutas/ubicaciones runtime, restricciones, riesgos bloqueantes, recortes y secuencia candidata de implementacion compatible con 2 meses. |
+| Acceptance criteria | [draft] Cada mecanismo/herramienta candidata tiene justificacion, prerequisito, costo, riesgo, evidencia esperada y decision futura de incluir/excluir/postergar; la materializacion tecnica de CRIT-04/05/06 queda definida sin crear implementacion, cerrando la elicitacion critica antes del Consolidated Truth Review y sin proponer CRIT-08. |
 | Open questions | [open-question] Que setup operativo, recursos, restricciones, recortes y herramientas auxiliares son necesarios para construir V1 en 2 meses sin convertirlas en dependencias funcionales del producto CAFL? |
 | Dependencies | [draft] Depende de CRIT-01, CRIT-02, CRIT-05 y CRIT-06; desbloquea planificacion tecnica. |

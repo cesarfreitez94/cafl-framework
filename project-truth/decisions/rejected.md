@@ -1,6 +1,6 @@
 # Rejected Decisions
 
-Status: bootstrap + CRIT-03 approved
+Status: bootstrap + CRIT-05 approved
 
 | ID | Rejected decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |
@@ -20,3 +20,9 @@ Status: bootstrap + CRIT-03 approved
 | DEC-REJECTED-014 | Crear especialistas permanentes por cada artefacto Odoo desde el inicio. | CRIT-03 owner | rejected | CRIT-03 aprobo backend base, frontend/OWL condicional y especialistas por artefacto solo por SDD, riesgo o complejidad. |
 | DEC-REJECTED-015 | Fusionar o absorber compliance de forma prematura hasta diluirlo dentro de QA generico o seguridad tecnica. | CRIT-03 owner | rejected | CRIT-03 preservo seguridad/riesgo/compliance como responsabilidad explicita y `odoo-legal-risk-reviewer` queda analyze later / maybe merge as capability. |
 | DEC-REJECTED-016 | Aprobar RAG completo como parte de V1 sin justificacion posterior. | CRIT-03 owner | rejected | CRIT-03 aclaro que RAG completo no queda aprobado para V1 salvo justificacion en CRIT-07. |
+| DEC-REJECTED-017 | Permitir autocierre por builder como decision de gate o DoD. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | El builder puede recomendar o reportar, pero no cerrar gates ni DoD cuando existe verificacion requerida. |
+| DEC-REJECTED-018 | Usar gate unico final como unico control de avance. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | CRIT-05 aprobo modelo hibrido con gates minimos, checks transversales y gates condicionales. |
+| DEC-REJECTED-019 | Escalar toda falla al owner por defecto. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | El owner decide decisiones criticas; fallas normales se manejan por orquestacion, QA, rework, block o warning segun severidad. |
+| DEC-REJECTED-020 | Tratar deuda funcional sobre alcance comprometido como deuda aceptable para produccion tecnica. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | Funcionalidad comprometida incompleta requiere rework, block, escalation o replan/reduce scope explicito y trazable. |
+| DEC-REJECTED-021 | Aceptar evidencia solo narrativa LLM como suficiente para gate o cierre. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | La narrativa LLM puede explicar, pero no sustituye evidencia reproducible. |
+| DEC-REJECTED-022 | Usar como escala principal de severidades una taxonomia incompatible con `blocker`, `critical`, `high`, `medium`, `low`, `warning/info`. | CRIT-05 Gates and Verification Technical Elicitation + owner approval | rejected | La alternativa `blocker`, `critical`, `major`, `minor`, `info` no queda como escala principal CRIT-05. |

@@ -1,6 +1,6 @@
 # Project Truth
 
-Status: bootstrap + CRIT-04 approved / CRIT-05 to CRIT-07 pending
+Status: bootstrap + CRIT-05 approved / CRIT-06 to CRIT-07 pending
 
 ## Proposito
 
@@ -23,7 +23,7 @@ Status: bootstrap + CRIT-04 approved / CRIT-05 to CRIT-07 pending
 - [accepted] No contiene gates finales.
 - [accepted] No contiene agentes ejecutables.
 - [accepted] No instala ni configura OpenSpec u otra herramienta.
-- [accepted] No define todavia el alcance V1 real, salvo restricciones explicitas aceptadas en CRIT-01, decisiones de flujo aceptadas en CRIT-02, responsabilidades conceptuales aprobadas en CRIT-03 y modelo contractual conceptual aprobado en CRIT-04.
+- [accepted] No define todavia el alcance V1 real, salvo restricciones explicitas aceptadas en CRIT-01, decisiones de flujo aceptadas en CRIT-02, responsabilidades conceptuales aprobadas en CRIT-03, modelo contractual conceptual aprobado en CRIT-04 y modelo conceptual de gates/verificacion aprobado en CRIT-05.
 
 ## Uso Antes De Implementar
 
@@ -46,5 +46,6 @@ Status: bootstrap + CRIT-04 approved / CRIT-05 to CRIT-07 pending
 - [accepted] CRIT-02 Operating Flow esta approved.
 - [accepted] CRIT-03 Agent Responsibilities esta approved como decision de responsabilidades y mecanismos candidatos, no como implementacion runtime.
 - [accepted] CRIT-04 Contracts esta approved como modelo contractual conceptual, no como contratos finales, schemas finales, gates, commands ni runtime.
-- [accepted] CRIT-05, CRIT-06 y CRIT-07 siguen pendientes.
+- [accepted] CRIT-05 Gates And Verification esta approved como modelo conceptual, no como gates finales ejecutables, schemas finales, validators, commands, scripts ni runtime.
+- [accepted] CRIT-06 y CRIT-07 siguen pendientes.
 - [accepted] No se debe implementar en `framework/` hasta resolver los puntos criticos minimos restantes con el owner.
