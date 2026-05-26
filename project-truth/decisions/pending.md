@@ -50,7 +50,8 @@ Status: READY_FOR_TARGET_OPERATING_MODEL
 ## Post-CRIT-07 Work To Define
 
 - [accepted] Consolidated Truth Review esta completado con resultado READY_FOR_TARGET_OPERATING_MODEL.
-- [pending] Target Operating Model debe definirse formalmente a partir de CRIT-01..CRIT-07 aprobados y Consolidated Truth Review completado.
+- [accepted] `project-truth/TOM.md` existe como especificacion/working contract para elaborar el Target Operating Model.
+- [pending] El contenido operativo completo del Target Operating Model debe elaborarse a partir de `project-truth/TOM.md`, CRIT-01..CRIT-07 aprobados y Consolidated Truth Review completado, y requiere aprobacion explicita del owner.
 - [pending] Implementation Blueprint debe definirse formalmente sin usar `framework/` como input y sin convertir recomendaciones en implementacion prematura.
 - [pending] Technical validations/spikes deben definirse formalmente.
 - [pending] Backlog tecnico debe definirse formalmente.

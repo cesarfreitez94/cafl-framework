@@ -141,6 +141,8 @@ Status: approved
 
 - [accepted] CRIT-01..CRIT-07 quedan completos.
 - [accepted] Consolidated Truth Review quedo `READY_FOR_TARGET_OPERATING_MODEL`.
-- [accepted] El siguiente artefacto recomendado es Target Operating Model.
+- [accepted] `project-truth/TOM.md` existe como especificacion/working contract para elaborar el Target Operating Model.
+- [pending] El Target Operating Model operativo completo sigue pendiente de elaboracion y aprobacion explicita del owner.
+- [accepted] El siguiente trabajo sigue siendo Target Operating Model.
 - [accepted] CRIT-08 no existe.
 - [accepted] El siguiente paso debe definirse formalmente a partir de las decisiones aprobadas, sin imponer en este mapa una secuencia detallada post-CRIT-07.
