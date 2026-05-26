@@ -1,158 +1,219 @@
-# CRIT-07: Implementation Risks And Resources
+# CRIT-07: Implementation Risks, Resources, Runtime And Feasibility
 
-Status: not-started
+Status: approved
 
 ## Session Objective
 
-- [draft] Definir setup operativo candidato, schemas finales, validators, commands, SDK/server/scripts, permissions, runtime, rutas, viabilidad, recursos, riesgos, secuencia y recortes para implementar el modelo mixto aprobado, sin reabrir OpenCode como runtime principal ni adelantar implementacion.
-- [draft] Definir tambien la implementacion fisica/runtime candidata de la base de conocimiento curada derivada de CRIT-06: RAG o no RAG, base vectorial o no, archivos curados, schemas finales, validators, commands, scripts de ingesta/actualizacion, source-vs-runtime layout y consulta desde agents/commands/skills/scripts.
+- [accepted] CRIT-07 cierra la elicitacion critica CRIT-01..CRIT-07.
+- [accepted] CRIT-07 define viabilidad, direccion candidata de runtime, recursos, riesgos, recortes V1 y criterios para implementacion posterior.
+- [accepted] CRIT-07 no crea runtime, blueprint final, backlog tecnico, schemas fisicos finales, validators reales, commands, agents ejecutables, scripts, RAG, base vectorial ni configuracion OpenCode.
+- [accepted] Despues de CRIT-07 no existe CRIT-08.
+- [accepted] Los siguientes trabajos deben definirse formalmente por el proceso correspondiente: Consolidated Truth Review, Target Operating Model, Implementation Blueprint, technical validations/spikes, backlog tecnico e implementacion controlada.
+- [accepted] CRIT-07 no impone una secuencia detallada post-CRIT-07 ni cierra esos trabajos posteriores.
 
 ## Context
 
-- [accepted] Este bootstrap no instala ni configura herramientas.
-- [accepted] OpenCode ya es runtime principal aprobado; CRIT-07 no reabre esa decision.
-- [accepted] OpenSpec y OpenProject no son producto CAFL ni dependencias funcionales obligatorias.
-- [accepted] CAFL es Odoo-only y requiere validacion contra un entorno Odoo real.
-- [draft] La separacion source-vs-runtime debe respetar que `framework/` es fuente y no runtime activo.
-- [draft] El setup operativo debe cubrir OpenCode agents, commands, SDK/server/scripts, permissions, config, skills, rules/AGENTS.md, operacion local/global y evidencia ejecutable.
-- [draft] CRIT-07 no adelanta implementacion antes de que CRIT-04, CRIT-05 y CRIT-06 definan contratos, gates y estado/evidencia/trazabilidad.
-- [draft] CRIT-07 debe definir la materializacion tecnica de CRIT-04 contracts, CRIT-05 gates y CRIT-06 state/evidence/traceability en schemas finales, validators, commands, SDK/server/scripts, permissions, rutas/ubicaciones runtime y ejecucion reproducible.
-- [accepted] CRIT-06 ya aprobo el modelo logico/conceptual de estado autoritativo, logs, IDs, trazabilidad, evidence/source/context governance, Knowledge Gap, Curation Request, Curation Mode y bootstrap incremental.
-- [draft] CRIT-07 debe decidir como materializar fisicamente Knowledge Gap, Curation Request, Curation Mode, source policy, source usage, snapshots/versiones, knowledge artifacts e integration knowledge packs sin asumir RAG/base vectorial por defecto.
-- [draft] CRIT-07 define el cierre de elicitacion critica antes del Consolidated Truth Review y no propone CRIT-08.
-- [draft] RAG, pgvector, CI/CD, Playwright y herramientas auxiliares deben validarse contra valor, recursos, secuencia y plazo de 2 meses.
-- [draft] El plazo de 2 meses es restriccion de alcance para recursos, tooling operativo, recortes y secuencia.
-- [draft] OpenCode ya es runtime principal aprobado; CRIT-07 decide como operar fisicamente el modelo, no si OpenCode sera reemplazado.
-- [draft] CRIT-07 debe decidir si la knowledge base se materializa con RAG, base vectorial, archivos curados, JSON/YAML/JSONL/Markdown, SQLite, PostgreSQL, pgvector u otro mecanismo.
-- [draft] CRIT-07 debe definir como implementar knowledge domains extensibles para Odoo, OWL, Playwright/testing, Python aplicado a Odoo, integraciones externas, APIs oficiales/de terceros, Swagger/OpenAPI, PDFs tecnicos y dominios futuros como legal-compliance.
-- [draft] CRIT-07 debe definir como bloquear ejecucion si falta conocimiento autorizado suficiente, sin implementar todavia ese bloqueo en esta sesion.
-- [draft] Despues de CRIT-07 corresponde Consolidated Truth Review y diseno implementable; no corresponde crear CRIT-08.
+- [accepted] CRIT-01 Intent and Scope esta approved.
+- [accepted] CRIT-02 Operating Flow esta approved.
+- [accepted] CRIT-03 Agent Responsibilities esta approved.
+- [accepted] CRIT-04 Contracts esta approved como modelo contractual conceptual.
+- [accepted] CRIT-05 Gates And Verification esta approved como modelo conceptual de gates y verificacion.
+- [accepted] CRIT-06 State, Evidence, Traceability And Knowledge Governance esta approved como modelo logico/conceptual.
+- [accepted] OpenCode sigue siendo runtime principal aprobado; CRIT-07 no reabre esa decision.
+- [accepted] Odoo sigue siendo el unico dominio objetivo de CAFL.
+- [accepted] CRIT-07 fue elicitado tecnicamente y aprobado por el owner con ajustes obligatorios.
 
-## Questions For The Owner
+## Owner Approval
 
-- [open-question] Que entorno Odoo existe hoy y que permisos hay sobre el?
-- [open-question] Que version, datos, permisos y restricciones tiene el entorno Odoo real para instalar, cargar, actualizar y probar un modulo piloto?
-- [open-question] Que setup operativo de OpenCode se requiere para agents, commands, SDK/server/scripts, permissions, config, skills y rules/AGENTS.md?
-- [open-question] Que debe operar local, global o por repo, y como se mantiene la separacion source-vs-runtime?
-- [open-question] Que rutas/ubicaciones runtime deben existir para agents, skills, commands, SDK/server/scripts, config, rules y artefactos de evidencia?
-- [open-question] Que permissions y restricciones de seguridad son necesarias para evitar ejecucion no autorizada o lectura de contexto prohibido?
-- [open-question] Que schemas finales, validators y commands deben materializar CRIT-04, CRIT-05 y CRIT-06?
-- [open-question] Que SDK/server/scripts y tooling operativo se necesitan para ejecucion reproducible sin implementarlos en esta sesion?
-- [open-question] Que evidencia ejecutable debe poder producirse mediante comandos, scripts, tests, capturas o reportes, sin crearla en esta sesion?
-- [open-question] RAG es esencial para V1, debe limitarse a alcance minimo o puede diferirse?
-- [open-question] La base de conocimiento curada se implementara con RAG o sin RAG?
-- [open-question] Se usara base vectorial, pgvector, PostgreSQL, SQLite, archivos curados, JSON, YAML, JSONL, Markdown u otro mecanismo?
-- [open-question] Que schemas finales de knowledge artifacts, source registry, source snapshots, source usage y knowledge domains se necesitan?
-- [open-question] Que schema/registro final necesita Knowledge Gap y Curation Request para bloquear implementacion hasta curaduria/aprobacion suficiente?
-- [open-question] Que validators finales deben validar fuentes, snapshots, freshness/vigencia, applicability, knowledge artifacts y knowledge packs?
-- [open-question] Como se implementara source policy para aprobar dominios, URLs base, documentos entregados por owner, repositorios oficiales y Swagger/OpenAPI/PDFs tecnicos candidatos antes de Curation Mode?
-- [open-question] Que commands de ingesta, actualizacion, validacion, consulta y reporte de knowledge base se requieren?
-- [open-question] Que scripts o tooling se requieren para procesar Swagger/OpenAPI, PDFs tecnicos, documentacion de autenticacion, endpoints, payloads, errores, seguridad, datos sensibles, compliance, ejemplos oficiales y pruebas recomendadas?
-- [open-question] Que scripts o tooling se requieren para snapshots/versiones, hashes, vigencia y deprecacion de fuentes?
-- [open-question] Como se integra la knowledge base con OpenCode agents, commands, skills/playbooks, SDK/server/scripts, permissions y context routing?
-- [open-question] Que source-vs-runtime layout y rutas/ubicaciones runtime deben existir para knowledge packs, indices, caches, snapshots, artifacts, logs y evidencia?
-- [open-question] Como consultaran agents/commands/scripts la base de conocimiento y como se registrara source usage?
-- [open-question] Como se bloqueara ejecucion o decision cuando falte conocimiento autorizado suficiente?
-- [open-question] Cual sera el alcance fisico minimo del bootstrap incremental para el modulo piloto sin cargar toda la documentacion Odoo/OWL/Playwright/integraciones desde el dia 1?
-- [open-question] Como se materializan dominios extensibles y como se agregan dominios futuros como legal-compliance, tax-regulation, public-sector-processes, accounting, industry-specific-rules y regulatory-reporting sin redisenar el framework?
-- [open-question] Que OpenSpec/OpenProject u otras herramientas auxiliares aportan valor sin convertirse en producto CAFL ni dependencia funcional?
-- [open-question] Que recursos existen para CI/CD y pruebas end-to-end?
-- [open-question] Que nivel de esfuerzo cabe en el plazo de 2 meses y que recortes son aceptables?
-- [open-question] Cual es el modulo piloto exacto para validar el flujo end-to-end?
-- [open-question] Cual es la secuencia de implementacion despues de CRIT-04, CRIT-05 y CRIT-06?
-- [open-question] Que riesgos tecnicos bloquearian implementacion?
+- [accepted] El owner aprobo las recomendaciones de CRIT-07 Technical Elicitation con los ajustes obligatorios registrados en esta sesion.
+- [accepted] CRIT-07 queda aprobado como cierre de la fase critica de elicitacion.
+- [accepted] Las capacidades diferidas a V2/post-V1 no quedan rechazadas; quedan fuera de V1 por estrategia de alcance.
 
-## Decisions To Make
+## Approved Decisions
 
-- [open-question] Recursos disponibles.
-- [open-question] Setup operativo OpenCode sin reabrir OpenCode como runtime principal.
-- [open-question] Schemas finales, validators, commands y materializacion tecnica de CRIT-04 contracts, CRIT-05 gates y CRIT-06 state/evidence/traceability.
-- [open-question] Uso candidato de agents, commands, SDK/server/scripts, permissions, config, skills y rules/AGENTS.md.
-- [open-question] Operacion local/global, rutas/ubicaciones runtime y separacion source-vs-runtime.
-- [open-question] Entorno Odoo real, instalacion/carga/actualizacion de modulo y ejecucion de tests aplicables.
-- [open-question] Evidencia ejecutable minima esperada.
-- [open-question] Herramientas auxiliares incluidas, excluidas o postergadas.
-- [open-question] Alcance RAG V1 o diferimiento.
-- [open-question] Implementacion fisica/runtime de la curated knowledge base derivada de CRIT-06.
-- [open-question] Mecanismo de almacenamiento/contenido para knowledge artifacts: archivos curados, JSON/YAML/JSONL/Markdown, SQLite, PostgreSQL, pgvector, base vectorial u otro.
-- [open-question] Schemas finales de knowledge artifacts, source registry, snapshots/versiones, source usage, prohibited sources y knowledge domains.
-- [open-question] Validators de fuentes, knowledge packs, freshness/vigencia, trust level, applicability y consistencia de artifacts.
-- [open-question] Commands y scripts de ingesta, actualizacion, validacion, consulta, snapshots/versiones, Swagger/OpenAPI, PDFs tecnicos y reportes.
-- [open-question] Integracion con OpenCode agents, commands, skills/playbooks, SDK/server/scripts, permissions, context routing y bloqueo por falta de conocimiento autorizado.
-- [open-question] Politica fisica de actualizacion, vigencia, deprecacion, rutas runtime y source-vs-runtime layout.
-- [open-question] Materializacion fisica de Knowledge Gap, Curation Request, Curation Mode y source policy con aprobacion owner/source policy.
-- [open-question] Alcance fisico del bootstrap incremental de knowledge base para el modulo piloto.
-- [open-question] Materializacion de knowledge domains extensibles para integraciones externas y dominios futuros legales/regulatorios.
-- [open-question] Secuencia de implementacion candidata.
-- [open-question] Modulo piloto exacto y recortes compatibles con 2 meses.
-- [open-question] Recursos, riesgos, recortes y plan de implementacion compatibles con el plazo de 2 meses.
-- [open-question] Restricciones de permisos y seguridad.
-- [open-question] Riesgos bloqueantes antes de desarrollo.
+### DEC-CRIT07-01: Cierre de elicitacion critica
 
-## Non-Goals For This Session
+- [accepted] CRIT-07 queda approved.
+- [accepted] CRIT-01..CRIT-07 quedan completos como fase critica de elicitacion.
+- [accepted] No existe CRIT-08.
 
-- [accepted] No instalar OpenSpec.
-- [accepted] No configurar OpenCode runtime.
-- [accepted] No reabrir la decision de OpenCode como runtime principal.
-- [accepted] No crear archivos ni implementacion de schemas finales, validators finales, agentes ejecutables, commands, scripts, permisos ni config runtime.
-- [accepted] No adelantar implementacion antes de CRIT-04, CRIT-05 y CRIT-06.
-- [accepted] No proponer CRIT-08.
-- [accepted] No crear CI/CD real.
-- [accepted] No implementar RAG.
-- [accepted] No modificar `framework/`.
-- [accepted] No crear base vectorial real ni base de datos real de conocimiento.
-- [accepted] No crear knowledge packs, ingesta, snapshots fisicos ni indices reales en esta sesion.
-- [accepted] No implementar schemas, validators, commands o scripts de knowledge base en esta sesion; solo definir decisiones pendientes de implementacion.
-- [accepted] No crear CRIT-08 ni nuevas sesiones criticas para knowledge governance.
+### DEC-CRIT07-02: Estrategia sobre `framework/`
 
-## Risks If Unresolved
+- [accepted] `framework/` queda eliminado como artefacto contaminado y descartado como input de diseno.
+- [accepted] Nada de `framework/` debe usarse para layout, agents, commands, contracts, gates, schemas, validators, runtime ni knowledge base.
+- [accepted] `framework/` no debe auditarse ni migrarse por defecto.
+- [accepted] La eliminacion de `framework/` queda aprobada por el owner como accion separada de limpieza, no como fuente de diseno.
 
-- [draft] Reabrir decisiones aprobadas sobre runtime o producto en vez de decidir setup operativo.
-- [draft] Integracion prematura con herramientas sin contratos, gates y estado definidos.
-- [draft] Planificacion basada en recursos inexistentes.
-- [draft] Falta de entorno Odoo real para instalar, actualizar o testear modulo.
-- [draft] Confusion source-vs-runtime que lleve a crear archivos ejecutables en ubicaciones incorrectas.
-- [draft] Permissions demasiado amplios, contexto prohibido no protegido o ejecucion no reproducible.
-- [draft] V1 bloqueada por dependencias tecnicas no priorizadas.
-- [draft] RAG completo, CI/CD o E2E exceden el plazo de 2 meses sin recortes.
-- [draft] Sobrecosto por automatizacion antes de validar valor.
-- [draft] RAG/base de conocimiento se convierte en scope creep y consume V1 antes de validar flujo Odoo end-to-end.
-- [draft] Implementacion fisica demasiado rigida impide agregar dominios futuros como legal-compliance sin redisenar el framework.
-- [draft] Knowledge base fisica sin validators permite usar fuentes desactualizadas, no oficiales o no aplicables.
-- [draft] Scripts para Swagger/OpenAPI, PDFs o API docs mal definidos producen conocimiento incorrecto pero aparentemente autorizado.
-- [draft] Bloqueo por falta de conocimiento autorizado no se implementa o queda solo en prompts.
-- [draft] Curation Mode queda solo en politica documental si CRIT-07 no define enforcement de fuentes aprobadas, source policy, permissions y logs.
-- [draft] Bootstrap incremental puede volverse demasiado amplio o demasiado laxo si CRIT-07 no define alcance fisico minimo y criterios de bloqueo.
+### DEC-CRIT07-03: Target Odoo V1
 
-## Output Format
+- [accepted] Odoo target V1 es Odoo 18.
+- [accepted] V1 debe orientarse a Odoo 18.
+- [accepted] La forma exacta de entorno Odoo 18, como Docker, venv/local u otra, no se decide en CRIT-07 y queda para spike/blueprint posterior.
 
-- [draft] Tabla de mecanismo/herramienta candidata, decision pendiente, razon, prerequisito, riesgo, costo, recurso requerido, evidencia esperada y estado.
-- [draft] Mapa de recursos disponibles y brechas.
-- [draft] Setup operativo candidato para OpenCode agents, schemas finales, validators, commands, SDK/server/scripts, permissions, config, skills, rules/AGENTS.md, rutas/ubicaciones runtime y operacion local/global.
-- [draft] Materializacion tecnica candidata de CRIT-04 contracts, CRIT-05 gates y CRIT-06 state/evidence/traceability.
-- [draft] Implementacion fisica/runtime candidata de curated knowledge base: RAG o no RAG, base vectorial o no, archivos curados, JSON/YAML/JSONL/Markdown, SQLite, PostgreSQL, pgvector u otro mecanismo.
-- [draft] Schemas finales candidatos, validators, commands y scripts para knowledge artifacts, source registry, source snapshots, knowledge packs, ingesta, actualizacion, validacion, consulta, Swagger/OpenAPI, PDFs tecnicos y source usage.
-- [draft] Layout source-vs-runtime y rutas/ubicaciones runtime candidatas para knowledge domains, snapshots, artifacts, indices/caches, logs, permissions y evidencia.
-- [draft] Politica candidata de actualizacion, vigencia, deprecacion, consulta desde agents/commands/scripts y bloqueo por falta de conocimiento autorizado.
-- [draft] Politica candidata de Knowledge Gap, Curation Request, Curation Mode, source policy, aprobacion de fuentes y bootstrap incremental fisico.
-- [draft] Plan candidato de entorno Odoo real, instalacion/carga/actualizacion, tests aplicables y evidencia ejecutable.
-- [draft] Lista de recursos, riesgos, recortes, alcance RAG V1 o diferimiento, modulo piloto exacto, plan de implementacion y secuencia candidata compatible con 2 meses.
-- [draft] Lista de bloqueadores tecnicos antes de implementar.
+### DEC-CRIT07-04: Operating model recomendado
 
-## Acceptance Criteria
+- [accepted] CAFL V1 usara modelo hibrido progresivo sobre OpenCode.
+- [accepted] El modelo combina agents para razonamiento, commands para entradas repetibles, scripts/CLI/validators para control deterministico, rules/config para invariantes minimos y skills/playbooks para conocimiento on-demand.
+- [accepted] CAFL V1 no sera agents-only.
 
-- [draft] Ninguna pregunta reabre OpenCode como runtime principal aprobado.
-- [draft] CRIT-07 cierra la elicitacion critica antes del Consolidated Truth Review y no propone CRIT-08.
-- [draft] Cada mecanismo/herramienta candidata queda aceptada, rechazada, postergada o pendiente para la futura implementacion.
-- [draft] Setup operativo cubre agents, schemas finales, validators, commands, SDK/server/scripts, permissions, config, skills, rules/AGENTS.md, rutas/ubicaciones runtime, operacion local/global y source-vs-runtime.
-- [draft] La materializacion tecnica de CRIT-04, CRIT-05 y CRIT-06 queda definida sin crear implementacion.
-- [draft] Viabilidad Odoo cubre instalacion/carga/actualizacion de modulo, tests aplicables y evidencia ejecutable.
-- [draft] RAG, CI/CD, Playwright y automatizacion quedan dimensionados o diferidos segun plazo de 2 meses.
-- [draft] La implementacion fisica de knowledge base queda decidida como mecanismo candidato sin crear runtime en esta sesion.
-- [draft] RAG/base vectorial/archivos curados quedan incluidos, excluidos, postergados o pendientes con razon, costo, riesgo y dependencia.
-- [draft] Schemas, validators, commands y scripts de ingesta/actualizacion/validacion de knowledge base quedan definidos como decisiones de implementacion futura, sin crearlos todavia.
-- [draft] La integracion con OpenCode agents/commands/skills/scripts y el bloqueo por falta de conocimiento autorizado quedan definidos operacionalmente, sin reabrir OpenCode como runtime principal.
-- [draft] Knowledge Gap, Curation Request, Curation Mode, source policy y bootstrap incremental quedan materializados como decisiones de implementacion futura sin crear implementacion.
-- [draft] La extensibilidad de knowledge domains futuros queda resuelta a nivel de plan implementable sin proponer CRIT-08.
-- [draft] No queda dependencia tecnica critica sin dueno ni mitigacion.
-- [draft] La secuencia de implementacion no requiere asumir recursos no confirmados.
+### DEC-CRIT07-05: V1 no es automatizacion debil
+
+- [accepted] V1 debe automatizar validaciones, trazabilidad, evidencia y ejecucion Odoo minima.
+- [accepted] No se acepta una V1 donde los agents solo recomienden y el owner deba verificar manualmente todo el ciclo.
+- [accepted] V1 debe tener suficiente automatizacion deterministica para demostrar un ciclo end-to-end real de modulo Odoo 18.
+- [accepted] La automatizacion minima suficiente debe cubrir o semi-cubrir validacion estructural de packets/contratos/gates/evidencia, DoR, trazabilidad minima, logs/estado/evidencia, install/update/test execution de Odoo 18, captura de evidencia y source policy / knowledge gap basico.
+
+### DEC-CRIT07-06: No double work
+
+- [accepted] CAFL V1 debe evitar trabajo doble documental.
+- [accepted] Los artefactos, schemas, logs y evidencia deben existir para controlar ejecucion, validacion, trazabilidad y cierre, no para duplicar manualmente informacion sin valor operativo.
+- [accepted] Si un dato debe aparecer en narrativa y registro estructurado, debe definirse una sola fuente autoritativa y una representacion secundaria derivada o referenciada.
+
+### DEC-CRIT07-07: Runtime architecture candidate
+
+- [accepted] Runtime candidate V1: OpenCode + commands + scripts/CLI/validators locales + storage fisico simple y auditable.
+- [accepted] SDK/server queda fuera de core V1 por defecto.
+- [accepted] SDK/server solo puede reactivarse si un spike demuestra necesidad y beneficio claro para control de sesion, estado, automatizacion o evidencia que no pueda resolverse razonablemente con commands/scripts/validators.
+
+### DEC-CRIT07-08: Scripts/CLI language
+
+- [accepted] No se asume Python, Node u otro lenguaje como decision tomada para scripts/CLI.
+- [accepted] El lenguaje debe definirse mediante spike o validacion tecnica.
+- [accepted] Criterios de decision: facilidad local, validacion de JSON/YAML/JSONL, integracion con comandos Odoo, velocidad de implementacion, mantenibilidad y menor friccion con OpenCode.
+
+### DEC-CRIT07-09: Schemas V1 minimos versionados
+
+- [accepted] Se aprueban schemas minimos versionados para registros criticos de V1.
+- [accepted] Los schemas V1 minimos no son schemas definitivos permanentes del framework.
+- [accepted] Su proposito V1 es validar estructura, referencias, estados, IDs y campos obligatorios.
+
+### DEC-CRIT07-10: Validators V1
+
+- [accepted] V1 debe incluir validators deterministicos minimos para evitar que CRIT-04, CRIT-05 y CRIT-06 queden solo como texto no validable.
+- [accepted] Los validators V1 deben enfocarse en estructura, referencias, estados, IDs, campos obligatorios, trazabilidad minima, evidencia, source policy, knowledge gap basico, rework/debt/approval cuando aplique y ejecucion Odoo minima.
+- [accepted] Los validators no sustituyen juicio tecnico, decision de gate ni aceptacion del owner.
+
+### DEC-CRIT07-11: State/evidence physical storage candidate
+
+- [accepted] V1 usara una estrategia candidata de storage fisico simple, auditable y compatible con Git.
+- [accepted] La direccion candidata es hibrida: Markdown para narrativa controlada, JSON/YAML para registros estructurados, JSONL para logs append-only y artifacts para evidencia.
+- [accepted] La decision fisica exacta de rutas, schemas y formatos queda para Implementation Blueprint; CRIT-07 no crea storage final.
+
+### DEC-CRIT07-12: Knowledge base V1
+
+- [accepted] V1 usara curated files + lightweight source registry + knowledge artifacts + skills/playbooks como direccion candidata de knowledge base.
+- [accepted] RAG/base vectorial no se aprueba para V1.
+- [accepted] RAG/base vectorial queda diferido a V2/post-V1 si el volumen, busqueda o automatizacion futura lo justifica.
+- [accepted] Source policy, Knowledge Gap y Curation Request basicos deben existir como parte de la automatizacion minima suficiente.
+
+### DEC-CRIT07-13: Ingesta, OpenAPI y PDF
+
+- [accepted] V1 no automatizara de forma amplia la ingesta de documentacion, Swagger/OpenAPI o PDFs tecnicos.
+- [accepted] OpenAPI/PDF processing queda como spike, validacion tecnica o capacidad post-V1, salvo que el piloto final lo requiera explicitamente.
+- [accepted] La curacion manual controlada con source policy, snapshots y validators minimos es preferida para V1.
+
+### DEC-CRIT07-14: Integration knowledge packs
+
+- [accepted] Los integration knowledge packs se mantienen como mecanismo logico/estructural condicional.
+- [accepted] V1 no incluye integraciones externas reales por defecto.
+- [accepted] Una integracion externa real solo entra en V1 si el piloto final la requiere intencionalmente y el owner acepta el impacto de alcance.
+
+### DEC-CRIT07-15: Odoo execution V1
+
+- [accepted] V1 debe poder ejecutar y evidenciar un ciclo minimo real en Odoo 18.
+- [accepted] La ejecucion minima debe cubrir install/update/test execution de modulo Odoo 18 y captura de evidencia.
+- [accepted] El entorno exacto de ejecucion se decide por spike/blueprint posterior.
+
+### DEC-CRIT07-16: Modulo piloto preferido
+
+- [accepted] El candidato preferido de modulo piloto es solicitudes internas/aprobaciones simples.
+- [accepted] La seleccion final del piloto queda para el blueprint posterior.
+- [accepted] El piloto final debe ser real, acotado, Odoo 18, con modelos, vistas, ACL/record rules, workflow, reglas de negocio, datos minimos, tests backend, tests de acceso, documentacion, evidencia y sin integracion externa compleja por defecto.
+
+### DEC-CRIT07-17: V1 scope direction
+
+- [accepted] V1 debe demostrar un flujo end-to-end verificable de modulo Odoo 18.
+- [accepted] V1 incluye direccion candidata para operating model, runtime candidate, automation minima, schemas minimos, validators minimos, state/evidence, knowledge governance basica, source policy/knowledge gap basico, Odoo 18 execution y piloto acotado.
+- [accepted] V1 no debe ampliarse con capacidades diferidas si eso compromete el ciclo end-to-end verificable.
+
+### DEC-CRIT07-18: Capacidades diferidas
+
+- [accepted] Las capacidades no incluidas en V1 no quedan rechazadas.
+- [accepted] Quedan diferidas a V2/post-V1 por estrategia de alcance: RAG/base vectorial, SDK/server runtime, dashboard/UI, CI/CD completo, integraciones externas reales, legal-compliance avanzado, knowledge base amplia, parsing automatico OpenAPI/PDF, PostgreSQL/pgvector/DB avanzada, multiusuario/equipo, plugins/MCP/custom tools, automatizacion avanzada de Curation Mode, frontend/OWL avanzado si no aplica al piloto y Playwright si no hay frontend custom en piloto.
+
+## V1 Minimum Sufficient Automation
+
+| Area | Approved V1 requirement | Boundary |
+| --- | --- | --- |
+| Packets/contracts/gates/evidence | Validacion estructural automatizada o semi-automatizada | No equivale a aprobacion semantica total |
+| DoR | Check minimo de campos, fuentes, blockers/`none`, alcance, outputs y evidencia esperada | El receptor/validator conserva criterio de suficiencia |
+| Trazabilidad | Links minimos entre modulo, capability/feature, tarea, contract, gate, evidence, decision y source cuando aplique | No crea dashboard ni DB avanzada |
+| Logs/estado/evidencia | Registros persistentes y auditables | No cierra storage fisico final permanente |
+| Odoo 18 execution | Install/update/test execution minimo con evidencia | Entorno exacto queda para spike/blueprint |
+| Source policy / Knowledge Gap | Bloqueo basico por fuente insuficiente y Curation Request | No crea automatizacion avanzada de curacion |
+
+## Deferred / Post-V1 Capabilities
+
+| Capability | V1 status | Notes |
+| --- | --- | --- |
+| RAG/base vectorial | deferred | No rechazado; no aprobado para V1 |
+| SDK/server runtime | deferred/conditional | Solo vuelve con spike favorable |
+| dashboard/UI | deferred | No necesario para validar V1 |
+| CI/CD completo | deferred | V1 prioriza ejecucion local reproducible |
+| integraciones externas reales | deferred/conditional | Solo si piloto final lo exige |
+| legal-compliance avanzado | deferred | V1 no es motor legal |
+| knowledge base amplia | deferred | V1 usa bootstrap incremental |
+| parsing automatico OpenAPI/PDF | deferred/conditional | Requiere spike y revision |
+| PostgreSQL/pgvector/DB avanzada | deferred | No necesario para V1 |
+| multiusuario/equipo | deferred | Usuario inicial es owner |
+| plugins/MCP/custom tools | deferred | Evita superficie temprana |
+| automatizacion avanzada de Curation Mode | deferred | V1 requiere basico enforceable |
+| frontend/OWL avanzado | conditional/deferred | Solo si aplica al piloto |
+| Playwright | conditional/deferred | Solo si hay frontend custom en piloto |
+
+## Technical Validations / Spikes To Define Later
+
+- [accepted] Technical validations/spikes son trabajo posterior a CRIT-07 y deben definirse formalmente en el proceso correspondiente.
+- [accepted] Spikes necesarios incluyen al menos OpenCode permissions, OpenCode commands/skills, SDK/server go/no-go, lenguaje scripts/CLI, schema/validator toolchain, storage/log convention, source policy enforcement, knowledge without RAG, Odoo 18 local environment, Odoo 18 install/update/test execution, evidence capture y secrets handling.
+- [accepted] CRIT-07 registra la necesidad de estos spikes; no los ejecuta ni cierra sus resultados.
+
+## Non-Goals Confirmed
+
+- [accepted] No se implementa runtime.
+- [accepted] No se crean agents ejecutables.
+- [accepted] No se crean commands reales.
+- [accepted] No se crean schemas fisicos finales.
+- [accepted] No se crean validators reales.
+- [accepted] No se crean scripts.
+- [accepted] No se crea RAG.
+- [accepted] No se crea base vectorial.
+- [accepted] No se configura OpenCode.
+- [accepted] No se configura OpenSpec.
+- [accepted] No se crea CRIT-08.
+- [accepted] No se cierra Implementation Blueprint.
+- [accepted] No se cierra backlog tecnico.
+- [accepted] No se impone planificacion detallada post-CRIT-07.
+- [accepted] No se usa `framework/` como fuente de diseno.
+
+## Handoff
+
+- [accepted] CRIT-07 entrega decisiones aprobadas, direccion candidata de runtime, restricciones V1, riesgos y criterios para trabajo posterior.
+- [accepted] Los trabajos posteriores deben partir desde las decisiones CRIT-01..CRIT-07 aprobadas.
+- [accepted] Los trabajos posteriores no deben reabrir `framework/` como fuente de diseno ni convertir capacidades diferidas en requisitos V1 sin decision explicita del owner.
+- [accepted] No existe CRIT-08.
+
+## Acceptance Criteria Result
+
+- [accepted] CRIT-07 queda aprobado documentalmente.
+- [accepted] CRIT-01..CRIT-07 quedan completos.
+- [accepted] `framework/` queda descartado como input y aprobado para eliminacion.
+- [accepted] Odoo 18 queda como target V1.
+- [accepted] Automatizacion minima suficiente queda definida como automatizacion real de validacion, trazabilidad, evidencia y ejecucion Odoo 18 minima.
+- [accepted] No double work queda registrado.
+- [accepted] Lo diferido a V2/post-V1 queda como diferido, no rechazado.
+- [accepted] RAG/base vectorial no queda aprobado para V1.
+- [accepted] SDK/server no queda aprobado como core V1.
+- [accepted] V1 queda como flujo end-to-end verificable y no puramente narrativo.
+- [accepted] No se impone planificacion detallada posterior.
+- [accepted] No se implementa runtime ni se crean artefactos ejecutables.
+- [accepted] CRIT-08 no existe.

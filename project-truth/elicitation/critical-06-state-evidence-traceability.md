@@ -196,8 +196,8 @@ Status: approved
 ## Boundaries With CRIT-07
 
 - [accepted] CRIT-06 define modelo logico/conceptual.
-- [accepted] CRIT-07 define schemas finales, validators, commands, SDK/server/scripts, permissions, OpenCode runtime setup, rutas/ubicaciones, storage fisico, RAG o no RAG, base vectorial o no, archivos curados o base de datos, ingesta/actualizacion, procesamiento Swagger/OpenAPI/PDFs y ejecucion reproducible real.
-- [accepted] CRIT-07 sigue not-started.
+- [accepted] CRIT-07 fue aprobado posteriormente como direccion candidata de viabilidad/runtime y cierre de la elicitacion critica CRIT-01..07.
+- [accepted] CRIT-07 resolvio direccion candidata para runtime, storage fisico, schemas/validators/commands/scripts y knowledge base V1, pero no implemento runtime ni artefactos fisicos finales.
 - [accepted] No se crea ni propone CRIT-08.
 
 ## Non-Goals Confirmed
@@ -233,5 +233,5 @@ Status: approved
 - [accepted] Curation Mode requiere fuentes aprobadas por owner o source policy.
 - [accepted] Knowledge Gap bloquea implementacion hasta curaduria/aprobacion suficiente.
 - [accepted] Bootstrap incremental queda aprobado sin autorizar implementacion sin fuente.
-- [accepted] CRIT-07 implementa schemas, validators, commands, scripts, storage fisico, runtime, RAG/base vectorial si aplica.
+- [accepted] CRIT-07 fue aprobado posteriormente como direccion candidata de viabilidad/runtime; no implemento schemas, validators, commands, scripts, storage fisico, runtime, RAG ni base vectorial.
 - [accepted] CRIT-08 no existe.

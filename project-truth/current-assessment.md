@@ -1,6 +1,14 @@
 # Current Assessment
 
-Status: draft
+Status: superseded by CRIT-01..07 approved / historical bootstrap diagnostic
+
+## Nota De Superacion
+
+- [superseded] Este documento conserva valor historico como diagnostico de bootstrap, pero no es autoridad vigente ni compite con CRIT-01..07 approved.
+- [accepted] La autoridad actual reside en CRIT-01..07 approved y en las decisiones aceptadas registradas en `project-truth/decisions/accepted.md`.
+- [accepted] CRIT-07 descarto `framework/` como artefacto contaminado, lo aprobo para eliminacion y cerro la elicitacion critica CRIT-01..07 sin implementar runtime.
+- [superseded] `framework/` ya no debe considerarse evidencia secundaria utilizable, input de diseno ni candidato de supervivencia; las referencias posteriores en este documento quedan historicas.
+- [superseded] Las secciones de assumptions y open questions quedan conservadas solo como registro historico del bootstrap; no son dudas activas salvo que una decision aceptada posterior las reactive.
 
 ## Alcance Del Diagnostico
 
@@ -32,7 +40,7 @@ Status: draft
 - [draft] `BACKLOG.md` y `ROADMAP.md` son utiles para detectar temas pendientes, especialmente agentes, contratos, gates, instalacion y permisos.
 - [draft] `RISKS.md` es util como lista inicial de riesgos tecnicos, legales y de alcance, pero requiere re-clasificacion desde la intencion real del owner.
 - [draft] Los catalogos preliminares de agentes, contratos y gates son utiles para preparar sesiones criticas, no para ejecutar desarrollo.
-- [draft] La estructura `framework/` es evidencia de una posible direccion, no prueba de que esa direccion sea correcta.
+- [superseded] La estructura `framework/` fue tratada durante el bootstrap como evidencia de una posible direccion; CRIT-07 la descarto posteriormente y aprobo su eliminacion.
 
 ## Partes Prematuras O Riesgosas
 
@@ -59,7 +67,7 @@ Status: draft
 - [assumption] Odoo v18 Community es el objetivo tecnico de V1.
 - [assumption] El owner quiere bajo control humano por defecto.
 - [assumption] La V1 debe incluir RAG, CI/CD, testing completo e instaladores.
-- [assumption] La estructura `framework/` podria sobrevivir con ajustes si la intencion del owner la valida.
+- [superseded] La estructura `framework/` podria sobrevivir con ajustes si la intencion del owner la validaba; CRIT-07 la descarto posteriormente y aprobo su eliminacion.
 
 ## Open Questions
 

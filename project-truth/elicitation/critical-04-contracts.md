@@ -39,7 +39,7 @@ Status: approved
 - [accepted] DEC-CRIT04-12: El contrato base se adapta mediante perfiles por mecanismo candidato: human, agent, command, SDK/server/script, rule/config/skill o mixed.
 - [accepted] DEC-CRIT04-13: Versionado y trazabilidad contractual quedan aprobados a nivel conceptual, conectando modulo, capability/feature, tarea, decision, riesgo, evidencia, rework y handoff.
 - [accepted] DEC-CRIT04-14: Rework, blockers y escalamiento deben estar representados en contratos como campos obligatorios o condicionales, sin definir todavia gates ni acciones finales.
-- [accepted] DEC-CRIT04-15: CRIT-04 define estructura contractual, campos, handoffs y suficiencia; CRIT-05, CRIT-06 y CRIT-07 conservan sus decisiones pendientes.
+- [accepted] DEC-CRIT04-15: CRIT-04 define estructura contractual, campos, handoffs y suficiencia; nota posterior: CRIT-05 fue aprobado como modelo conceptual de gates/verificacion, CRIT-06 como modelo logico/conceptual de estado/evidencia/trazabilidad/knowledge governance y CRIT-07 como direccion de viabilidad/runtime candidato y cierre de elicitacion critica, sin crear decision de implementacion.
 
 ## V1 Contract Classification
 

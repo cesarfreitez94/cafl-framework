@@ -1,6 +1,6 @@
 # Rejected Decisions
 
-Status: bootstrap + CRIT-06 approved
+Status: bootstrap + CRIT-07 approved / critical elicitation complete
 
 | ID | Rejected decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |
@@ -34,3 +34,11 @@ Status: bootstrap + CRIT-06 approved
 | DEC-REJECTED-028 | Incluir Python generico, Django, FastAPI, Flask o patrones Python que contradigan Odoo como conocimiento objetivo de CAFL V1. | CRIT-06 owner | rejected | Python queda incluido solo como conocimiento aplicado a Odoo. |
 | DEC-REJECTED-029 | Asumir que CRIT-06 aprueba RAG final, base vectorial, base de datos final, storage fisico, schemas, validators, commands, scripts o runtime OpenCode. | CRIT-06 owner | rejected | CRIT-06 aprueba solo modelo logico/conceptual; implementacion fisica queda para CRIT-07. |
 | DEC-REJECTED-030 | Crear o proponer CRIT-08 para resolver knowledge governance. | CRIT-06 owner | rejected | CRIT-06 aprobo el modelo logico y CRIT-07 debe resolver la implementacion fisica/runtime; CRIT-08 no existe. |
+| DEC-REJECTED-031 | Crear o proponer CRIT-08 despues de CRIT-07. | CRIT-07 Technical Elicitation + owner approval | rejected | CRIT-07 cierra la elicitacion critica; los trabajos posteriores son Consolidated Truth Review, Target Operating Model, Implementation Blueprint, validations/spikes, backlog tecnico e implementacion controlada. |
+| DEC-REJECTED-032 | Usar `framework/` contaminado como input de layout, agents, commands, contracts, gates, schemas, validators, runtime o knowledge base. | CRIT-07 Technical Elicitation + owner approval | rejected | `framework/` queda descartado y aprobado para eliminacion como limpieza separada. |
+| DEC-REJECTED-033 | Disenar CAFL V1 como agents-only. | CRIT-07 Technical Elicitation + owner approval | rejected | V1 requiere modelo hibrido progresivo con automatizacion deterministica minima. |
+| DEC-REJECTED-034 | Tratar RAG/base vectorial como obligatorio en V1. | CRIT-07 Technical Elicitation + owner approval | rejected | RAG/base vectorial queda diferido a V2/post-V1, no rechazado definitivamente. |
+| DEC-REJECTED-035 | Tratar SDK/server como core obligatorio de V1. | CRIT-07 Technical Elicitation + owner approval | rejected | SDK/server solo puede reactivarse con spike favorable. |
+| DEC-REJECTED-036 | Aceptar una V1 puramente manual o solo narrativa donde agents recomiendan y el owner verifica manualmente todo el ciclo. | CRIT-07 Technical Elicitation + owner approval | rejected | V1 debe tener automatizacion minima suficiente de validacion, trazabilidad, evidencia y ejecucion Odoo 18 minima. |
+| DEC-REJECTED-037 | Crear trabajo doble documental sin valor operativo. | CRIT-07 Technical Elicitation + owner approval | rejected | Los artefactos deben controlar ejecucion, validacion, trazabilidad y cierre; no duplicar manualmente informacion. |
+| DEC-REJECTED-038 | Incluir integraciones externas reales por defecto en V1. | CRIT-07 Technical Elicitation + owner approval | rejected | Integration knowledge packs se mantienen como mecanismo condicional; integraciones reales quedan diferidas o condicionadas al piloto. |
