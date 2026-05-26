@@ -1,6 +1,6 @@
 # Pending Decisions
 
-Status: bootstrap + CRIT-03 approved / downstream decisions pending
+Status: bootstrap + CRIT-04 approved / downstream decisions pending
 
 ## CRIT-01: Intent And Scope
 
@@ -10,28 +10,20 @@ Status: bootstrap + CRIT-03 approved / downstream decisions pending
 
 - [accepted] No quedan decisiones pendientes para aprobar CRIT-02; CRIT-02 esta approved como operating flow.
 - [accepted] CRIT-03 ya aprobo responsabilidades conceptuales y mecanismos candidatos.
-- [accepted] Las decisiones de implementacion concreta restantes se derivan a CRIT-04, CRIT-05, CRIT-06 y CRIT-07.
+- [accepted] CRIT-04 ya aprobo el modelo contractual conceptual.
+- [accepted] Las decisiones de implementacion concreta restantes se derivan a CRIT-05, CRIT-06 y CRIT-07.
 
 ## CRIT-03: Agent Responsibilities
 
-| ID | Critical area | Decision needed | Why it matters | Current status | Truth status | Blocking level |
-| --- | --- | --- | --- | --- | --- | --- |
-| DEC-PENDING-009 | CRIT-03 | Definir si las funciones minimas aprobadas por CRIT-02 se implementan como agentes separados, roles combinados, capacidades de orquestacion u otros mecanismos candidatos: human, agent, command, SDK-server-script, rule-config o mixed. | Evita crear agentes innecesarios, forzar responsabilidades no aptas para LLM y dejar brechas en capacidades equivalentes a equipo especializado. | resolved in CRIT-03 | accepted | none |
-| DEC-PENDING-010 | CRIT-03 | Definir responsabilidades y no-responsabilidades por rol/agente, incluyendo seguridad/riesgo/compliance. | Evita solapamiento, brechas, handoffs debiles y tareas operativas manuales. | resolved in CRIT-03 | accepted | none |
-| DEC-PENDING-011 | CRIT-03 | Definir autoridad conceptual de roles/agentes para bloquear, avanzar, pedir contexto, escalar o cerrar una unidad de trabajo. | Afecta autonomia, seguridad, compliance y control humano en decisiones criticas. | resolved in CRIT-03 | accepted | none |
-| DEC-PENDING-012 | CRIT-03 | Definir como los roles/agentes interactuan con la jerarquia modulo -> capability/feature -> tarea verificable. | Impacta handoffs, contexto, evidencia y validacion del modulo acotado. | resolved in CRIT-03 | accepted | none |
-
-- [accepted] CRIT-03 queda aprobado como decision de responsabilidades y mecanismo candidato, no como implementacion runtime.
-- [accepted] Las decisiones de implementacion concreta quedan derivadas a CRIT-04, CRIT-05, CRIT-06 y CRIT-07.
+- [accepted] CRIT-03 fue resuelto y aprobado como decision de responsabilidades, autoridad conceptual, limites, handoffs y mecanismos candidatos.
+- [accepted] La trazabilidad de CRIT-03 queda en `project-truth/decisions/accepted.md` y `project-truth/elicitation/critical-03-agent-responsibilities.md`.
+- [accepted] CRIT-03 no aprobo implementacion runtime; los pendientes vivos derivados continuan en CRIT-05, CRIT-06 y CRIT-07 donde aplique.
 
 ## CRIT-04: Contracts
 
-| ID | Critical area | Decision needed | Why it matters | Current status | Truth status | Blocking level |
-| --- | --- | --- | --- | --- | --- | --- |
-| DEC-PENDING-013 | CRIT-04 | Definir contratos internos minimos obligatorios, incluyendo relacion con PRD, SDD, CDD, TDD y handoffs. | Sin contratos claros no hay handoffs verificables ni control de alcance. | pending | open-question | blocker |
-| DEC-PENDING-014 | CRIT-04 | Definir formato de contratos internos y task/context packet. | Afecta legibilidad, validacion, versionado, tokens y mantenimiento. | pending | open-question | high |
-| DEC-PENDING-015 | CRIT-04 | Definir campos minimos, producer/consumer/validator, versionado, Definition of Ready, criterios de suficiencia y criterio de rechazo por consumidor o receptor. | Permite trazabilidad y evita avanzar con entradas incompletas o salidas rechazadas tardiamente. | pending | open-question | high |
-| DEC-PENDING-029 | CRIT-04 | Definir contenido minimo del task/context packet por tipo de tarea, incluyendo fuentes aplicables, fuentes secundarias, fuentes prohibidas/no relevantes, token budget, evidencia esperada y excepciones justificadas. | CRIT-02 lo hizo obligatorio y CRIT-03 aprobo la responsabilidad, pero no definio campos finales ni formatos. | pending | open-question | high |
+- [accepted] CRIT-04 fue resuelto y aprobado como modelo contractual conceptual.
+- [accepted] La trazabilidad de CRIT-04 queda en `project-truth/decisions/accepted.md` y `project-truth/elicitation/critical-04-contracts.md`.
+- [accepted] CRIT-04 no aprobo contratos finales, schemas finales, gates, commands, agents ejecutables ni runtime; los pendientes vivos quedan derivados a CRIT-05, CRIT-06 y CRIT-07.
 
 ## CRIT-05: Gates And Verification
 
@@ -44,6 +36,7 @@ Status: bootstrap + CRIT-03 approved / downstream decisions pending
 | DEC-PENDING-027 | CRIT-05 | Definir DoD verificable para modulo listo para produccion tecnica. | CRIT-01 acepto la intencion del DoD y CRIT-02 el principio operativo, pero falta operacionalizar evidencia y criterios. | pending | open-question | high |
 | DEC-PENDING-030 | CRIT-05 | Definir cuando aplicar BDD formal, ATDD parcial, TDD estricto o solo planificacion de pruebas. | CRIT-02 diferio BDD formal y no aprobo TDD estricto universal. | pending | open-question | medium |
 | DEC-PENDING-033 | CRIT-05 | Definir politica concreta para rework default de 2 ciclos, excepciones, tercer ciclo significativo, bloqueo y escalamiento. | CRIT-03 aprobo el limite default y la autoridad conceptual, pero no definio gate final, severidad ni evidencia requerida para excepciones. | pending | open-question | high |
+| DEC-PENDING-037 | CRIT-05 | Definir como los gates consumen contratos CRIT-04 sin confundir contrato con gate. | CRIT-04 define estructura, campos y suficiencia; CRIT-05 debe decidir verificacion, severidad y accion por fallo. | pending | open-question | high |
 
 ## CRIT-06: State, Evidence And Traceability
 
@@ -54,6 +47,7 @@ Status: bootstrap + CRIT-03 approved / downstream decisions pending
 | DEC-PENDING-022 | CRIT-06 | Definir matriz de trazabilidad minima alineada a modulo -> capability/feature -> tarea verificable. | Conecta idea, alcance, decisiones, tareas, implementacion, pruebas, evidencia y resultado. | pending | open-question | high |
 | DEC-PENDING-031 | CRIT-06 | Definir como registrar context routing decisions, token budget usage, context log, excluded/prohibited context log, documentos no relevantes y uso de evidencia secundaria. | CRIT-02 lo aprobo como principio, pero falta modelo de estado y auditoria. | pending | open-question | medium |
 | DEC-PENDING-034 | CRIT-06 | Definir como registrar decisiones CRIT-03 en estado autoritativo, incluyendo autoridad conceptual, rework counters, fuentes usadas/excluidas y clasificacion de mecanismos candidatos. | CRIT-03 aprobo responsabilidades y limites, pero el modelo de persistencia, auditoria y decision log pertenece a CRIT-06. | pending | open-question | medium |
+| DEC-PENDING-038 | CRIT-06 | Definir IDs finales, registros de instancias contractuales, evidence log, source log, context log y trazabilidad persistente para el modelo CRIT-04. | CRIT-04 aprobo versionado y trazabilidad conceptual, pero no define storage, logs ni esquema persistente. | pending | open-question | high |
 
 ## CRIT-07: Implementation Risks And Resources
 
@@ -67,3 +61,4 @@ Status: bootstrap + CRIT-03 approved / downstream decisions pending
 | DEC-PENDING-032 | CRIT-07 | Validar setup operativo OpenCode sobre subagentes, comandos, contexto, permisos, aprobaciones, estado, archivos fuente vs runtime, limites de tokens y ejecucion verificable. | CRIT-02/CRIT-03 lo requieren para operar correctamente el flujo sin reabrir OpenCode como runtime principal. | pending | open-question | blocker |
 | DEC-PENDING-035 | CRIT-07 | Decidir implementacion concreta de mecanismos candidatos CRIT-03: agents, commands, permissions, SDK/server/scripts, config, rules/AGENTS.md, skills, ejecucion no interactiva y control deterministico. | CRIT-03 aprobo mecanismos candidatos conceptuales, pero no setup operativo final ni archivos runtime definitivos. | pending | open-question | blocker |
 | DEC-PENDING-036 | CRIT-07 | Decidir alcance de RAG V1 y si RAG completo se justifica dentro del plan de 2 meses. | CRIT-03 aclaro que RAG completo no queda aprobado para V1 salvo justificacion posterior. | pending | open-question | high |
+| DEC-PENDING-039 | CRIT-07 | Definir schemas finales, validators, commands, SDK/server/scripts, permissions y runtime que implementarian o validarian el modelo contractual CRIT-04. | CRIT-04 no crea schemas finales ni implementacion runtime; la viabilidad y forma tecnica pertenecen a CRIT-07. | pending | open-question | blocker |

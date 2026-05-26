@@ -17,7 +17,7 @@ Status: draft
 - [draft] Granularidad de agentes pertenece a CRIT-03, no a implementacion.
 - [draft] Formato de contratos pertenece a CRIT-04, no a tooling.
 - [draft] Evidencia, fuentes y trazabilidad pertenecen a CRIT-06, aunque alimenten gates y contratos.
-- [draft] CRIT-04, CRIT-05, CRIT-06 y CRIT-07 permanecen not-started y sus plantillas quedan alineadas al modelo mixto aprobado por CRIT-03.
+- [accepted] CRIT-04 queda approved como modelo contractual conceptual; CRIT-05, CRIT-06 y CRIT-07 permanecen not-started.
 
 ## CRIT-01: Intent And Scope
 
@@ -32,7 +32,7 @@ Status: approved
 | Inputs reviewed | [accepted] Respuestas y aclaraciones CRIT-01 del owner como fuente primaria; `project-truth/` como bootstrap; repo previo solo como evidencia secundaria. |
 | Expected outputs | [accepted] Declaracion de intencion, decisiones aceptadas/rechazadas, pendientes derivados, riesgos y glosario actualizados. |
 | Acceptance criteria | [accepted] Verificacion independiente CRIT-01: APPROVED; CRIT-01 queda approved para intencion y alcance del producto. |
-| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-01; CRIT-03 a CRIT-07 siguen sin resolverse. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-01; las sesiones posteriores mantienen su propio estado de aprobacion. |
 | Dependencies | [accepted] CRIT-01 alimenta CRIT-02, CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07, pero no los resuelve. |
 
 ## CRIT-02: Operating Flow
@@ -48,7 +48,7 @@ Status: approved
 | Inputs reviewed | [accepted] CRIT-01 approved, `project-truth/` y respuesta del owner a CRIT-02 como fuente primaria; repo previo solo como evidencia secundaria. |
 | Expected outputs | [accepted] Mapa operativo aprobado, con decisiones de flujo y derivaciones explicitas a CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
 | Acceptance criteria | [accepted] Cada fase/tarea debe tener salida esperada, evidencia minima, criterios de aceptacion, condicion de bloqueo, rework acotado y cierre verificable. |
-| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-02; implementacion concreta queda derivada a CRIT-03 a CRIT-07. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-02; implementacion concreta queda derivada a las sesiones posteriores segun su estado. |
 | Dependencies | [accepted] Depende de CRIT-01 approved y alimenta CRIT-03, CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
 
 ## CRIT-03: Agent Responsibilities
@@ -64,24 +64,24 @@ Status: approved
 | Inputs reviewed | [accepted] `project-truth/spikes/spike-oc-crit03-opencode-responsibility-mapping.md` como input tecnico; `framework/AGENT_CONTRACTS.md` y `framework/agents/*.agent.md` solo como evidencia secundaria; documentos raiz solo como evidencia secundaria. |
 | Expected outputs | [accepted] Matriz de responsabilidades conceptuales, mecanismos candidatos, autoridad, handoffs, limites y revision preliminar de agentes actuales. |
 | Acceptance criteria | [accepted] CRIT-03 queda aprobado como decision de responsabilidades y mecanismo candidato; no eleva `framework/agents` a verdad oficial ni crea implementacion runtime. |
-| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-03; implementacion concreta y criterios finales quedan derivados a CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-03; CRIT-04 ya resolvio modelo contractual conceptual y la implementacion concreta queda derivada a CRIT-05, CRIT-06 y CRIT-07 segun corresponda. |
 | Dependencies | [accepted] Depende de CRIT-01 y CRIT-02; alimenta CRIT-04, CRIT-05, CRIT-06 y CRIT-07. |
 
 ## CRIT-04: Contracts
 
-Status: not-started
+Status: approved
 
 | Campo | Contenido |
 | --- | --- |
-| Purpose | [draft] Definir la estructura contractual para coordinar fases, entregables y mecanismos mixtos. |
-| Why it is critical | [draft] Contratos incompletos permiten avanzar con entradas ambiguas y salidas no verificables. |
-| What must be decided | [open-question] Tipos de contratos, task/context packet, Definition of Ready, producer/consumer/validator, contexto autorizado/excluido, token budget, campos minimos, formato, versionado y relacion con trazabilidad. |
-| What must NOT be decided yet | [draft] Contenido final de cada contrato, gates finales, schemas definitivos, estado persistente, runtime y tooling de validacion. |
-| Inputs to review | [draft] CRIT-01/02/03 approved, `project-truth/spikes/spike-oc-crit03-opencode-responsibility-mapping.md`, `framework/CONTRACT_CATALOG.md`, plantillas en `framework/templates/contracts/`, `framework/PRE_PLANNING_ELICITATION.md` como evidencia secundaria. |
-| Expected outputs | [draft] Inventario de contratos candidatos y estructura contractual para agent, command, SDK/server/script, rule/config, skill/playbook, human/owner y mixed. |
-| Acceptance criteria | [draft] Cada contrato candidato tiene proposito, producer, consumer, validator, entrada, salida, contexto, token budget, evidencia, criterio de suficiencia y criterio de rechazo. |
-| Open questions | [open-question] Que contrato minimo evita perder control del modelo mixto sin crear burocracia excesiva? |
-| Dependencies | [draft] Depende de CRIT-01, CRIT-02 y CRIT-03; alimenta CRIT-05 y CRIT-06. |
+| Purpose | [accepted] Definir la estructura contractual conceptual para coordinar fases, entregables y mecanismos mixtos. |
+| Why it is critical | [accepted] Contratos incompletos permiten avanzar con entradas ambiguas, contexto no controlado y salidas no verificables. |
+| What was answered | [accepted] CAFL usara modelo hibrido: contrato base comun mas extensiones por fase, mecanismo y riesgo; task/context packet obligatorio; DoR validada por receptor o validador; producer, consumer y validator explicitos; consumer puede rechazar; context routing y token budget por contrato; evidencia no solo narrativa; contratos V1 clasificados como `always-required` y `conditional-required`; `blockers` en task/context packet es conditional con `none` explicito si no hay blockers conocidos. |
+| What must NOT be decided yet | [accepted] Contenido final de cada contrato, gates finales, severidades, acciones por fallo, schemas definitivos, estado persistente, runtime, commands, agents ejecutables, validators y tooling de validacion. |
+| Inputs reviewed | [accepted] CRIT-01/02/03 approved, CRIT-04 Contracts Technical Elicitation, aprobacion del owner y `project-truth/spikes/spike-oc-crit03-opencode-responsibility-mapping.md`; `framework/CONTRACT_CATALOG.md`, `framework/AGENT_CONTRACTS.md`, `framework/agents/*.agent.md` y otros documentos del repo solo como evidencia secundaria. |
+| Expected outputs | [accepted] Modelo contractual conceptual, inventario V1 `always-required` y `conditional-required`, matriz contractual conceptual, campos candidatos del task/context packet y handoff a CRIT-05/06/07. |
+| Acceptance criteria | [accepted] Cada contrato candidato tiene proposito, producer, consumer, validator, entrada, salida, contexto, token budget, evidencia, criterio de suficiencia y criterio de rechazo; el modelo cubre human, agent, command, SDK/server/script, rule/config/skill y mixed sin implementar runtime. |
+| Open questions | [accepted] No quedan preguntas abiertas para aprobar CRIT-04 como modelo contractual conceptual; los detalles finales quedan derivados a CRIT-05, CRIT-06 y CRIT-07. |
+| Dependencies | [accepted] Depende de CRIT-01, CRIT-02 y CRIT-03; alimenta CRIT-05, CRIT-06 y CRIT-07. |
 
 ## CRIT-05: Gates And Verification
 

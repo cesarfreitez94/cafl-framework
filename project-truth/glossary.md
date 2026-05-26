@@ -1,6 +1,6 @@
 # Glossary
 
-Status: CRIT-03 approved / downstream decisions pending
+Status: CRIT-04 approved / downstream decisions pending
 
 | Term | Definition | Status | Notes |
 | --- | --- | --- | --- |
@@ -30,7 +30,8 @@ Status: CRIT-03 approved / downstream decisions pending
 | candidate mechanism | Mecanismo conceptual propuesto para resolver una responsabilidad: human, agent, command, SDK-server-script, rule-config-skill o mixed. | accepted | CRIT-03 aprueba mecanismos candidatos; CRIT-07 decide implementacion runtime concreta. |
 | deterministic control | Control operativo verificable y reproducible que no depende solo de razonamiento LLM, por ejemplo validacion de estado, permisos, ejecucion de tests, conteo de rework o chequeos estructurales. | accepted | CRIT-03 lo aprobo como mecanismo candidato; implementacion concreta queda para CRIT-07. |
 | mixed responsibility model | Modelo en que una responsabilidad CAFL puede mapearse a humano, agente, command, SDK/server/script, rule/config/skill o combinacion de mecanismos. | accepted | CRIT-03 aprobo este modelo y rechazo agents-only. No es arquitectura OpenCode final. |
-| contract | Acuerdo formal interno entre fases, roles o artefactos que define entradas, salidas y criterios de suficiencia. | draft | Los contratos finales no existen en este bootstrap; se definen en CRIT-04. |
+| contract | Acuerdo formal interno entre fases, responsabilidades, mecanismos o artefactos que define entradas, salidas, contexto, token budget, evidencia, producer, consumer, validator, criterios de suficiencia, rechazo y handoff. | accepted | CRIT-04 aprobo el modelo conceptual; no existen contratos finales ni schemas finales. |
+| base contract envelope | Estructura comun conceptual que deben compartir los contratos internos CAFL antes de aplicar extensiones por fase, mecanismo o riesgo. | accepted | Incluye proposito, unidad de control, producer, consumer, validator, inputs, outputs, contexto, token budget, restricciones, evidencia, blockers, handoff, version y trazabilidad. |
 | gate | Punto de decision interno que verifica criterios y evidencia para avanzar, bloquear, replanificar o escalar. | draft | Los gates finales no existen en este bootstrap; se definen en CRIT-05. |
 | evidence | Prueba documental o tecnica que respalda una decision, resultado, verificacion o entrega. | draft | Su formato minimo se decide en CRIT-06 y CRIT-05. |
 | traceability | Capacidad de rastrear relacion entre idea, alcance, decision, fuente, requisito, tarea, implementacion, prueba, evidencia y entrega. | draft | Su alcance final depende de CRIT-06. |
@@ -42,15 +43,24 @@ Status: CRIT-03 approved / downstream decisions pending
 | flujo hibrido controlado | Forma de trabajo con fases minimas obligatorias, iteraciones acotadas, avance por evidencia y retrabajo controlado. | accepted | Aprobado en CRIT-02 como forma del flujo end-to-end. |
 | capability/feature | Unidad funcional intermedia dentro de un modulo Odoo, mayor que una tarea y menor que el modulo completo. | accepted | Parte de la jerarquia modulo -> capability/feature -> tarea verificable aprobada en CRIT-02. |
 | tarea verificable | Unidad tecnica de trabajo con salida esperada, evidencia minima, criterios de aceptacion, bloqueo y cierre. | accepted | Parte de la jerarquia operativa aprobada en CRIT-02. |
-| PRD ligero | Definicion funcional minima suficiente antes del diseno tecnico. | accepted | Obligatorio por CRIT-02; formato final queda para CRIT-04. |
+| PRD ligero | Definicion funcional minima suficiente antes del diseno tecnico. | accepted | Obligatorio por CRIT-02; CRIT-04 definio su estructura contractual conceptual. Formato final, schema o implementacion quedan para sesiones posteriores segun corresponda. |
 | SDD ligero | Diseno tecnico minimo suficiente antes de escribir codigo. | accepted | Obligatorio por CRIT-02; se amplia por riesgo, complejidad o impacto arquitectonico. |
-| CDD | Capacidad interna ligera orientada a construccion cuando aporte valor. | accepted | Aprobado por CRIT-02; significado y formato final quedan para CRIT-04. |
+| CDD | Capacidad interna ligera orientada a construccion cuando aporte valor. | accepted | Aprobado por CRIT-02; CRIT-04 definio estructura contractual conceptual. Significado operacional, formato final, schema o implementacion quedan para sesiones posteriores segun corresponda. |
 | TDD | Capacidad interna ligera de diseno, validacion y planificacion de pruebas. | accepted | CRIT-02 no lo aprueba como Test-Driven Development estricto universal. |
 | ADR | Registro minimo de decisiones tecnicas significativas. | accepted | Aprobado por CRIT-02 sin burocracia pesada; formato final queda para sesiones posteriores. |
-| Definition of Ready | Criterio minimo para iniciar una unidad operativa con contexto suficiente. | accepted | CRIT-02 la hizo obligatoria junto al task/context packet. |
-| task/context packet | Paquete de contexto minimo por unidad de trabajo. | accepted | Debe reducir tokens, evitar lectura innecesaria del repo y controlar fuentes aplicables; campos finales quedan para CRIT-04. |
-| context routing | Regla para seleccionar contexto segun autoridad documental y aplicabilidad. | accepted | Debe distinguir fuente autoritativa, contexto aplicable, evidencia secundaria y documento prohibido/no relevante. |
-| token budget | Presupuesto de contexto por fase o tarea. | accepted | CRIT-02 prohibio leer todo el repo por defecto. |
+| Definition of Ready | Criterio minimo para iniciar una unidad operativa con contexto suficiente, packet completo y aceptacion del receptor o validador. | accepted | CRIT-04 aprobo que no puede autoaprobarse solo por el productor. Gates finales quedan para CRIT-05. |
+| task/context packet | Paquete de contexto minimo por unidad verificable que actua como unidad central de ejecucion. | accepted | CRIT-04 aprobo campos candidatos; no es schema final. Debe incluir blockers conocidos o `none`. |
+| producer | Responsabilidad o mecanismo que genera un contrato, artefacto, packet o handoff. | accepted | Debe declararse en todo contrato conceptual CRIT-04. |
+| consumer | Responsabilidad o mecanismo que recibe, usa o ejecuta un contrato, artefacto, packet o handoff. | accepted | Evalua suficiencia desde su capacidad real de ejecutar sin inventar y puede rechazar. |
+| validator | Responsabilidad o mecanismo que valida suficiencia, salida, evidencia o cumplimiento conceptual de un contrato. | accepted | Cuando exista riesgo relevante, no debe ser el mismo ejecutor. |
+| always-required contract | Contrato conceptual V1 que debe existir siempre en el flujo aplicable para mantener control minimo. | accepted | CRIT-04 clasifico Base Contract Envelope, Idea -> PRD, PRD -> SDD, SDD -> Task/Context Packet, Task/Context Packet + DoR, Task Execution, QA/Testing, Evidence/Closure y Context Routing / Token Budget. |
+| conditional-required contract | Contrato conceptual V1 que debe activarse cuando se cumple una condicion de riesgo, mecanismo, rework, escalamiento, seguridad, datos, compliance, normativa o tipo de modulo. | accepted | CRIT-04 clasifico Security/Risk/Compliance Review, Rework, Escalation/Owner Decision y Mechanism Execution Profile como condicionales. |
+| mechanism profile | Extension conceptual del contrato base segun el consumidor o mecanismo candidato: human, agent, command, SDK/server/script, rule/config/skill o mixed. | accepted | No crea agents, commands, scripts ni runtime; implementacion queda para CRIT-07. |
+| context routing | Regla para seleccionar contexto segun autoridad documental y aplicabilidad. | accepted | CRIT-04 exige declarar fuentes autorizadas, aplicables, secundarias, prohibidas/no relevantes y excepciones por contrato. |
+| token budget | Presupuesto de contexto por fase o tarea. | accepted | CRIT-02 prohibio leer todo el repo por defecto; CRIT-04 lo conecta a contratos y packet. |
+| token budget class | Clasificacion conceptual del presupuesto de contexto de una fase/tarea/contrato, junto con politica de expansion y excepciones. | accepted | Numeros finales, enforcement y runtime quedan para CRIT-07; registro persistente queda para CRIT-06. |
+| blocker | Condicion conocida que impide avanzar sin inventar, asumir riesgo indebido, violar alcance o ejecutar sin contexto suficiente. | accepted | En task/context packet es conditional: si existen blockers se declaran; si no existen se declara `none`. |
+| sufficiency criteria | Criterios que permiten al consumidor/receptor aceptar que un contrato o packet tiene informacion suficiente para avanzar sin inventar. | accepted | CRIT-04 aprobo que la suficiencia se evalua desde el consumidor/receptor. |
 | shift-left verification | Verificacion temprana en transiciones importantes antes de llegar al cierre final. | accepted | Aprobada por CRIT-02 como principio de flujo; gates finales quedan para CRIT-05. |
 | risk-based testing | Enfoque de pruebas proporcional a riesgo, alcance e impacto. | accepted | Aprobado por CRIT-02 sin reducir el principio de testing obligatorio. |
 | rework loop | Ciclo de retrabajo acotado, trazable y con escalamiento si falla repetidamente o cambia el alcance. | accepted | Aprobado por CRIT-02 para evitar tareas interminables. |
