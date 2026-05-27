@@ -1,6 +1,6 @@
 # Project Truth
 
-Status: READY_FOR_TARGET_OPERATING_MODEL
+TOM_APPROVED_BY_OWNER
 
 ## Proposito
 
@@ -24,7 +24,7 @@ Status: READY_FOR_TARGET_OPERATING_MODEL
 - [accepted] No contiene agentes ejecutables.
 - [accepted] No instala ni configura OpenSpec u otra herramienta.
 - [accepted] No es Implementation Blueprint, backlog tecnico ni runtime implementado; CRIT-07 aprobo viabilidad, runtime candidate direction, recortes V1, riesgos, recursos y criterios para implementacion posterior.
-- [accepted] `project-truth/TOM.md` existe como especificacion/working contract para elaborar el Target Operating Model; no es el TOM operativo final aprobado.
+- [accepted] `project-truth/TOM.md` fue elaborado como Target Operating Model operativo y aprobado explicitamente por el owner; estado actual: `approved`.
 
 ## Uso Antes De Implementar
 
@@ -53,7 +53,6 @@ Status: READY_FOR_TARGET_OPERATING_MODEL
 - [accepted] CRIT-01..CRIT-07 quedan completos.
 - [accepted] CRIT-08 no existe.
 - [accepted] Consolidated Truth Review esta completado.
-- [accepted] Estado actual: `READY_FOR_TARGET_OPERATING_MODEL`.
-- [accepted] `project-truth/TOM.md` existe como especificacion/working contract para elaborar el Target Operating Model.
-- [pending] El Target Operating Model operativo completo sigue pendiente de elaboracion y aprobacion explicita del owner.
-- [accepted] Siguiente trabajo: Target Operating Model.
+- [accepted] Estado actual: TOM operativo elaborado y aprobado explicitamente por el owner (2026-05-27).
+- [accepted] `project-truth/TOM.md` es el Target Operating Model approved de CAFL V1.
+- [accepted] Siguiente trabajo: Implementation Blueprint (no aprobado, no iniciado).

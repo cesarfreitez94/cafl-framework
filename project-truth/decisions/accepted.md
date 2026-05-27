@@ -1,6 +1,6 @@
 # Accepted Decisions
 
-Status: READY_FOR_TARGET_OPERATING_MODEL
+Status: TOM_APPROVED_READY_FOR_IMPLEMENTATION_BLUEPRINT
 
 | ID | Decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |
@@ -164,3 +164,4 @@ Status: READY_FOR_TARGET_OPERATING_MODEL
 | DEC-ACCEPTED-158 | Technical validations/spikes post-CRIT-07 deben definirse formalmente por el proceso correspondiente. | CRIT-07 Technical Elicitation + owner approval | accepted | CRIT-07 registra necesidad; no ejecuta ni cierra resultados. |
 | DEC-ACCEPTED-159 | Consolidated Truth Review completed. | Consolidated Truth Review post-fix verification | accepted | Resultado: READY_FOR_TARGET_OPERATING_MODEL. Implicacion: el proyecto puede pasar a Target Operating Model. Limite: no aprueba TOM, Blueprint, backlog ni implementacion. |
 | DEC-ACCEPTED-160 | `project-truth/TOM.md` queda aceptado como especificacion/working contract para elaborar el Target Operating Model. | Prompt del owner TOM Registration | accepted | Limite: no aprueba TOM final, Blueprint, backlog, runtime ni implementacion. |
+| DEC-ACCEPTED-161 | TOM approved by owner. Aprobacion explicita del Target Operating Model completo contenido en `project-truth/TOM.md`. | Owner explicit approval (2026-05-27) | accepted | Implicacion: puede iniciarse Implementation Blueprint. Limite: no aprueba Blueprint, backlog ni implementacion. |

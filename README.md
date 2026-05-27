@@ -6,8 +6,9 @@ CAFL es un framework/plataforma operativo sobre OpenCode para desarrollar soluci
 
 - `project-truth/` es la unica fuente de verdad aprobada del proyecto.
 - CRIT-01..CRIT-07 estan completos y aprobados segun `project-truth/`.
-- Consolidated Truth Review quedo `READY_FOR_TARGET_OPERATING_MODEL`.
-- El siguiente paso es iniciar Target Operating Model desde la verdad aprobada.
+- Consolidated Truth Review quedo completado.
+- Target Operating Model esta approved (2026-05-27) en `project-truth/TOM.md`. Decision registrada en DEC-ACCEPTED-161.
+- El siguiente paso es Implementation Blueprint (no aprobado, no iniciado).
 - Este repo no contiene runtime implementado, agentes finales, commands finales, contratos finales, gates finales, schemas finales, validators reales, RAG/base vectorial V1 ni backlog tecnico aprobado.
 
 ## Autoridad
@@ -18,5 +19,6 @@ Referencias principales:
 
 - [`project-truth/README.md`](project-truth/README.md)
 - [`project-truth/critical-map.md`](project-truth/critical-map.md)
+- [`project-truth/TOM.md`](project-truth/TOM.md)
 - [`project-truth/decisions/accepted.md`](project-truth/decisions/accepted.md)
 - [`project-truth/risks.md`](project-truth/risks.md)

@@ -1,6 +1,6 @@
 # Pending Decisions
 
-Status: READY_FOR_TARGET_OPERATING_MODEL
+TOM_APPROVED_BY_OWNER
 
 ## CRIT-01: Intent And Scope
 
@@ -51,7 +51,7 @@ Status: READY_FOR_TARGET_OPERATING_MODEL
 
 - [accepted] Consolidated Truth Review esta completado con resultado READY_FOR_TARGET_OPERATING_MODEL.
 - [accepted] `project-truth/TOM.md` existe como especificacion/working contract para elaborar el Target Operating Model.
-- [pending] El contenido operativo completo del Target Operating Model debe elaborarse a partir de `project-truth/TOM.md`, CRIT-01..CRIT-07 aprobados y Consolidated Truth Review completado, y requiere aprobacion explicita del owner.
+- [accepted] TOM approval completada. El contenido operativo completo del Target Operating Model fue elaborado en `project-truth/TOM.md` y aprobado explicitamente por el owner (2026-05-27). Decision registrada en DEC-ACCEPTED-161.
 - [pending] Implementation Blueprint debe definirse formalmente sin usar `framework/` como input y sin convertir recomendaciones en implementacion prematura.
 - [pending] Technical validations/spikes deben definirse formalmente.
 - [pending] Backlog tecnico debe definirse formalmente.

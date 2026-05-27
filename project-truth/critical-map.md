@@ -1,6 +1,6 @@
 # Critical Map
 
-Status: READY_FOR_TARGET_OPERATING_MODEL
+TOM_APPROVED_BY_OWNER
 
 ## Regla De Uso
 
@@ -141,8 +141,8 @@ Status: approved
 
 - [accepted] CRIT-01..CRIT-07 quedan completos.
 - [accepted] Consolidated Truth Review quedo `READY_FOR_TARGET_OPERATING_MODEL`.
-- [accepted] `project-truth/TOM.md` existe como especificacion/working contract para elaborar el Target Operating Model.
-- [pending] El Target Operating Model operativo completo sigue pendiente de elaboracion y aprobacion explicita del owner.
-- [accepted] El siguiente trabajo sigue siendo Target Operating Model.
+- [accepted] `project-truth/TOM.md` fue elaborado y aprobado explicitamente por el owner (2026-05-27).
+- [accepted] TOM status: `approved`.
+- [accepted] El siguiente paso es Implementation Blueprint (no aprobado, no iniciado).
 - [accepted] CRIT-08 no existe.
-- [accepted] El siguiente paso debe definirse formalmente a partir de las decisiones aprobadas, sin imponer en este mapa una secuencia detallada post-CRIT-07.
+- [accepted] Post-TOM: Implementation Blueprint es el siguiente artefacto formal. No se crea aqui, no se aprueba aqui.

@@ -8,10 +8,17 @@ Estas reglas aplican a cualquier agente que trabaje en este repo. Su objetivo es
 
 - Antes de actuar, leer el contexto aplicable en `project-truth/`.
 - Tratar `project-truth/` como la unica fuente de verdad aprobada.
-- Usar como referencias de autoridad `project-truth/critical-map.md`, `project-truth/risks.md`, `project-truth/decisions/accepted.md`, `project-truth/decisions/pending.md`, `project-truth/decisions/rejected.md` y `project-truth/decisions/superseded.md`.
+- Usar como referencias de autoridad `project-truth/critical-map.md`, `project-truth/TOM.md`, `project-truth/risks.md`, `project-truth/decisions/accepted.md`, `project-truth/decisions/pending.md`, `project-truth/decisions/rejected.md` y `project-truth/decisions/superseded.md`.
 - Mantener trazabilidad hacia decisiones, riesgos y pendientes en `project-truth/`.
 - No duplicar decisiones que ya viven en `project-truth/`.
 - No crear documentos raiz paralelos que compitan con `project-truth/`.
+
+## Estado Aprobado
+
+- CRIT-01..CRIT-07 estan completos y aprobados.
+- Consolidated Truth Review esta completado.
+- Target Operating Model esta approved (2026-05-27) en `project-truth/TOM.md`. Decision registrada en DEC-ACCEPTED-161.
+- El siguiente trabajo es Implementation Blueprint. Ejecutarlo solo cuando el prompt lo solicite explicitamente y con los limites definidos en `project-truth/`.
 
 ## Modo De Trabajo
 
@@ -20,7 +27,7 @@ Estas reglas aplican a cualquier agente que trabaje en este repo. Su objetivo es
 - No crear ni modificar artefactos fuera del alcance autorizado.
 - No convertir recomendaciones en implementacion sin autorizacion explicita.
 - Si falta contexto suficiente para cumplir una tarea, reportar el gap y pedir autorizacion o decision; no inventar.
-- Si una tarea corresponde a Target Operating Model, Implementation Blueprint, backlog o implementacion, ejecutarla solo cuando el prompt lo solicite explicitamente y con los limites definidos en `project-truth/`.
+- Si una tarea corresponde a Implementation Blueprint, backlog o implementacion, ejecutarla solo cuando el prompt lo solicite explicitamente y con los limites definidos en `project-truth/`.
 
 ## Documentacion
 
@@ -31,7 +38,8 @@ Estas reglas aplican a cualquier agente que trabaje en este repo. Su objetivo es
 
 ## Limites
 
-- No disenar Target Operating Model, Implementation Blueprint ni backlog salvo instruccion explicita.
+- No disenar Implementation Blueprint ni backlog salvo instruccion explicita.
 - No implementar runtime salvo instruccion explicita posterior y trazable.
 - No definir agentes finales, commands finales, schemas finales, validators finales, scripts, RAG, base vectorial ni configuracion OpenCode salvo instruccion explicita posterior y trazable.
 - No introducir decisiones no trazadas a `project-truth/`.
+- No crear CRIT-08.
