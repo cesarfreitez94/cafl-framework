@@ -20,7 +20,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 
 - [accepted] Responder como opera CAFL V1 de punta a punta sin ambiguedad operativa critica, de modo que el Implementation Blueprint pueda arrancar desde una base validada.
 - [accepted] Definir el modelo operativo generico aplicable a todos los modulos CAFL V1 dentro del dominio Odoo.
-- [accepted] Instanciar el modelo sobre el piloto preferido de solicitudes internas / aprobaciones simples sin convertirlo en PRD final, SDD final ni backlog.
+- [accepted] Instanciar el modelo sobre el piloto V1 confirmado de solicitudes internas / aprobaciones simples sin convertirlo en PRD final, SDD final ni backlog.
 - [accepted] Separar claramente lo operativo del TOM de lo fisico/tecnico que queda para Blueprint o technical validation/spike.
 
 ## Fuentes Autoritativas Usadas
@@ -65,6 +65,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [accepted] Agents son adecuados para juicio, razonamiento, analisis, diseno, generacion, diagnostico, revision y redaccion.
 - [accepted] Commands son entradas repetibles candidatas para estructurar fases y tareas; no son autoridad final de gate, estado ni cierre.
 - [accepted] Scripts/CLI/validators/control deterministico son candidatos para validar estructura, ejecutar checks, registrar evidencia, controlar permisos, token budget, DoR/DoD estructural y rework counters; su implementacion queda para Blueprint/spikes.
+- [accepted] Para core V1, SDK/server queda fuera; Blueprint debe priorizar OpenCode + commands + scripts/CLI + validators y solo considerar SDK/server con spike favorable posterior y decision owner explicita.
 - [accepted] Rules/config son candidatos para invariantes minimos.
 - [accepted] Skills/playbooks son candidatos para conocimiento operativo on-demand.
 - [accepted] El owner interviene solo en decisiones criticas, no en microgestion operativa.
@@ -88,7 +89,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 | Evidence/closure | Mixed | Consolida evidencia, trazabilidad, logs, documentacion, deuda aceptada o `none`, y prepara paquetes de cierre. | No cierra sin tests/evidencia/DoD ni reemplaza aceptacion owner del modulo. | Asistido con captura automatica futura. | Hacia gates de cierre, Module Technical Readiness y owner. |
 | Rework/escalamiento | Mixed + control deterministico futuro | Cuenta ciclos, registra causa/evidencia, limita loops, dispara Rework Limit Gate y decision owner cuando corresponde. | No reintenta indefinidamente ni oculta cambio de alcance. | Automatico para contador cuando exista runtime; asistido para diagnostico; humano para excepciones criticas. | Hacia correccion, replan/reduce scope, reject/stop u owner. |
 | Commands candidatos | Command + agent | Estandarizan entradas repetibles para elicitar modulo, generar PRD, generar SDD, preparar packet, desarrollar tarea, ejecutar/verificar pruebas, validar gate, registrar evidencia y preparar cierre. | No son commands reales aprobados, no son autoridad final y no sustituyen validators/gates. | Asistido; invocados por owner/orquestacion segun fase futura. | Producen salidas estructuradas para contratos/gates/logs. |
-| Scripts/CLI/validators candidatos | SDK/server/script/control deterministico candidato | Validan estructura, referencias, estados, IDs, trazabilidad minima, evidencia, source policy, Knowledge Gap basico, rework/debt/approval y Odoo 18 execution minima. | No se implementan en TOM; no sustituyen juicio tecnico, gate decision ni aceptacion owner. | Automatico/semi-automatico despues de Blueprint. | Producen resultados reproducibles para gates/evidence logs. |
+| Scripts/CLI/validators candidatos | Script/control deterministico candidato | Validan estructura, referencias, estados, IDs, trazabilidad minima, evidencia, source policy, Knowledge Gap basico, rework/debt/approval y Odoo 18 execution minima. | No se implementan en TOM; no sustituyen juicio tecnico, gate decision ni aceptacion owner. | Automatico/semi-automatico despues de Blueprint. | Producen resultados reproducibles para gates/evidence logs. |
 | Knowledge governance / curation | Mixed + source policy + skills/playbooks | Mantiene source registry logico, knowledge artifacts, Knowledge Gap, Curation Request, Curation Mode y source usage. | No habilita busqueda web libre ni RAG/base vectorial V1. | Asistido; owner/source policy requerido para fuentes externas no autorizadas. | Hacia PRD/SDD/tasks/gates/evidence con source usage trazado. |
 
 ### Automatico, Asistido Y Exclusivamente Humano
@@ -202,6 +203,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 
 - [accepted] Knowledge Governance arranca en modo minimo en V1.
 - [accepted] Modo minimo significa source registry inicial ligero, source policy basica, knowledge artifacts minimos bajo demanda, source usage trazado y Knowledge Gap/Curation Request basicos.
+- [accepted] La source policy minima pre-autorizada sin Curation Mode es documentacion oficial Odoo y repositorio oficial GitHub `odoo/odoo`; otras fuentes requieren Curation Request y aprobacion segun DEC-ACCEPTED-163.
 - [accepted] Bootstrap incremental no autoriza implementar sin conocimiento autorizado suficiente.
 - [accepted] Curation Mode no inicia por defecto; se activa por Knowledge Gap.
 - [accepted] V1 no carga toda la documentacion desde el dia 1 y no asume RAG/base vectorial.
@@ -243,13 +245,13 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [accepted] Queda prohibido usar Wikipedia como fuente tecnica directa, blogs no autorizados, StackOverflow como fuente autoritativa, copiar soluciones de terceros sin validacion o ampliar fuentes sin aprobacion.
 - [accepted] RAG/base vectorial no forma parte de V1 salvo decision futura post-V1.
 
-## Instancia En El Piloto Preferido
+## Instancia En El Piloto V1 Confirmado
 
 ### Estado Del Piloto
 
-- [accepted] El candidato preferido de modulo piloto es solicitudes internas / aprobaciones simples.
-- [accepted] La seleccion final del piloto queda para el Blueprint posterior.
-- [accepted] Esta seccion instancia el modelo operativo sobre el candidato preferido sin crear PRD final, SDD final ni backlog del piloto.
+- [accepted] El piloto V1 confirmado por el owner es solicitudes internas / aprobaciones simples.
+- [accepted] Esta seleccion queda cerrada para el Blueprint; no debe reabrirse salvo nueva decision explicita del owner.
+- [accepted] Esta seccion instancia el modelo operativo sobre el piloto confirmado sin crear PRD final, SDD final ni backlog del piloto.
 - [accepted] El piloto debe ser real, acotado, Odoo 18, con modelos, vistas, ACL/record rules, workflow, reglas de negocio, datos minimos, tests backend, tests de acceso, documentacion, evidencia y sin integracion externa compleja por defecto.
 
 ### Como Entra La Idea Piloto
@@ -329,7 +331,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [accepted] PRD final del piloto.
 - [accepted] SDD final del piloto.
 - [accepted] Backlog del piloto.
-- [accepted] Seleccion final cerrada del piloto.
+- [accepted] Reapertura de la seleccion del piloto sin nueva decision explicita del owner.
 - [accepted] Integraciones externas reales salvo decision posterior explicita.
 - [accepted] RAG/base vectorial, SDK/server core, dashboard, CI/CD completo, DB avanzada, multiusuario/equipo, plugins/MCP/custom tools y curation avanzada.
 
@@ -341,7 +343,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [accepted] Flujo punta a punta con entrada, salida, ejecutor, validador, evidencia minima, bloqueo, condicion de avance y handoff por fase.
 - [accepted] Matriz de control con bloqueos, escalamiento, warnings, rework, owner approval y consecuencias ante rework maximo.
 - [accepted] Modelo operativo de Knowledge Governance V1: source registry minimo, knowledge artifacts, Knowledge Gap, Curation Request, Curation Mode y reglas de fuente.
-- [accepted] Instancia del flujo sobre el piloto preferido de solicitudes internas / aprobaciones simples sin cerrar PRD/SDD/backlog.
+- [accepted] Instancia del flujo sobre el piloto V1 confirmado de solicitudes internas / aprobaciones simples sin cerrar PRD/SDD/backlog.
 - [accepted] Lista de gates aplicables, checks transversales y gates condicionales.
 - [accepted] Reglas de no double work y de separacion entre narrativa LLM y estado autoritativo.
 - [accepted] Lista concreta de decisiones fisicas/tecnicas que quedan para Blueprint y spikes.
@@ -361,7 +363,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [queda para Blueprint] Evidence capture fisico y convenciones de logs/resultados.
 - [queda para Blueprint] Source policy enforcement basico y materializacion de Knowledge Gap/Curation Request.
 - [queda para Blueprint] Secrets handling para Odoo, tokens, certificados o integraciones futuras.
-- [queda para Blueprint] Piloto final si todavia no esta aprobado como PRD.
+- [queda para Blueprint] Instanciacion del flujo sobre el piloto V1 confirmado sin reabrir su seleccion.
 
 ### Technical Validations / Spikes Que Blueprint Debe Planificar
 
@@ -369,7 +371,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [technical validation/spike] Entorno Odoo 18 exacto: Docker, venv/local u otra alternativa.
 - [technical validation/spike] OpenCode permissions.
 - [technical validation/spike] OpenCode commands/skills.
-- [technical validation/spike] SDK/server go/no-go, solo si aporta beneficio claro frente a commands/scripts/validators.
+- [technical validation/spike] SDK/server no se planifica como core V1; cualquier spike posterior requiere decision owner explicita y debe demostrar beneficio frente a commands/scripts/validators.
 - [technical validation/spike] Schema/validator toolchain.
 - [technical validation/spike] Storage/log convention.
 - [technical validation/spike] Source policy enforcement y Knowledge Gap basico.
@@ -377,7 +379,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [technical validation/spike] Odoo 18 install/update/test execution.
 - [technical validation/spike] Evidence capture.
 - [technical validation/spike] Secrets handling.
-- [technical validation/spike] OpenAPI/PDF processing solo si piloto final lo requiere explicitamente.
+- [technical validation/spike] OpenAPI/PDF processing solo si una decision posterior de alcance lo requiere explicitamente.
 - [technical validation/spike] Frontend/OWL/Playwright solo si el piloto aprobado lo requiere.
 
 ### Lo Que NO Debe Resolver El TOM
@@ -391,7 +393,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [accepted] Runtime layout.
 - [accepted] Rutas fisicas de storage/logs/evidence.
 - [accepted] RAG/base vectorial, que queda post-V1 salvo decision posterior explicita.
-- [accepted] Piloto final si no esta aprobado como PRD.
+- [accepted] PRD final del piloto V1 confirmado.
 - [accepted] Backlog tecnico ni secuencia de implementacion.
 
 ## Lo Que El TOM NO Hace
@@ -416,7 +418,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 ## Outputs Esperados Del TOM
 
 - [accepted] Mapa operativo V1 elaborado: roles, capacidades, flujo, mecanismos, bloqueos, escalamientos, rework y knowledge governance.
-- [accepted] Instancia del modelo operativo sobre el piloto preferido con simplificaciones/restricciones explicitas.
+- [accepted] Instancia del modelo operativo sobre el piloto V1 confirmado con simplificaciones/restricciones explicitas.
 - [accepted] Lista concreta de artefactos, decisiones y validations/spikes que pasan al Blueprint.
 - [accepted] Lista explicita de decisiones tecnicas/fisicas fuera del TOM.
 - [accepted] La decision de aprobacion del TOM por el owner queda registrada en `decisions/accepted.md` como DEC-ACCEPTED-161.
@@ -425,8 +427,8 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 ## Owner Decisions Pendientes
 
 - [accepted] Aprobacion explicita del TOM final otorgada por el owner (2026-05-27). Estado cambiado a `approved`.
-- [queda para Blueprint] Seleccion final del piloto y/o aprobacion de PRD del piloto si no existe aprobacion posterior.
-- [queda para Blueprint] Aprobacion de source policy minima operativa si Blueprint no puede derivarla completamente de decisiones ya aceptadas.
+- [accepted] Seleccion final del piloto V1 confirmada por owner como solicitudes internas / aprobaciones simples. Decision registrada en DEC-ACCEPTED-162; Blueprint instancia el flujo sin reabrir seleccion.
+- [accepted] Source policy minima base aprobada por owner: documentacion oficial Odoo y repositorio oficial GitHub `odoo/odoo`. Decision registrada en DEC-ACCEPTED-163; enforcement fisico queda para Blueprint.
 - [queda para Blueprint] Aprobaciones puntuales de fuentes externas durante Curation Mode cuando no exista source policy suficiente.
 - [queda para Blueprint] Decisiones de excepcion sobre testing/DoD, deuda significativa, tercer ciclo de rework o recorte de alcance si aparecen durante implementacion.
 
@@ -435,7 +437,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 - [accepted] No se detectaron conflictos entre fuentes obligatorias que afecten aprobacion, flujo, responsabilidades, gates, evidencia, knowledge governance, runtime candidate o scope V1.
 - [accepted] No se registran `needs-owner-decision` por conflicto de autoridad dentro del TOM.
 - [accepted] No se registran `open-question` que bloquee el TOM; las decisiones tecnicas fisicas quedan clasificadas como `queda para Blueprint` o `technical validation/spike`.
-- [accepted] La seleccion final del piloto no se cierra aqui porque CRIT-07 la dejo como candidato preferido y remitio la seleccion final al Blueprint.
+- [accepted] La seleccion final del piloto quedo cerrada por owner en DEC-ACCEPTED-162; Blueprint no debe reabrirla salvo nueva decision explicita.
 
 ## Dependencies
 
@@ -454,7 +456,7 @@ Aprobado explicitamente por el owner (2026-05-27). Esta aprobacion habilita el I
 | Cada gate puede responder que recomienda, que verifica, con que evidencia, quien decide y que pasa si falla, incluyendo rework maximo agotado. | [accepted] Cumplido operativamente | Cubierto en `Flujo Operativo Punta A Punta` y `Control Y Bloqueos`. |
 | Knowledge governance tiene lugar explicito en V1: modo minimo por defecto, Curation Mode por Knowledge Gap y bloqueo por fuente insuficiente. | [accepted] Cumplido operativamente | Cubierto en `Knowledge Governance En El Flujo V1`. |
 | El modelo operativo generico cubre todos los modulos V1 sin restringirse al piloto. | [accepted] Cumplido operativamente | Cubierto por flujo generico y unidad module -> capability/feature -> task. |
-| El piloto queda instanciado con simplificaciones/restricciones explicitas. | [accepted] Cumplido operativamente | Cubierto en `Instancia En El Piloto Preferido`. |
+| El piloto queda instanciado con simplificaciones/restricciones explicitas. | [accepted] Cumplido operativamente | Cubierto en `Instancia En El Piloto V1 Confirmado`. |
 | Outputs del TOM al Blueprint estan listados concretamente. | [accepted] Cumplido operativamente | Cubierto en `Handoff Al Blueprint`. |
 | Lo que queda fuera del TOM esta listado explicitamente para Blueprint/spikes/post-V1. | [accepted] Cumplido operativamente | Cubierto en `Lo Que NO Debe Resolver El TOM` y `Lo Que El TOM NO Hace`. |
 | El owner aprueba explicitamente el TOM. | [accepted] Cumplido | Aprobacion owner otorgada explicitamente el 2026-05-27 y registrada en DEC-ACCEPTED-161. |
