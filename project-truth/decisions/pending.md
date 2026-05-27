@@ -1,6 +1,6 @@
 # Pending Decisions
 
-TOM_APPROVED_BY_OWNER
+IMPLEMENTATION_BLUEPRINT_WORKING_CONTRACT_CREATED
 
 ## CRIT-01: Intent And Scope
 
@@ -55,7 +55,8 @@ TOM_APPROVED_BY_OWNER
 - [accepted] Piloto V1 confirmado por owner como solicitudes internas / aprobaciones simples. Decision registrada en DEC-ACCEPTED-162; Blueprint debe instanciar el flujo sin reabrir seleccion ni crear PRD/SDD/backlog aqui.
 - [accepted] Source policy minima base pre-autorizada por owner: documentacion oficial Odoo y repositorio oficial GitHub `odoo/odoo`. Decision registrada en DEC-ACCEPTED-163; enforcement fisico queda pendiente para Blueprint/technical validation.
 - [accepted] SDK/server queda fuera de core V1. Decision registrada en DEC-ACCEPTED-164; cualquier inclusion posterior requiere spike favorable y decision explicita del owner.
-- [pending] Implementation Blueprint debe definirse formalmente sin usar `framework/` como input, tomando como entradas el piloto V1 confirmado, la source policy minima pre-autorizada y SDK/server fuera de core V1, sin convertir recomendaciones en implementacion prematura.
+- [accepted] Implementation Blueprint working contract creado en `project-truth/implementation-blueprint.md`; Iteration 1 no esta iniciada y requiere elaboracion posterior bajo aprobacion owner entre iteraciones.
+- [pending] Implementation Blueprint debe elaborarse iterativamente desde el working contract, sin usar `framework/` como input, tomando como entradas el piloto V1 confirmado, la source policy minima pre-autorizada y SDK/server fuera de core V1, sin convertir recomendaciones en implementacion prematura.
 - [pending] Diseno fisico de source policy enforcement, Knowledge Gap y Curation Request queda para Implementation Blueprint/technical validation; no esta implementado aqui.
 - [pending] Technical validations/spikes deben definirse formalmente.
 - [pending] Backlog tecnico debe definirse formalmente.
