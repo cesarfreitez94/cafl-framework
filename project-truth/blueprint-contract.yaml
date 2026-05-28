@@ -1,0 +1,119 @@
+contract_id: cafl-blueprint-implementation-contract
+version: 0.1.0
+derived_from: project-truth/implementation-blueprint.md
+note: >
+  This contract extracts governance rules from the working contract for agent
+  consumption. It does NOT replace the working contract. In case of conflict,
+  the working contract (implementation-blueprint.md) takes precedence.
+
+scope:
+  purpose: >
+    Govern the author → verify → fix → re-verify loop for Blueprint sections
+    using OpenCode agents. Reduce manual coordination without removing owner
+    control over gates and commits.
+  blueprint_path: project-truth/implementation-blueprint.md
+  state_path: project-truth/blueprint-state.yaml
+  authority_order:
+    1: project-truth/decisions/accepted.md
+    2: project-truth/TOM.md
+    3: project-truth/decisions/rejected.md
+    4: project-truth/decisions/superseded.md
+    5: project-truth/critical-map.md
+    6: project-truth/decisions/pending.md
+    7: project-truth/risks.md
+
+allowed_files:
+  read:
+    - project-truth/implementation-blueprint.md
+    - project-truth/blueprint-state.yaml
+    - project-truth/blueprint-contract.yaml
+    - project-truth/TOM.md
+    - project-truth/decisions/accepted.md
+    - project-truth/decisions/rejected.md
+    - project-truth/decisions/superseded.md
+    - project-truth/decisions/pending.md
+    - project-truth/critical-map.md
+    - project-truth/risks.md
+    - reports/blueprint/**
+  write:
+    - project-truth/implementation-blueprint.md
+    - project-truth/blueprint-state.yaml
+    - reports/blueprint/**
+
+forbidden_actions:
+  - git commit
+  - git push
+  - modifying source code
+  - creating executable agents, real commands, physical schemas, real validators, scripts
+  - creating runtime, backlog, PRD, SDD
+  - using framework/ as input or reference
+  - creating RAG or vector base
+  - reopening CRIT-01..07, TOM, or accepted decisions
+  - advancing future sections unless explicitly selected
+  - closing sections without owner approval
+  - closing iterations without owner gate approval
+  - changing acceptance criteria to self-approve
+  - resolving conflicts by agent criteria (must register instead)
+  - modifying unrelated documentation
+
+workflow_rules:
+  # RULE-01 / RULE-02 from working contract
+  iteration_ends_in_pending_owner_approval: true
+  next_iteration_requires_explicit_owner_approval: true
+  # RULE-03
+  retroactive_blocker_stops_iteration: true
+  # RULE-04
+  every_component_must_be_traceable: true
+  traceable_to: [TOM, approved_CRIT, accepted_decision]
+  untraceable_component_action: eliminate_or_mark_post_v1_or_register_owner_decision
+  # Automation loop rules
+  author_cannot_verify: true
+  author_cannot_self_approve: true
+  verifier_cannot_fix: true
+  fixer_must_only_address_reported_issues: true
+  orchestrator_must_not_implement_content_directly: true
+  owner_must_commit: true
+  max_fix_iterations_per_section: 2
+  default_sections_per_run: 1
+
+context_rules:
+  author_must_read_approved_sections_context_summary: true
+  author_must_read_section_inputs_from_blueprint: true
+  verifier_must_check_consistency_with_prior_sections: true
+  context_summary_must_be_updated_after_section_approved: true
+  conflict_must_be_registered_not_resolved: true
+  conflict_blocking_advance: needs-owner-decision
+  conflict_non_blocking: open-question
+
+approval_rules:
+  section_approved_by: owner_explicit_approval
+  section_closed_by: owner_gate_after_iteration_complete
+  iteration_closed_by: owner_gate_after_all_sections_approved
+  iteration_gate_requires: all_sections_in_iteration_approved
+
+reporting:
+  section_reports_path: reports/blueprint/
+  required_per_section:
+    - author_report
+    - verification_report
+    - fix_report_when_needed
+  required_per_iteration:
+    - iteration_gate_report
+  report_format: compact
+  note: >
+    Reports must be compact. No redundant summaries. One file per section,
+    one gate report per iteration. Avoid meta-framework overhead.
+
+mvp_agents:
+  cafl-blueprint-orchestrator:
+    role: coordinates author and verifier; acts as gatekeeper at iteration end
+    must_not: implement section content directly
+  cafl-blueprint-author:
+    role: elaborates section content; fixes only verifier-reported issues in fix mode
+    must_not: verify own work; self-approve; advance future sections
+  cafl-blueprint-verifier:
+    role: audits section against contract, blueprint inputs, and prior context
+    must_not: fix issues; change acceptance criteria; implement content
+  note: >
+    fixer and gatekeeper are modes of author and orchestrator respectively in MVP.
+    Separate agents may be introduced later if needed.

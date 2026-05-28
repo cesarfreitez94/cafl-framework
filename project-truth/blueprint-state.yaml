@@ -1,0 +1,336 @@
+blueprint:
+  path: project-truth/implementation-blueprint.md
+  working_contract_path: project-truth/implementation-blueprint.md
+  total_sections: 19
+  total_iterations: 5
+  current_iteration: 1
+  owner_approval_required: true
+  commit_policy: owner_only
+  source_of_truth: project-truth/
+
+statuses:
+  allowed:
+    - not-started
+    - in-progress
+    - in-verification
+    - needs-fix
+    - pending-owner-approval
+    - approved
+    - closed
+  iteration_gate_status: pending-owner-approval
+  section_approval_status: approved
+  note: >
+    pending-owner-approval is an iteration-level gate status (RULE-01).
+    approved is a section-level status after owner explicitly approves.
+    Sections are approved individually; iterations are closed as a group
+    only after owner gate approval.
+
+iterations:
+  I1:
+    name: "Marco arquitectonico base"
+    sections: [S01, S02, S03, S04, S05, S06]
+    status: in-progress
+    owner_gate: not-reached
+  I2:
+    name: "Diseno operativo de mecanismos"
+    sections: [S07, S08]
+    status: not-started
+    owner_gate: not-reached
+    depends_on: [I1]
+  I3:
+    name: "Artefactos tecnicos de control"
+    sections: [S09, S10, S11, S12]
+    status: not-started
+    owner_gate: not-reached
+    depends_on: [I2]
+  I4:
+    name: "Ejecucion Odoo y piloto"
+    sections: [S13, S14, S15]
+    status: not-started
+    owner_gate: not-reached
+    depends_on: [I3]
+  I5:
+    name: "Cierre del Blueprint"
+    sections: [S16, S17, S18, S19]
+    status: not-started
+    owner_gate: not-reached
+    depends_on: [I4]
+
+sections:
+  S01:
+    title: "Blueprint Scope and Non-Goals"
+    iteration: I1
+    status: approved
+    owner_approval: approved
+    iteration_position: 1
+    depends_on: []
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: >
+      Defines what the Blueprint is within CAFL V1 and what it must not cross.
+      Fixed decisions: CRIT-01..07 approved and not reopened; TOM approved by
+      DEC-ACCEPTED-161; project-truth/ remains source of truth; CAFL V1 is
+      Odoo-only targeting Odoo 18; OpenCode is primary runtime; pilot V1 is
+      internal requests / simple approvals (DEC-ACCEPTED-162); minimal source
+      policy is official Odoo docs + github.com/odoo/odoo (DEC-ACCEPTED-163);
+      SDK/server out of V1 core (DEC-ACCEPTED-164); RAG/vector base deferred to
+      V2. Blueprint must not create runtime, executable agents, real commands,
+      physical schemas, real validators, scripts, RAG, detailed backlog,
+      final PRD or SDD. framework/ is excluded as input. Guardrails: every
+      Blueprint component must be traceable to TOM, approved CRIT or accepted
+      decision; conflicts must be registered, not resolved by agent criteria.
+
+  S02:
+    title: "Architecture Principles"
+    iteration: I1
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 2
+    depends_on: [S01]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S03:
+    title: "V1 / Post-V1 Boundary"
+    iteration: I1
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 3
+    depends_on: [S01, S02]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S04:
+    title: "Runtime Layout Candidate"
+    iteration: I1
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 4
+    depends_on: [S01, S02, S03]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S05:
+    title: "Source-vs-Runtime Structure"
+    iteration: I1
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 5
+    depends_on: [S04]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S06:
+    title: "Initial Spike Map"
+    iteration: I1
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 6
+    depends_on: [S01, S02, S03, S04, S05]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S07:
+    title: "OpenCode Operating Design"
+    iteration: I2
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 7
+    depends_on: [S01, S02, S03, S04, S05, S06]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S08:
+    title: "Agents / Commands / Scripts / Validators Split"
+    iteration: I2
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 8
+    depends_on: [S07]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S09:
+    title: "Schemas V1 Minimum Set"
+    iteration: I3
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 9
+    depends_on: [S07, S08]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S10:
+    title: "Validators V1 Minimum Set"
+    iteration: I3
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 10
+    depends_on: [S09]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S11:
+    title: "State / Logs / Evidence Storage"
+    iteration: I3
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 11
+    depends_on: [S09, S10]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S12:
+    title: "Knowledge Base and Source Policy Implementation"
+    iteration: I3
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 12
+    depends_on: [S09, S10, S11]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S13:
+    title: "Odoo 18 Execution Environment"
+    iteration: I4
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 13
+    depends_on: [S09, S10, S11, S12]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S14:
+    title: "Security and Secrets"
+    iteration: I4
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 14
+    depends_on: [S13]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S15:
+    title: "Pilot Module Blueprint"
+    iteration: I4
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 15
+    depends_on: [S13, S14]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S16:
+    title: "Spikes and Technical Validations final order"
+    iteration: I5
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 16
+    depends_on: [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11, S12, S13, S14, S15]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S17:
+    title: "Bidirectional Traceability Matrix"
+    iteration: I5
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 17
+    depends_on: [S16]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S18:
+    title: "Blueprint Outputs to Backlog"
+    iteration: I5
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 18
+    depends_on: [S17]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
+
+  S19:
+    title: "Acceptance Criteria"
+    iteration: I5
+    status: not-started
+    owner_approval: not-requested
+    iteration_position: 19
+    depends_on: [S18]
+    fix_iterations: 0
+    last_author_report: null
+    last_fix_report: null
+    last_verification_report: null
+    open_issues: []
+    context_summary: ""
