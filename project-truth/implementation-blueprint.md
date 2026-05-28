@@ -1,6 +1,6 @@
 # CAFL V1 Implementation Blueprint Working Contract
 
-Status: iteration-01-closed__iteration-02-ready
+Status: iteration-02-closed__iteration-03-ready
 
 Metodologia: Contract-Driven + ADRs ligeros + Ordered Spike-Driven Validation + Walking Skeleton + Risk-Based V1 Scoping + Bidirectional Traceability Matrix
 
@@ -686,47 +686,213 @@ La salida de S06 es un mapa inicial de 13 spikes conceptuales ordenados por depe
 
 #### 7. OpenCode Operating Design
 
-Status: not-started
+##### 1. Status
 
-Inputs esperados:
+Status: closed
 
-- Iteration 1 aprobada por owner.
-- Secciones 1 a 6 elaboradas y aprobadas.
+Owner approval: approved
 
-Outputs esperados:
+##### 2. Purpose
 
-- Diseno operativo OpenCode para alimentar el split de mecanismos.
+Esta seccion define el diseno operativo conceptual de OpenCode para CAFL V1. Su proposito es explicar como OpenCode funciona como runtime primario y hub de coordinacion dentro del modelo hibrido progresivo, sin convertirlo en fuente de verdad, gate final, storage final, policy engine final ni evidencia suficiente por si solo.
 
-Restricciones especificas:
+S07 traduce las zonas conceptuales de S04 y la separacion source-vs-runtime de S05 en reglas de operacion para alimentar S08. No crea configuracion OpenCode, agentes ejecutables, commands reales, skills, plugins, permission rules, MCP, scripts, validators, schemas, runtime ni implementacion.
 
-- No configurar OpenCode.
-- No crear agents, commands, skills, plugins, permissions ni runtime ejecutable.
+##### 3. Inputs / Scope
 
-Acceptance criteria minimos:
+Entradas trazables usadas:
 
-- La seccion queda trazable y no implementa configuracion.
+- S01: scope V1 Odoo-only, target Odoo 18, piloto internal requests / simple approvals, source policy minima y non-goals globales.
+- S02: AP-02, AP-03, AP-04 y AP-05 sobre OpenCode, modelo hibrido, separacion reasoning/control y avance por gates/evidencia.
+- S03: BR-01 y BR-02 para mantener V1 core y condicional/spike dentro de limites aprobados.
+- S04: zona conceptual `Coordinacion OpenCode` y relaciones entre fuente de verdad, mecanismos candidatos, evidencia/storage, Odoo 18, seguridad/secrets y spikes.
+- S05: separacion source-vs-runtime: OpenCode como soporte primario de coordinacion/runtime, no como autoridad ni evidencia suficiente.
+- S06: SP-04 y SP-05 como incertidumbres conceptuales sobre permisos OpenCode y commands/skills candidatos, sin validarlos ni crearlos aqui.
+- Decisiones aceptadas aplicables: DEC-ACCEPTED-028, 058, 094, 107, 136 y 139 para OpenCode como runtime; DEC-ACCEPTED-056, 068, 069, 136, 137 y 140 para el modelo hibrido progresivo; DEC-ACCEPTED-162 y DEC-ACCEPTED-163 para piloto y source policy minima.
+
+Alcance de S07:
+
+- Definir que coordina OpenCode en V1 a nivel conceptual.
+- Definir que OpenCode no puede decidir ni cerrar.
+- Ubicar agentes, commands candidatos, scripts/CLI/validators candidatos, reglas/config y skills/playbooks dentro del modelo hibrido sin crear artefactos.
+- Describir handoffs conceptuales entre OpenCode, fuente de verdad, control deterministico candidato, evidencia/storage, source policy y Odoo 18.
+- Mantener el diseno dentro del core V1: Odoo-only, Odoo 18, piloto de solicitudes internas / aprobaciones simples.
+
+##### 4. Operating Role of OpenCode
+
+OpenCode opera como el entorno principal donde el trabajo asistido se prepara, coordina y encamina. En V1, su rol conceptual es:
+
+| Responsabilidad conceptual | Como opera en OpenCode | Limite obligatorio | Trazabilidad |
+| --- | --- | --- | --- |
+| Coordinacion de tareas | Organiza handoffs, context packets, instrucciones de ejecucion y retorno de reportes entre roles conceptuales. | No aprueba, no cierra gates, no cambia owner approval y no reemplaza `project-truth/`. | AP-02, AP-05; S04 Coordinacion OpenCode; S05 source-vs-runtime. |
+| Context routing | Encauza contexto autorizado, source policy minima, Knowledge Gap y restricciones de seccion hacia el mecanismo conceptual correcto. | No amplia fuentes; no usa busqueda libre ni fuentes fuera de politica sin curacion/owner approval. | AP-06; DEC-ACCEPTED-163; S05 source policy. |
+| Invocacion o guia de mecanismos candidatos | Puede guiar agentes conceptuales, commands candidatos, playbooks o futuros controles deterministicos cuando las secciones posteriores los definan. | No crea commands reales, agents ejecutables, skills, scripts, validators, permission rules ni configuracion. | AP-03, AP-04; S06 SP-04/SP-05. |
+| Preparacion de evidencia candidata | Puede ayudar a recopilar reportes, logs, observaciones y resultados candidatos para revision posterior. | Chat, prompt o salida OpenCode no son evidencia suficiente por si solos hasta registro gobernado. | AP-02, AP-05; S05 evidencia candidata. |
+| Coordinacion con Odoo 18 piloto | Encauza trabajo y evidencia hacia el ciclo Odoo 18 del piloto confirmado. | No cambia piloto, no crea PRD/SDD/backlog, no construye entorno Odoo ni implementa modulo. | AP-07; DEC-ACCEPTED-162; S03 BR-01. |
+
+##### 5. What OpenCode Must Not Decide
+
+OpenCode no es autoridad de decision. En S07 quedan prohibidas las siguientes funciones para OpenCode o cualquier mecanismo coordinado por OpenCode:
+
+- Aprobar secciones, cerrar iteraciones, declarar owner approval, cambiar status semantico o cerrar gates.
+- Reemplazar `project-truth/` como fuente de verdad, decision record, source policy, registro de riesgos o estado aprobado.
+- Resolver conflictos entre fuentes por criterio del agente; los conflictos deben registrarse como `open-question` o `needs-owner-decision` segun corresponda.
+- Convertir outputs de chat, memoria de sesion, reportes o resultados de commands candidatos en evidencia suficiente sin registro trazable y revision aplicable.
+- Expandir el scope V1, reabrir CRIT-01..07, cambiar el piloto, usar fuentes no aprobadas, introducir RAG/vector, SDK/server core, plugins/MCP, integraciones amplias o `framework/`.
+- Crear o activar configuracion OpenCode, agents, commands, skills, plugins, permissions, scripts, validators, schemas, storage fisico, runtime o implementacion.
+
+##### 6. Hybrid Mechanism Relationships
+
+El operating design usa el modelo hibrido progresivo: OpenCode coordina mecanismos diferenciados, pero no los fusiona ni los convierte en autoridad. S08 debe refinar el split; S07 solo fija relaciones conceptuales.
+
+| Mecanismo conceptual | Relacion con OpenCode | Responsabilidad V1 candidata | No decide / no crea | Trazabilidad |
+| --- | --- | --- | --- | --- |
+| Agentes conceptuales | OpenCode puede enrutar instrucciones, contexto y reportes entre roles asistidos. | Razonamiento asistido, redaccion, diagnostico, preparacion de cambios conceptuales y reportes. | No son ejecutables finales, no verifican/aprueban su propio trabajo y no cierran gates. | AP-03, AP-04, AP-05; DEC-ACCEPTED-056/068/069. |
+| Commands candidatos | OpenCode puede tratarlos como entradas repetibles futuras o interfaces conceptuales. | Estandarizar tareas recurrentes, parametros esperados y salidas candidatas en secciones posteriores. | No se nombran ni crean commands reales, permisos finales o configuracion. | S04 entradas repetibles; S06 SP-05. |
+| Scripts/CLI/validators candidatos | OpenCode puede invocar o solicitar controles solo cuando futuras secciones/spikes los definan. | Control deterministico conceptual sobre estructura, trazabilidad, evidencia, source policy y Odoo cuando aplique. | No se implementan scripts, validators, schemas ni toolchain final en S07. | AP-04; S04 control deterministico; S06 Banda C. |
+| Reglas/config conceptuales | OpenCode debe operar bajo reglas aprobadas del Blueprint y `project-truth/`. | Mantener invariantes de scope, source policy, gates, evidencia, seguridad y exclusion de `framework/`. | No se crean archivos de configuracion ni permission rules. | AP-01, AP-02, AP-06, AP-12; S05. |
+| Skills/playbooks conceptuales | OpenCode puede usar playbooks como conocimiento procedimental futuro si son aprobados. | Guiar pasos repetibles sin sustituir determinismo, evidencia ni owner approval. | No se crean skills OpenCode, plugins ni MCP en S07. | AP-03; S06 SP-05; S03 BR-02. |
+| Humano critico / owner | OpenCode prepara contexto y opciones para decision humana. | Owner approval, decisiones de alcance, conflictos bloqueantes y cierre de gates cuando aplique. | OpenCode no delega ni simula autoridad humana. | AP-05; S05 estado/gates. |
+
+##### 7. Conceptual Handoff Flows
+
+Los flujos siguientes son logicos, no secuencias ejecutables ni comandos.
+
+1. **Source of truth -> OpenCode coordination:** `project-truth/`, context packets y estado permitido entregan alcance, restricciones, decisiones y criterios. OpenCode solo opera dentro de ese contexto autorizado.
+2. **OpenCode coordination -> mechanism candidate:** OpenCode encamina la tarea hacia agente conceptual, command candidato, playbook o control deterministico candidato segun el tipo de trabajo. La seleccion no cambia autoridad ni crea artefactos.
+3. **Mechanism candidate -> deterministic control candidate:** Cuando el trabajo requiera verificabilidad, el resultado debe poder pasar a controles deterministicos futuros. En S07 esto es solo una expectativa conceptual para S08-S11.
+4. **Deterministic control candidate -> evidence/storage candidate:** Los resultados verificables deberan registrarse como evidencia/log/estado auditable en secciones posteriores. OpenCode puede transportar o resumir, pero no ser storage final.
+5. **Evidence/storage candidate -> source of truth:** Solo mediante registro gobernado, revision y aprobacion aplicable un output runtime puede impactar decisiones, estado o trazabilidad oficial.
+6. **OpenCode coordination -> source policy / Knowledge Gap:** Si falta fuente autorizada, OpenCode debe encaminar la brecha como Knowledge Gap o Curation Request futura; no debe inventar ni ampliar fuentes.
+7. **OpenCode coordination -> Odoo 18 pilot zone:** Para el piloto, OpenCode puede coordinar preparacion, observaciones y evidencia candidata del ciclo Odoo 18. No define funcionalidad nueva, PRD, SDD, backlog ni entorno real.
+8. **Security/secrets cross-flow:** Cualquier necesidad de permisos, secretos o acceso debe tratarse como restriccion transversal y/o spike posterior; no se materializa en configuracion.
+
+##### 8. V1 Boundaries Preserved
+
+- **Odoo-only / Odoo 18:** El operating design se limita al dominio Odoo y target Odoo 18; no introduce otros dominios ni integraciones por defecto.
+- **Piloto confirmado:** Las referencias de operacion se acotan a solicitudes internas / aprobaciones simples; S07 no convierte el piloto en PRD, SDD ni backlog.
+- **Minimalidad V1:** OpenCode coordina el minimo necesario para trazabilidad, gates, evidencia y source policy sin RAG/vector, SDK/server core, dashboard productizado, CI/CD completo, storage avanzado, multiuser/team avanzado, plugins/MCP ni curation avanzada.
+- **No implementacion:** Toda capacidad queda conceptual hasta que secciones posteriores y spikes autorizados la detallen; S07 no valida, ejecuta ni cierra incertidumbres.
+- **Greenfield desde `project-truth/`:** El diseno no usa fuentes legacy ni material externo no autorizado como base.
+
+##### 9. Open Questions / Owner Decisions
+
+- none
+
+##### 10. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- El diseno define OpenCode como runtime primario y hub de coordinacion dentro del modelo hibrido progresivo, sin convertirlo en autoridad de estado, gate, storage, source policy ni evidencia suficiente por si solo.
+- La seccion especifica que coordina OpenCode: handoffs, context routing, guia o invocacion conceptual de mecanismos candidatos y preparacion de evidencia candidata.
+- La seccion especifica que OpenCode no decide: approvals, gates, cambios de estado, source policy, cierre, conflictos ni expansion de scope.
+- Agentes conceptuales, commands candidatos, scripts/CLI/validators candidatos, reglas/config y skills/playbooks quedan diferenciados sin crear artefactos ejecutables ni configuracion.
+- Los handoff flows conectan fuente de verdad, OpenCode, control deterministico candidato, evidencia/storage, source policy/Knowledge Gap, seguridad/secrets y Odoo 18 piloto sin implementar runtime.
+- El diseno respeta Odoo-only, Odoo 18, piloto internal requests / simple approvals, source policy minima y exclusion de `framework/`.
+- Cada responsabilidad queda trazable a AP-02..AP-05, S04, S05, S06 SP-04/SP-05, BR-01/BR-02 o decisiones aceptadas citadas.
+
+##### 11. Section Output / Handoff
+
+- Para S08, S07 entrega los limites operativos que deben guiar el split entre agentes conceptuales, commands candidatos, scripts/CLI/validators candidatos, reglas/config, skills/playbooks y humano critico.
+- Para S09-S12, S07 entrega expectativas conceptuales de control deterministico, evidencia/storage y source policy sin crear schemas, validators, storage fisico ni source tooling.
+- Para S13-S15, S07 entrega el rol de OpenCode frente al ciclo Odoo 18 y piloto confirmado sin crear entorno, modulo, PRD, SDD ni backlog.
+- Para S16, S07 conserva SP-04 y SP-05 como incertidumbres de permisos y commands/skills candidatos que deben validarse antes de convertir mecanismos en diseno operacional final.
 
 #### 8. Agents / Commands / Scripts / Validators Split
 
-Status: not-started
+##### 1. Status
 
-Inputs esperados:
+Status: closed
 
-- Seccion 7 de la iteracion correspondiente.
-- Capacidades operativas del TOM y decisiones aceptadas sobre modelo mixto.
+Owner approval: approved
 
-Outputs esperados:
+##### 2. Purpose
 
-- Split de responsabilidades por mecanismo para alimentar artefactos de control.
+Esta seccion define el split conceptual de responsabilidades entre agentes, command candidates, script/CLI/validator candidates, rules/config, skills/playbooks y humano/owner para CAFL V1. El objetivo es convertir las relaciones hibridas de S07 en criterios de asignacion de mecanismos sin crear mecanismos ejecutables, configuracion, scripts, validators, schemas, runtime, backlog, PRD, SDD ni implementacion.
 
-Restricciones especificas:
+S08 preserva el modelo hibrido progresivo: OpenCode coordina y encamina, los agentes razonan, los commands candidatos estandarizan entradas, los controles deterministicos candidatos verifican cuando futuras secciones los definan, las reglas/config sostienen invariantes, los skills/playbooks contienen conocimiento procedimental y el owner conserva decisiones y cierres. Ningun mecanismo runtime sustituye `project-truth/`, owner approval, gates, evidencia gobernada ni source policy.
 
-- No crear agents ejecutables, commands reales, scripts ni validators reales.
-- No tratar commands como autoridad final de gates, estado o cierre.
+##### 3. Inputs / Scope
 
-Acceptance criteria minimos:
+Entradas trazables usadas:
 
-- Cada asignacion esperada queda respaldada y sin artefactos ejecutables.
+- S07: operating design de OpenCode, relaciones hibridas y handoff flows entre fuente de verdad, OpenCode, mecanismos candidatos, control deterministico candidato, evidencia/storage, source policy/Knowledge Gap, seguridad/secrets y Odoo 18 piloto.
+- S02: AP-02, AP-03, AP-04 y AP-05 sobre OpenCode no autoritativo, modelo hibrido progresivo, separacion reasoning/control y avance por contratos, gates y evidencia.
+- S03: BR-01 y BR-02 para mantener V1 core limitado y conservar incertidumbres condicionales/spike sin convertirlas en aprobacion de implementacion.
+- S04: zonas conceptuales de coordinacion OpenCode, entradas repetibles, control deterministico candidato, rules/config, skills/playbooks, source policy, evidencia/storage, Odoo 18 piloto y seguridad/secrets.
+- S05: separacion source-vs-runtime: autoridad en `project-truth/`; outputs runtime solo como evidencia candidata hasta registro gobernado.
+- S06: SP-04 y SP-05 como incertidumbres sobre permisos OpenCode y commands/skills candidatos; S08 las referencia, no las cierra.
+- Decisiones aceptadas aplicables: DEC-ACCEPTED-056, 068, 069, 136, 137 y 140 para modelo hibrido progresivo; DEC-ACCEPTED-138 para direccion conceptual de mecanismos; DEC-ACCEPTED-162 y DEC-ACCEPTED-163 para piloto y source policy minima.
+
+Alcance de S08:
+
+- Diferenciar responsabilidades conceptuales por tipo de mecanismo.
+- Indicar que tipo de trabajo debe ir a razonamiento asistido, entrada repetible, control deterministico, regla/config, procedimiento reusable o decision humana.
+- Preparar handoff para S09-S12 sobre schemas, validators, storage/evidence y source policy, sin definirlos fisicamente.
+- Preparar handoff para S13-S15 sobre evidencia Odoo 18, seguridad/secrets y piloto, sin crear entorno ni modulo.
+
+##### 4. Mechanism Split
+
+Los mecanismos siguientes son categorias conceptuales, no artefactos aprobados. No son nombres finales, comandos ejecutables, agentes reales, scripts, validators, schemas, permission rules ni configuracion OpenCode.
+
+| Mecanismo | Responsabilidad conceptual V1 | Asignar aqui cuando el trabajo sea | No debe asumir | Trazabilidad |
+| --- | --- | --- | --- | --- |
+| Agents conceptuales | Razonamiento asistido, analisis de contexto autorizado, redaccion conceptual, diagnostico, preparacion de propuestas, reportes y handoffs para revision. | La tarea requiere interpretar fuentes aprobadas, resumir contexto, proponer cambios conceptuales, detectar gaps, preparar evidencia candidata o explicar trade-offs. | No son ejecutables finales; no aprueban, verifican su propio trabajo, cierran gates, cambian estado, resuelven conflictos por criterio propio ni sustituyen controles deterministicos. | S07 hybrid relationships; AP-03/AP-04/AP-05; S04 coordinacion OpenCode; S05 source-vs-runtime; DEC-ACCEPTED-056/068/069/136/137/140. |
+| Command candidates | Entradas repetibles futuras para iniciar trabajos recurrentes con parametros, restricciones y salidas esperadas de forma estandarizada. | La tarea necesita repetibilidad de input, encuadre consistente, DoR contextual o handoff predecible, pero no una verificacion deterministica ni autoridad de gate. | No son commands reales, interfaces finales, permission rules ni evidencia suficiente; no aprueban gates, no cambian estado y no reemplazan `project-truth/`. SP-05 sigue abierto. | S07 handoff flow OpenCode -> mechanism candidate; AP-03/AP-05; S04 entradas repetibles; S06 SP-05; S03 BR-02; DEC-ACCEPTED-138/140. |
+| Script/CLI/validator candidates | Control deterministico conceptual para comprobaciones futuras de estructura, trazabilidad, DoR, evidencia, source policy, logs/state y resultados Odoo cuando S09-S12/S13 los definan. | La tarea requiere un resultado verificable, reproducible o bloqueante basado en reglas objetivas aprobadas, no en juicio LLM. | No se implementan scripts, CLIs, validators, schemas ni toolchains aqui; no sustituyen owner approval ni cierran gates por si solos; solo producirian evidencia candidata gobernable. | S07 deterministic control flow; AP-04/AP-05; S04 control deterministico; S05 evidencia candidata; S06 Banda C; DEC-ACCEPTED-069/138/140. |
+| Rules/config conceptuales | Invariantes de alcance, autoridad, source policy, estado, evidencia, seguridad, exclusiones y limites V1 que todos los mecanismos deben respetar. | La tarea requiere una regla estable para impedir scope creep, preservar source policy minima, proteger gates/estado, excluir `framework/` o mantener seguridad/secrets como criterio transversal. | No se crean archivos de configuracion, schemas, permission rules ni policies ejecutables; OpenCode no se convierte en policy engine final. SP-04 sigue abierto. | AP-02/AP-05/AP-07/AP-10/AP-12; S04 rules/config y seguridad; S05 autoridad-runtime; S06 SP-04; DEC-ACCEPTED-136/137/140/163. |
+| Skills/playbooks conceptuales | Conocimiento procedimental reusable: pasos, checklist narrativo, criterios de handoff y guias de actuacion bajo contexto autorizado. | La tarea requiere orientar una secuencia humana/asistida repetible sin convertirla en command, script o validator. | No son skills OpenCode reales, plugins, MCP, prompts finales ni automatizacion aprobada; no reemplazan controles deterministicos, evidencia ni owner approval. SP-05 sigue abierto. | S07 skills/playbooks relationship; AP-03/AP-04; S04 skills/playbooks; S06 SP-05; S03 BR-02; DEC-ACCEPTED-056/068/138. |
+| Human / owner | Decisiones de alcance, owner approval, cierre de gates, resolucion de conflictos bloqueantes, aprobacion de fuentes fuera de minima, aceptacion de riesgos y cambios de estado autorizados. | La tarea afecta autoridad, aprobacion, cierre, excepciones de source policy, cambios de scope, conflictos entre fuentes, capacidades condicionales o incertidumbres que requieren decision. | No debe ser simulado por OpenCode, agente, command candidate, validator candidate o script; ningun output runtime equivale a owner approval. | S07 human/owner relationship; AP-02/AP-05; S05 estado/gates; S03 BR-01/BR-02; DEC-ACCEPTED-136/140/162/163. |
+
+Reglas de asignacion por tipo de control:
+
+- **Razonamiento y redaccion:** asignar a agents conceptuales cuando el valor dependa de interpretacion, sintesis o propuesta; cualquier resultado queda sujeto a revision y posible control deterministico futuro. Trazabilidad: AP-03/AP-04; S07 agents; DEC-ACCEPTED-056/068/069.
+- **Repetibilidad de entrada:** asignar a command candidates cuando el problema sea estandarizar como se inicia un trabajo recurrente; no usar commands para aprobar, cerrar ni registrar autoridad. Trazabilidad: S04 entradas repetibles; S07 command candidates; S06 SP-05; AP-05.
+- **Verificabilidad objetiva:** asignar a script/CLI/validator candidates cuando la necesidad sea comprobar reglas aprobadas de forma reproducible; el detalle corresponde a S09-S12/S13 y a spikes posteriores. Trazabilidad: AP-04/AP-05; S04 control deterministico; S05 runtime evidence candidate; DEC-ACCEPTED-138/140.
+- **Invariantes:** asignar a rules/config conceptuales cuando la responsabilidad sea mantener limites obligatorios de scope, source policy, seguridad, gates, estado o exclusion de `framework/`. Trazabilidad: AP-02/AP-07/AP-10/AP-12; S05 authority separation; DEC-ACCEPTED-163.
+- **Procedimiento reusable:** asignar a skills/playbooks conceptuales cuando se requiere guiar pasos o criterios sin formalizarlos como comando o validator. Trazabilidad: AP-03; S07 skills/playbooks; S06 SP-05; S03 BR-02.
+- **Decision y cierre:** asignar a human/owner cuando haya approval, gate closure, conflicto, excepcion de fuentes, cambio de alcance o incertidumbre bloqueante. Trazabilidad: AP-05; S05 estado/gates; S07 human/owner.
+
+##### 5. Cross-Section Guidance / Handoff Rules
+
+- **Para S09 Schemas V1 Minimum Set:** S08 entrega que los schemas futuros deben servir a controles deterministicos, evidencia y trazabilidad; no deben modelar agentes, commands o playbooks como autoridad por si mismos.
+- **Para S10 Validators V1 Minimum Set:** S08 entrega que validators futuros pertenecen al mecanismo de control deterministico candidato y no a agents ni commands; su resultado no sustituye owner approval ni evidencia gobernada.
+- **Para S11 State / Logs / Evidence Storage:** S08 entrega que logs, reportes, outputs de agents/commands y resultados de validators son evidencia candidata hasta registro trazable bajo la separacion source-vs-runtime de S05.
+- **Para S12 Knowledge Base and Source Policy Implementation:** S08 entrega que source policy minima, Knowledge Gap y Curation Request deben tratarse como reglas/config conceptuales y controles futuros, no como memoria libre de OpenCode, RAG/vector ni busqueda web libre.
+- **Para S13 Odoo 18 Execution Environment:** S08 entrega que la evidencia Odoo 18 del piloto debe pasar por controles deterministicos candidatos cuando sean definidos, manteniendo Odoo-only, Odoo 18 e internal requests / simple approvals.
+- **Para S14 Security and Secrets:** S08 entrega que permisos, secretos y accesos son invariantes/riesgos transversales; SP-04 permanece abierto y esta seccion no define permission rules, vault ni secrets policy ejecutable.
+- **Para S15 Pilot Module Blueprint:** S08 entrega criterios para usar agents en razonamiento, commands en repetibilidad y validators en evidencia del piloto sin crear PRD, SDD, backlog funcional ni modulo.
+- **Para S16 Spikes:** S08 preserva SP-04/SP-05 como incertidumbres sobre permisos y commands/skills; tambien deja language/toolchain de scripts/CLI/validators como validacion futura, no como eleccion cerrada.
+
+##### 6. Explicit Non-Decisions
+
+- Esta seccion no crea agents ejecutables, commands reales, scripts, CLIs, validators, schemas, OpenCode config, permission rules, skills reales, plugins, MCP, runtime, backlog, PRD, SDD ni implementacion.
+- Esta seccion no nombra mecanismos finales, no define interfaces de command, no define prompts finales, no define toolchain, no decide lenguaje de scripts/CLI y no define storage fisico.
+- Esta seccion no convierte OpenCode en autoridad de estado, gate, source policy, storage, decision, evidencia suficiente ni policy engine.
+- Esta seccion no convierte commands o scripts en autoridad final de gates, estado, cierre u owner approval.
+- Esta seccion no cierra SP-04 ni SP-05; solo ubica sus responsabilidades conceptuales dentro del split.
+- Esta seccion no introduce RAG/vector, SDK/server core, MCP/plugins, CI/CD completo, storage avanzado, multiuser/team operation, integraciones amplias, dashboard productizado, curation avanzada ni capacidades post-V1.
+- Esta seccion no usa ni referencia `framework/` como input, evidencia, layout, fuente de agents, commands, validators, schemas, runtime o conocimiento.
+
+##### 7. Open Questions / Owner Decisions
+
+- none
+
+##### 8. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- El split diferencia agents conceptuales, command candidates, script/CLI/validator candidates, rules/config, skills/playbooks y human/owner sin crear artefactos ejecutables.
+- Cada mecanismo y regla de asignacion queda trazado a S07, AP-02..AP-05, AP-07/AP-10/AP-12, S04, S05, S03 BR-01/BR-02, S06 SP-04/SP-05 o decisiones aceptadas aplicables.
+- OpenCode permanece como runtime primario y hub de coordinacion, no como autoridad de estado, gate, storage, source policy, policy engine ni evidencia suficiente.
+- El control deterministico queda reservado para script/CLI/validator candidates futuros; agents y commands no sustituyen verificaciones reproducibles, gates ni owner approval.
+- SP-04 y SP-05 quedan referenciados como incertidumbres abiertas, no cerradas.
+- La seccion respeta Odoo-only, Odoo 18, piloto internal requests / simple approvals, source policy minima y exclusion de `framework/`.
+- La seccion no introduce RAG/vector, SDK/server core, MCP/plugins, CI/CD completo, advanced storage, multiuser, post-V1 capabilities, runtime, backlog, PRD, SDD ni implementacion.
+
+##### 9. Section Output / Handoff
+
+- S08 entrega a S09-S12 el split conceptual que separa razonamiento, entrada repetible, control deterministico, invariantes, conocimiento procedimental y decision humana para que schemas, validators, storage/evidence y source policy se definan sin confundir mecanismos ni autoridad.
+- S08 entrega a S13-S15 criterios para coordinar trabajo del piloto Odoo 18 sin ampliar scope ni crear artefactos ejecutables.
+- S08 entrega a S16 incertidumbres preservadas sobre permisos OpenCode, commands/skills y toolchain de control para ordenarlas como validaciones futuras sin autocierre.
 
 ### Iteration 3 - Artefactos tecnicos de control
 
@@ -985,8 +1151,8 @@ Acceptance criteria minimos:
 | Iteration 1 | 4 | Runtime Layout Candidate | closed | approved | none |
 | Iteration 1 | 5 | Source-vs-Runtime Structure | closed | approved | none |
 | Iteration 1 | 6 | Initial Spike Map | closed | approved | none |
-| Iteration 2 | 7 | OpenCode Operating Design | not-started | not-requested | none |
-| Iteration 2 | 8 | Agents / Commands / Scripts / Validators Split | not-started | not-requested | none |
+| Iteration 2 | 7 | OpenCode Operating Design | closed | approved | none |
+| Iteration 2 | 8 | Agents / Commands / Scripts / Validators Split | closed | approved | none |
 | Iteration 3 | 9 | Schemas V1 Minimum Set | not-started | not-requested | none |
 | Iteration 3 | 10 | Validators V1 Minimum Set | not-started | not-requested | none |
 | Iteration 3 | 11 | State / Logs / Evidence Storage | not-started | not-requested | none |

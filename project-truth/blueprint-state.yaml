@@ -3,7 +3,7 @@ blueprint:
   working_contract_path: project-truth/implementation-blueprint.md
   total_sections: 19
   total_iterations: 5
-  current_iteration: 1
+  current_iteration: 2
   owner_approval_required: true
   commit_policy: owner_only
   source_of_truth: project-truth/
@@ -34,8 +34,8 @@ iterations:
   I2:
     name: "Diseno operativo de mecanismos"
     sections: [S07, S08]
-    status: not-started
-    owner_gate: not-reached
+    status: closed
+    owner_gate: approved
     depends_on: [I1]
   I3:
     name: "Artefactos tecnicos de control"
@@ -232,30 +232,62 @@ sections:
   S07:
     title: "OpenCode Operating Design"
     iteration: I2
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 7
     depends_on: [S01, S02, S03, S04, S05, S06]
     fix_iterations: 0
-    last_author_report: null
+    last_author_report: reports/blueprint/S07-author-report.md
     last_fix_report: null
-    last_verification_report: null
+    last_verification_report: reports/blueprint/S07-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual OpenCode operating design for CAFL V1 without
+      creating OpenCode config, agents, commands, skills, plugins, permissions,
+      scripts, validators, schemas, runtime or implementation. OpenCode is
+      positioned as primary runtime and coordination hub within the hybrid
+      progressive model: it coordinates handoffs, context routing, mechanism
+      candidate invocation, evidence candidate preparation, and Odoo 18 pilot
+      coordination. It must not decide approvals, close gates, change state,
+      resolve conflicts by agent criteria, treat chat/output as sufficient
+      evidence, expand V1 scope, or create artifacts. Hybrid mechanism
+      relationships differentiate agents, command candidates, script/CLI/validator
+      candidates, rules/config, skills/playbooks, and human/owner roles.
+      Conceptual handoff flows connect source of truth, OpenCode coordination,
+      deterministic control candidates, evidence/storage, source policy/Knowledge
+      Gap, security/secrets, and Odoo 18 pilot. V1 boundaries preserved: Odoo-only,
+      Odoo 18, confirmed pilot, minimality, greenfield, source policy minima, and
+      framework/ exclusion. Traces to AP-02..AP-05, S04, S05, S06 SP-04/SP-05,
+      BR-01/BR-02, and accepted decisions. Feeds S08 mechanism split and
+      S09-S12/S13-S15/S16 conceptual expectations.
 
   S08:
     title: "Agents / Commands / Scripts / Validators Split"
     iteration: I2
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 8
     depends_on: [S07]
-    fix_iterations: 0
+    fix_iterations: 1
     last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    last_fix_report: reports/blueprint/S08-fix-report.md
+    last_verification_report: reports/blueprint/S08-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual mechanism split for CAFL V1 across six categories:
+      agents conceptuales (reasoning/analysis), command candidates (repeatable
+      inputs), script/CLI/validator candidates (deterministic control), rules/
+      config conceptuales (invariants), skills/playbooks conceptuales
+      (procedural knowledge), and human/owner (decisions and gate closure).
+      Each mechanism defines responsibility, assignment criteria, and
+      constraints; none creates executable artifacts. OpenCode remains primary
+      runtime and coordination hub but not authoritative state, gate, storage,
+      source policy, or policy engine. Delivers handoff guidance to S09-S12
+      (schemas/validators/storage/source policy), S13-S15 (Odoo 18 pilot/
+      security/pilot module), and S16 (preserves SP-04 and SP-05 as open spike
+      uncertainties). Traces to S07 operating design, AP-02..AP-05/AP-07/
+      AP-10/AP-12, S04/S05/S06, S03 BR-01/BR-02, and accepted decisions
+      DEC-ACCEPTED-056/068/069/136/137/138/140/162/163.
 
   S09:
     title: "Schemas V1 Minimum Set"
