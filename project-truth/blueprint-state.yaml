@@ -40,7 +40,7 @@ iterations:
   I3:
     name: "Artefactos tecnicos de control"
     sections: [S09, S10, S11, S12]
-    status: not-started
+    status: in-progress
     owner_gate: not-reached
     depends_on: [I2]
   I4:
@@ -292,28 +292,43 @@ sections:
   S09:
     title: "Schemas V1 Minimum Set"
     iteration: I3
-    status: not-started
-    owner_approval: not-requested
+    status: approved
+    owner_approval: approved
     iteration_position: 9
     depends_on: [S07, S08]
-    fix_iterations: 0
-    last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    fix_iterations: 2
+    last_author_report: reports/blueprint/S09-author-report.md
+    last_fix_report: reports/blueprint/S09-fix-report.md
+    last_verification_report: reports/blueprint/S09-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual minimum schema set (SCH-01..SCH-10) for CAFL V1:
+      SCH-01 Authority Source, SCH-02 Traceability Link, SCH-03 Work State,
+      SCH-04 Gate and Approval, SCH-05 Evidence Record, SCH-06 Deterministic
+      Control, SCH-07 Runtime Output / Candidate Evidence, SCH-08 Context
+      Packet, SCH-09 Source Policy / Knowledge Gap, SCH-10 Odoo Pilot Artifact.
+      All schemas are logical categories only; physical schemas, JSON Schema,
+      YAML schema, DDL, tables, ORM models and final formats are excluded.
+      Each schema traces to CRIT-06, CRIT-07, TOM handoff, AP-01/AP-04/AP-06/
+      AP-09, BR-01, S04, S05, S07, S08, and accepted decisions. Schemas serve
+      deterministic controls, evidence, traceability, source policy, and Odoo 18
+      pilot without converting OpenCode, agents, commands or runtime outputs
+      into authority. Cross-section handoffs defined to S10 (validators), S11
+      (storage/evidence), S12 (source policy/Knowledge Gap), and S13-S15 (Odoo
+      18 pilot environment). Fix iterations: 2 (acceptance-criteria status
+      reference corrected). Verification passed with zero issues.
 
   S10:
     title: "Validators V1 Minimum Set"
     iteration: I3
-    status: not-started
+    status: pending-owner-approval
     owner_approval: not-requested
     iteration_position: 10
     depends_on: [S09]
-    fix_iterations: 0
-    last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    fix_iterations: 1
+    last_author_report: reports/blueprint/S10-author-report.md
+    last_fix_report: reports/blueprint/S10-fix-report.md
+    last_verification_report: reports/blueprint/S10-verification-report.md
     open_issues: []
     context_summary: ""
 

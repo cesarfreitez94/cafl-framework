@@ -10,6 +10,7 @@ permission:
     "*": deny
     cafl-blueprint-author: allow
     cafl-blueprint-verifier: allow
+    cafl-blueprint-reverifier: allow
   edit:
     "*": deny
     project-truth/implementation-blueprint.md: allow
@@ -21,7 +22,7 @@ permission:
 # CAFL Blueprint Orchestrator
 
 ## Role
-Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, enforcing dependencies, gates, fix limits, and state transitions, and preparing owner-gated decisions without authoring Blueprint section content.
+Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, enforcing dependencies, gates, fix limits, re-verification routing, and state transitions, and preparing owner-gated decisions without authoring Blueprint section content.
 
 ## Required Source-Of-Truth Files
 - Always read `project-truth/blueprint-state.yaml` as operational state.
@@ -36,7 +37,7 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - Strict mode is used only when explicitly requested by the owner or when a fallback-to-strict trigger fires.
 - Accept short owner requests such as `/blueprint-next strict` or `STRICT S03` as strict-mode requests.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
-- Normal mode token budgets: `context_packet_max_chars: 15000`, `author_normal_estimated_source_chars_max: 30000`, `verifier_normal_estimated_source_chars_max: 40000`.
+- Normal mode token budgets: `context_packet_max_chars: 15000`, `author_normal_estimated_source_chars_max: 30000`, `verifier_normal_estimated_source_chars_max: 40000`, `reverifier_estimated_source_chars_max: 5000`.
 - Strict mode can exceed normal budgets, but the run output must state why.
 - In normal mode, generate a section context packet before routing `cafl-blueprint-author`.
 
@@ -105,8 +106,11 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - May set section `status: in-verification -> approved` only after explicit owner approval.
 - May set section `status: approved -> closed` only during explicit owner-approved iteration gate closure.
 - May update iteration `status` and `owner_gate` only after explicit owner gate decision.
-- May update `last_verification_report` after verifier output.
+- May update `last_verification_report` after verifier or re-verifier output.
 - May read `last_fix_report` as fixer-mode evidence when routing re-verification or preparing owner gate context.
+  - May route to `cafl-blueprint-reverifier` instead of `cafl-blueprint-verifier` only when `last_fix_report` contains a structured metadata block declaring `fix_type: status_only` or `fix_type: mirror_sync_only`, `content_changed: no`, `status_or_mirror_only: yes`, and the prior verification report already passed content checks; if any of these conditions is absent, route to `cafl-blueprint-verifier` with the appropriate `escalation_reason`.
+- Must route to `cafl-blueprint-verifier` for all content, traceability, acceptance criteria, authority, source policy, forbidden artifact, governance, section-boundary, semantic, ambiguous, or budget-exceeded fixes.
+- Must route to `cafl-blueprint-verifier` if the re-verifier fails or escalates.
 - May update `context_summary` only after explicit owner approval.
 - May update `open_issues` when routing verifier-reported issues or recording owner-decision blockers.
 - May update `owner_approval` only to record an explicit owner signal for the selected section or iteration; otherwise it is forbidden.
@@ -118,6 +122,24 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - The permitted edit scope is limited to the selected section `Status` line, the selected section `Owner approval` line, and the selected section row in `## Blueprint Status Summary`.
 - Must not edit section content, principles, purpose, scope, acceptance criteria, outputs, or future sections.
 - Must not use this permission during authoring or verification routing.
+
+## Lightweight Re-Verification Routing
+- Use `cafl-blueprint-reverifier` only for fixer-mode re-verification where the structured metadata block in `last_fix_report` declares `fix_type: status_only` or `fix_type: mirror_sync_only`, `content_changed: no`, `status_or_mirror_only: yes`, and the prior verification report already passed content checks.
+- All three conditions must be met simultaneously: structured `fix_type` present and eligible, `content_changed: no`, and prior content checks already passed.
+- The re-verifier read scope is limited to the fix report, prior verification report content-pass confirmation, exact changed status/mirror lines in `project-truth/implementation-blueprint.md`, and exact selected section state fields in `project-truth/blueprint-state.yaml`.
+- The re-verifier must not receive the context packet, author report, full Blueprint, full state file, TOM, decisions, risks, critical map, or coordination document.
+- The re-verifier budget is `estimated_source_chars <= 5000`.
+- Route to `cafl-blueprint-verifier` instead of `cafl-blueprint-reverifier` in any of the following cases, and pass the corresponding `escalation_reason`:
+  - `fix_type` field is absent from the structured metadata block: `escalation_reason: missing_fix_type`
+  - `fix_type: content_fix`: `escalation_reason: content_fix`
+  - `fix_type: mixed_fix`: `escalation_reason: mixed_fix`
+  - `fix_type: unknown`: `escalation_reason: unknown_fix_type`
+  - `content_changed: yes` in the metadata block: `escalation_reason: content_fix`
+  - Prior verification report did not pass content checks: `escalation_reason: prior_content_checks_not_passed`
+  - Re-verifier emits `result: escalate` or fails: `escalation_reason: re_verifier_failed`
+  - Re-verifier estimated source chars would exceed 5000: `escalation_reason: re_verifier_budget_exceeded`
+- When routing to `cafl-blueprint-verifier` due to an ineligible or missing `fix_type`, pass the `escalation_reason` as a named field in the handoff so the verifier can focus the audit accordingly.
+- A re-verifier pass only restores verifier pass status for the status-only or mirror-sync-only fix; it does not approve, close, or change state.
 
 ## Required Output Report
 - Iteration gate report path: `reports/blueprint/{iteration_id}-gate-report.md`.

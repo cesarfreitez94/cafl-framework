@@ -105,3 +105,26 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 - Token Efficiency must include `read_model: normal|strict`, `context_packet`, `context_packet_chars`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars` if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
 - If normal mode exceeds 30000 estimated source chars, report `Token Budget Warning` with the exceeded amount and cause.
 - In fixer mode, include only `Verifier issue`, `Fix applied`, `Evidence in section`, and `Remaining issue`; do not perform unrelated cleanup.
+- In fixer mode, the fix report must begin with a mandatory structured metadata block immediately after the `Agent`, `Mode`, and `Section` header lines and before any other content:
+
+```
+fix_type: status_only | mirror_sync_only | content_fix | mixed_fix | unknown
+human_readable_change_description: <plain explanation; mandatory when fix_type is unknown>
+changed_files:
+  - <path>
+changed_lines_or_fields:
+  - <exact line/field>
+content_changed: yes|no
+status_or_mirror_only: yes|no
+```
+
+- `fix_type` classification rules:
+  - `status_only`: the fix changed only section status fields or `project-truth/blueprint-state.yaml` status fields; no section content changed.
+  - `mirror_sync_only`: the fix changed only `project-truth/implementation-blueprint.md` `## Blueprint Status Summary` row or selected-section status mirror fields; no section content changed.
+  - `content_fix`: any section content, acceptance criteria, tables, traceability, handoffs, non-decisions, or other substantive Blueprint text changed.
+  - `mixed_fix`: both status/mirror and content changes occurred.
+  - `unknown`: the fixer cannot classify the change with certainty.
+- If `fix_type: unknown`, `human_readable_change_description` is mandatory and must explain in plain language what changed and why the fixer could not classify the change as `status_only`, `mirror_sync_only`, `content_fix`, or `mixed_fix`.
+- For `fix_type: status_only` or `fix_type: mirror_sync_only`, `content_changed` must be `no` and `status_or_mirror_only` must be `yes`.
+- If `content_changed: yes`, the re-verifier must not be used; only the full `cafl-blueprint-verifier` is eligible.
+- `fix_type` is mandatory; a fixer mode report without this block is non-compliant and will cause the orchestrator to route to `cafl-blueprint-verifier` with `escalation_reason: missing_fix_type`.

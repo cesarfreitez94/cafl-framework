@@ -25,6 +25,7 @@
 - The author may update only the selected section row in `## Blueprint Status Summary`, and only to mirror allowed selected-section state already recorded in `project-truth/blueprint-state.yaml`.
 - `cafl-blueprint-verifier` audits the selected section against the working contract, automation contract, section inputs, prior approved context, and traceability requirements.
 - `cafl-blueprint-verifier` must audit Blueprint Status Summary synchronization whenever the summary changed.
+- `cafl-blueprint-reverifier` is used only after fixer mode when `last_fix_report` contains a structured metadata block declaring `fix_type: status_only` or `fix_type: mirror_sync_only`, `content_changed: no`, and `status_or_mirror_only: yes`, and the prior verifier report already passed content checks; if any condition is absent, the orchestrator routes to `cafl-blueprint-verifier` with the appropriate `escalation_reason`.
 - If verification fails, the section moves to `needs-fix`; `cafl-blueprint-author` runs in fixer mode and addresses only verifier-reported issues.
 - In fixer mode, the author produces the compact fix report at `reports/blueprint/{section_id}-fix-report.md`; `last_fix_report` points to this fix report when fixer mode runs.
 - Fix and re-verification can repeat up to `max_fix_iterations_per_section: 2`.
@@ -34,14 +35,14 @@
 
 ## 3. Agent Responsibilities
 
-- `cafl-blueprint-orchestrator`: primary agent; coordinates the loop, selects eligible sections, enforces dependencies and status transitions, routes author/verifier work, detects owner gates, acts as gatekeeper at iteration end, and owns derived status mirror synchronization after explicit owner decisions.
+- `cafl-blueprint-orchestrator`: primary agent; coordinates the loop, selects eligible sections, enforces dependencies and status transitions, routes author/verifier/re-verifier work, detects owner gates, acts as gatekeeper at iteration end, and owns derived status mirror synchronization after explicit owner decisions.
 - `cafl-blueprint-orchestrator` owns the normal-mode section context packet at `reports/blueprint/{section_id}-context-packet.md`.
 - `cafl-blueprint-orchestrator` must keep normal-mode packets compact, prefer identifiers and short anchor notes, and avoid full authority-file reads unless a strict trigger is present.
 - `cafl-blueprint-orchestrator` reports run-level token efficiency: selected section, mode, packet generated, packet path, `context_packet_chars`, full authority fallback count, large repeated reads avoided, estimated source chars read if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
 - `cafl-blueprint-orchestrator` must not implement Blueprint section content directly.
 - `cafl-blueprint-orchestrator` may edit `project-truth/implementation-blueprint.md` only in owner-decision/status-sync mode, limited to the selected section `Status` line, selected section `Owner approval` line, and selected section row in `## Blueprint Status Summary`.
 - `cafl-blueprint-orchestrator` must not use status mirror sync permission during authoring or verification routing.
-- `cafl-blueprint-orchestrator` does not write section reports; section reports are owned by author mode, fixer mode, and verifier.
+- `cafl-blueprint-orchestrator` does not write section reports; section reports are owned by author mode, fixer mode, verifier, and re-verifier.
 - `cafl-blueprint-author`: subagent; writes selected section content, keeps content within the selected section, updates required operational state/report fields, and in fixer mode changes only items reported by the verifier.
 - `cafl-blueprint-author` reads the compact context packet, selected section slice, and relevant state/contract portions in normal mode; it does not read full TOM/decisions/risks by default.
 - `cafl-blueprint-author` must not read `docs/coordination/blueprint-automation-loop.md` in normal mode; this coordination guidance is internalized in the author agent instructions. It may read the document only in strict mode or if a governance ambiguity appears.
@@ -56,8 +57,10 @@
 - `cafl-blueprint-verifier` reports token efficiency with `read_model`, `context_packet`, `context_packet_chars`, `full_sources_read`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars`, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation` if practical.
 - `cafl-blueprint-verifier` must confirm any summary change is limited to the selected section row, matches `project-truth/blueprint-state.yaml`, and does not substitute owner approval.
 - `cafl-blueprint-verifier` must not fix issues, implement content, change acceptance criteria, or approve the section.
-- Fixer is author mode. Gatekeeper is orchestrator mode. No separate fixer or gatekeeper agent exists in MVP.
-- OpenCode permissions enforce tool access, subagent routing, and coarse file write access for the three agents.
+- `cafl-blueprint-reverifier`: subagent; performs lightweight re-verification only for `status_only` or `mirror_sync_only` fixes. It reads only the fix report, prior verification report content-pass confirmation, exact changed status/mirror lines in `project-truth/implementation-blueprint.md`, and exact selected section state fields in `project-truth/blueprint-state.yaml`. It must not read the full Blueprint, full state file, context packet, author report, TOM, decisions, risks, critical map, or this coordination document.
+- `cafl-blueprint-reverifier` has `max estimated_source_chars: 5000` and must fail/escalate to `cafl-blueprint-verifier` if the structured metadata block is missing or incomplete (`escalation_reason: missing_fix_type`), if `fix_type` is not `status_only` or `mirror_sync_only` (`escalation_reason: content_fix | mixed_fix | unknown_fix_type`), if `content_changed: yes` (`escalation_reason: content_fix`), if the prior report did not pass content checks (`escalation_reason: prior_content_checks_not_passed`), if exact changed lines or selected state fields mismatch, if budget cannot be preserved (`escalation_reason: re_verifier_budget_exceeded`), or if any content change was introduced.
+- Fixer is author mode. Gatekeeper is orchestrator mode. No separate fixer or gatekeeper agent exists in MVP; the only additional verification subagent is the status-only/mirror-sync-only `cafl-blueprint-reverifier`.
+- OpenCode permissions enforce tool access, subagent routing, and coarse file write access for the Blueprint agents.
 - Section-level editing boundaries and YAML-field-level restrictions remain contract, verifier, and governance constraints until deterministic validators exist.
 
 ## 4. State Transitions
@@ -84,10 +87,11 @@
 ## 6. Normal And Strict Read Modes
 
 - Normal mode is the default for ordinary section authoring and verification.
-- Normal mode uses an orchestrator-owned context packet to avoid repeated full authority-stack reads by orchestrator, author, and verifier.
+- Normal mode uses an orchestrator-owned context packet to avoid repeated full authority-stack reads by orchestrator, author, and verifier; lightweight re-verification avoids the context packet entirely.
 - Normal mode budgets are `context_packet_max_chars: 15000`, `author_normal_estimated_source_chars_max: 30000`, and `verifier_normal_estimated_source_chars_max: 40000`.
+- Lightweight re-verification budget is `reverifier_estimated_source_chars_max: 5000` and applies only to `status_only` or `mirror_sync_only` fixes.
 - In normal mode, the orchestrator must not read full authority files unless a strict trigger is present.
-- In normal mode, author and verifier must not read `docs/coordination/blueprint-automation-loop.md`; required coordination guidance is internalized in their agent instructions.
+- In normal mode, author, verifier, and re-verifier must not read `docs/coordination/blueprint-automation-loop.md`; required coordination guidance is internalized in their agent instructions.
 - Strict mode may read full or larger authority sources, but must state why strict mode was entered.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, and owner explicit strict request.
 - Reports must distinguish sources read directly, context packet used, and full-source fallback if any.
@@ -96,10 +100,12 @@
 
 ## 7. Verification Rule
 
-- Verification is mandatory before owner approval and must be performed by `cafl-blueprint-verifier`, not by the author.
+- Verification is mandatory before owner approval and must not be performed by the author; full verification is performed by `cafl-blueprint-verifier`.
+- After a fixer run that changed only status or mirror fields, lightweight re-verification may be performed by `cafl-blueprint-reverifier` instead of a full verifier re-run; the fixer fix report must include the mandatory structured metadata block with `fix_type`, `changed_files`, `changed_lines_or_fields`, `content_changed`, and `status_or_mirror_only` fields for re-verifier routing to be eligible.
 - Verification checks scope, selected section boundaries, authority order, traceability, non-goals, prior context consistency, no use of `framework/`, no future-section advancement, and no forbidden artifacts.
+- Lightweight re-verification must not re-audit content, traceability, acceptance criteria, or forbidden artifacts when the prior verifier report already passed content checks.
 - If `## Blueprint Status Summary` changed, verification also checks that only the selected section row changed, that it mirrors `project-truth/blueprint-state.yaml`, and that it does not imply owner approval.
-- Verifier output is a compact verification report at `reports/blueprint/{section_id}-verification-report.md` with pass/fail status and concrete issues; `last_verification_report` points to this verification report.
+- Verifier or re-verifier output is a compact verification report at `reports/blueprint/{section_id}-verification-report.md` with pass/fail status and concrete issues or status-only re-verification result; `last_verification_report` points to this verification report.
 - A passing verification does not approve the section; it only makes it ready for owner decision.
 
 ## 8. Owner Gates
@@ -112,7 +118,7 @@
 
 ## 9. Non-Goals
 
-- Do not create additional executable agents, separate fixer/gatekeeper agents, commands beyond `/blueprint-next`, scripts, schemas, validators, runtime, RAG/vector base, backlog, PRD, or SDD.
+- Do not create additional executable agents beyond the approved `cafl-blueprint-reverifier`, separate fixer/gatekeeper agents, commands beyond `/blueprint-next`, scripts, schemas, validators, runtime, RAG/vector base, backlog, PRD, or SDD.
 - Do not modify source code or use `framework/` as input or reference.
 - Do not reopen CRIT-01..07, TOM, or accepted decisions.
 - Do not advance future sections unless that section was explicitly selected and allowed by state/dependencies.

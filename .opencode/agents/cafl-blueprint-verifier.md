@@ -29,7 +29,23 @@ Audits only the selected Blueprint section against the working contract, automat
 
 ## Normal And Strict Modes
 - Normal mode is default for ordinary section verification and re-verification.
+- Status-only and mirror-sync-only fixer re-verification should be routed to `cafl-blueprint-reverifier` when its preconditions are met; this verifier handles those cases only when the re-verifier escalates or routing preconditions fail.
 - Strict mode is used only when explicitly requested by the owner, instructed by the orchestrator, or required by a fallback-to-strict trigger.
+
+## Re-Verifier Escalation Handling
+- When invoked after a re-verifier escalation, the orchestrator passes an `escalation_reason` field in the handoff.
+- Read `escalation_reason` first and apply the minimum scope table below; do not blindly restart with broad reads unless the escalation requires a full audit.
+
+| `escalation_reason` | Minimum verification scope |
+| --- | --- |
+| `re_verifier_budget_exceeded` | Read `fix_report` + `changed_lines_or_fields` + selected state fields only. Do not restart full content audit unless `changed_lines_or_fields` includes content lines. |
+| `content_fix` or `mixed_fix` | Full content re-verification required using the context packet + full selected section slice. |
+| `missing_fix_type` or `unknown_fix_type` | Read fix report prose + `changed_files` + `changed_lines_or_fields` + `human_readable_change_description` if present. Determine minimum necessary verification scope from those fields before expanding reads. |
+| `prior_content_checks_not_passed` | Full verification required from scratch; treat as first verification. |
+
+- If the escalation reason is `re_verifier_failed` or another unlisted reason, read the re-verifier escalation output to identify what failed, then perform targeted re-verification of the affected elements; expand to full audit only if the failure is ambiguous.
+- Record the received `escalation_reason` in the verification report under a `Escalation context` field.
+- Do not perform reads beyond what the escalation scope requires; avoid re-reading authority files that are not relevant to the `escalation_reason`.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
 - Normal mode estimated source chars budget: 40000.
 - In normal mode, read only the author report, selected section content, relevant state subset, and packet checklist/anchors/non-goals/fallback triggers needed for the audit.
@@ -88,7 +104,7 @@ Audits only the selected Blueprint section against the working contract, automat
 
 ## Required Output Report
 - Report path: `reports/blueprint/{section_id}-verification-report.md`.
-- Format: compact Markdown with `Agent`, `Section`, `Result: pass|fail`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Checks performed`, `Issues`, `Traceability`, `Forbidden artifacts check`, `Owner decision readiness`, `Token Efficiency`, and `Required next action`.
+- Format: compact Markdown with `Agent`, `Section`, `Result: pass|fail`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Escalation context` (if invoked after re-verifier escalation, include `escalation_reason` received and scope applied), `Checks performed`, `Issues`, `Traceability`, `Forbidden artifacts check`, `Owner decision readiness`, `Token Efficiency`, and `Required next action`.
 - Do not claim `Sources read: all authority files` in normal mode.
 - Token Efficiency must include `read_model: normal|strict`, `context_packet`, `context_packet_chars`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars` if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
 - If normal mode exceeds 40000 estimated source chars, report `Token Budget Warning` with the exceeded amount and cause.

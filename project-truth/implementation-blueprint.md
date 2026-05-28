@@ -898,46 +898,232 @@ Reglas de asignacion por tipo de control:
 
 #### 9. Schemas V1 Minimum Set
 
-Status: not-started
+Status: approved
 
-Inputs esperados:
+Owner approval: approved explicitly by owner.
 
-- Iteration 2 aprobada por owner.
-- Secciones 7 y 8 elaboradas y aprobadas.
-- Modelo logico CRIT-06 y direccion CRIT-07 aplicables.
+##### 1. Purpose
 
-Outputs esperados:
+S09 define el set minimo conceptual de schemas V1 necesario para que CAFL pueda describir, controlar y auditar el flujo piloto Odoo-only / Odoo 18 / solicitudes internas y aprobaciones simples sin crear schemas fisicos, archivos de schema, runtime ni implementacion.
 
-- Set minimo conceptual de schemas V1 para alimentar validators y storage.
+El objetivo es fijar categorias logicas compartidas para:
 
-Restricciones especificas:
+- alimentar S10 con controles deterministicos candidatos trazables;
+- alimentar S11 con estado, logs y evidencia auditables;
+- alimentar S12 con source policy minima, Knowledge Gap y Curation Request conceptuales;
+- mantener separacion source-vs-runtime: la autoridad permanece en `project-truth/` y cualquier output runtime es evidencia candidata hasta registro gobernado;
+- preservar que los schemas V1 son minimos y no permanentes.
 
-- No crear schemas fisicos finales ni archivos de schema.
+##### 2. Inputs / Scope
 
-Acceptance criteria minimos:
+Inputs trazables usados:
 
-- Cada schema esperado queda justificado por control, trazabilidad o evidencia.
+- S07: OpenCode como runtime primario y hub de coordinacion, no como autoridad de estado, gate, storage, source policy o decision.
+- S08: los schemas futuros deben servir a controles deterministicos, evidencia y trazabilidad; no deben modelar agents, commands o playbooks como autoridad por si mismos.
+- CRIT-06: modelo logico requerido para estado, evidencia, trazabilidad, IDs, logs y governance de fuentes.
+- CRIT-07: direccion de schemas V1 minimos, versionados y no permanentes, con validators minimos como direccion posterior.
+- S02 AP-01/AP-04/AP-06/AP-09: trazabilidad bidireccional, separacion LLM/control deterministico, minimo contexto/source policy y evidencia simple auditable Git-compatible.
+- S03 BR-01: V1 core limitado a Odoo-only, Odoo 18 y piloto de solicitudes internas / aprobaciones simples.
+- S04: zonas conceptuales de control deterministico candidato, estado/logs/evidencia auditable, source policy y Odoo 18 piloto.
+- S05: source-vs-runtime; `project-truth/` conserva autoridad y outputs runtime son evidencia candidata.
+- Decisiones aceptadas citadas para esta seccion: DEC-ACCEPTED-138, DEC-ACCEPTED-140, DEC-ACCEPTED-145, DEC-ACCEPTED-162 y DEC-ACCEPTED-163.
+- TOM: handoff al Blueprint para schemas, logs, evidence y storage como trabajo conceptual posterior al TOM aprobado.
+
+Alcance de S09:
+
+- Nombrar categorias conceptuales minimas de schema para V1.
+- Describir que modela cada schema a nivel logico.
+- Indicar campos o elementos conceptuales, sin definir tipos fisicos, formatos finales, JSON Schema, DDL, rutas ni archivos.
+- Trazar cada schema a CRIT, TOM, decision aceptada, AP, BR o seccion previa.
+- Indicar a que seccion posterior alimenta cada schema.
+
+Fuera de alcance:
+
+- Crear schemas fisicos, finales o archivos de schema.
+- Crear validators reales, scripts, CLIs, runtime, agents, commands, playbooks ejecutables, RAG/vector base, backlog, PRD, SDD o implementacion.
+- Convertir agents, commands, playbooks u outputs runtime en autoridad.
+- Cambiar source policy, owner approval, status semantics o reglas de governance.
+- Expandir V1 fuera de Odoo 18 y del piloto interno de solicitudes/aprobaciones simples.
+- Usar o referenciar `framework/` como input.
+
+##### 3. Schemas V1 Minimum Set
+
+Los schemas siguientes son categorias logicas minimas. No son archivos, no son contratos finales de API, no son tablas, no son JSON Schema/YAML schema, no son validators y no fijan formato fisico. Cada schema debe poder evolucionar o ser reemplazado tras V1 porque CRIT-07 exige schemas minimos no permanentes.
+
+| ID | Schema conceptual | Proposito | Campos / elementos conceptuales minimos | Trazabilidad | Handoff |
+| --- | --- | --- | --- | --- | --- |
+| SCH-01 | Authority Source Schema | Modelar la identidad logica de una fuente autorizada o fuente candidata para preservar source-vs-runtime y evitar autoridad paralela. | Identificador de fuente; tipo de fuente; estado de autoridad; alcance permitido; version/referencia; relacion con decision/CRIT/TOM; restricciones de uso; motivo si es candidata o no autorizada. | CRIT-06 source governance; CRIT-07 schemas minimos; TOM handoff schemas/evidence; AP-01; AP-06; S05; DEC-ACCEPTED-163. | S10 valida source policy minima y uso de fuentes; S12 define Knowledge Gap/Curation Request conceptual; S11 conserva evidencia de fuente. |
+| SCH-02 | Traceability Link Schema | Modelar enlaces bidireccionales entre componentes del Blueprint, decisiones, riesgos/pendientes autorizados, evidencia y controles. | Identificador de enlace; origen; destino; tipo de relacion; obligatoriedad; estado del enlace; evidencia asociada; gaps o conflicto registrado; seccion consumidora. | CRIT-06 trazabilidad/IDs; CRIT-07; TOM traceability handoff; AP-01; RULE-04; S02; S05. | S10 valida cobertura trazable; S11 registra links/evidencia; S17 consume la matriz final sin cerrarla aqui. |
+| SCH-03 | Work State Schema | Modelar el estado logico de secciones, iteraciones, gates y handoffs sin sustituir `blueprint-state.yaml` ni owner approval. | Identificador de unidad de trabajo; tipo de unidad; status permitido; owner approval; dependencia; gate relacionado; open issues; reportes asociados; timestamps conceptuales o marcador temporal auditable; actor/rol responsable como metadato no autoritativo. | CRIT-06 estado/IDs/logs; CRIT-07; TOM state/storage handoff; AP-05; S05; Blueprint contract/state semantics. | S10 valida transiciones permitidas; S11 define storage/logs/evidence; S19 revisa acceptance criteria sin autocierre. |
+| SCH-04 | Gate and Approval Schema | Modelar gates, aprobaciones owner y bloqueos de avance como entidades logicas trazables, sin permitir cierre automatico. | Identificador de gate; scope del gate; prerequisitos; estado del gate; owner approval esperado/obtenido; evidencia requerida; bloqueos retroactivos; decision asociada; resultado permitido. | CRIT-06 estado/evidencia; CRIT-07; TOM gate/evidence handoff; AP-05; RULE-01/RULE-02; S05. | S10 valida prerequisitos/gates; S11 conserva evidencia de aprobacion; S16-S19 consumen para orden, trazabilidad y cierre, sin decidir aqui. |
+| SCH-05 | Evidence Record Schema | Modelar evidencia simple, auditable y Git-compatible para soportar controles, revisiones y handoffs. | Identificador de evidencia; tipo de evidencia; origen; seccion/control relacionado; resumen verificable; ubicacion logica; estado candidato/registrado; trazas a fuente/decision/control; limitaciones; resultado observado. | CRIT-06 evidencia/logs/IDs; CRIT-07; TOM evidence/storage handoff; AP-04; AP-09; S05; DEC-ACCEPTED-140/145. | S10 valida evidencia esperada por control; S11 define storage/logs; S13-S15 consumen evidencia Odoo 18 piloto. |
+| SCH-06 | Deterministic Control Schema | Modelar controles deterministicos candidatos que S10 puede convertir en set conceptual de validators, sin crear validators reales. | Identificador de control; regla verificable; input conceptual; output conceptual; condicion de bloqueo/no bloqueo; evidencia requerida; trazabilidad a schema/fuente; limites; seccion responsable. | CRIT-06 control/log/evidencia; CRIT-07 validators minimos como direccion; TOM control handoff; AP-04; S04; S08; DEC-ACCEPTED-138/140/145. | S10 define validators V1 minimum set; S11 registra resultados; S13-S15 usan controles candidatos para evidencia piloto. |
+| SCH-07 | Runtime Output / Candidate Evidence Schema | Modelar outputs de OpenCode, agents conceptuales, commands candidatos, scripts/validators candidatos o reportes como evidencia candidata no autoritativa. | Identificador de output; mecanismo conceptual origen; input/handoff relacionado; resumen; estado candidato; controles pendientes; fuente autorizada usada; evidencia derivada; restricciones; decision humana requerida si aplica. | CRIT-06 logs/evidencia/source governance; CRIT-07; AP-03/AP-04/AP-05; S05; S07; S08. | S10 valida que outputs no sustituyan gates; S11 almacena logs/evidencia; S12 controla fuente/contexto minimo. |
+| SCH-08 | Context Packet Schema | Modelar paquetes compactos de contexto autorizado para trabajo seccional sin convertirlos en fuente de verdad. | Identificador de paquete; seccion objetivo; fuentes resumidas; anchors de trazabilidad; restricciones heredadas; fallback triggers; fecha/generador; estado de no-autoridad; gaps declarados. | CRIT-06 context/source governance; CRIT-07; AP-06; S05; S07; S08; TOM context handoff. | S10 valida completitud minima del contexto; S11 conserva evidencia de uso; S12 gobierna source policy y Knowledge Gap. |
+| SCH-09 | Source Policy / Knowledge Gap Schema | Modelar source policy minima, gaps de conocimiento y solicitudes de curacion sin introducir RAG/vector ni busqueda libre. | Identificador de politica/gap; fuente esperada; fuente disponible; tipo de gap; impacto; estado; solicitud de curacion; decision owner requerida si aplica; relacion con Odoo official docs / github.com/odoo/odoo. | CRIT-06 source governance; CRIT-07; AP-06; AP-12; S03 BR-01/BR-02; S05; DEC-ACCEPTED-163. | S10 valida cumplimiento source policy; S12 desarrolla Knowledge Gap/Curation Request conceptual; S13-S15 usan solo fuentes permitidas para Odoo 18. |
+| SCH-10 | Odoo Pilot Artifact Schema | Modelar artefactos conceptuales del piloto Odoo 18 necesarios para evidencia y controles, limitado a solicitudes internas / aprobaciones simples. | Identificador de artefacto piloto; tipo de artefacto; relacion con flujo internal request/simple approval; version/entorno conceptual Odoo 18; fuente Odoo autorizada; control/evidencia asociada; estado candidato/registrado; restricciones de alcance. | CRIT-06 evidence/IDs/logs; CRIT-07; TOM Odoo handoff; BR-01; AP-08; S03; S04; DEC-ACCEPTED-162/163. | S13 define entorno conceptual Odoo 18; S15 consume para modulo piloto; S10/S11 definen controles y evidencia asociados. |
+
+##### 4. Cross-Section Guidance / Handoff Rules
+
+- **Para S10 Validators V1 Minimum Set:** S10 debe derivar validators conceptuales desde SCH-01..SCH-10 solo como controles deterministicos candidatos. Ningun validator futuro puede cerrar gates, otorgar owner approval ni convertir outputs runtime en autoridad.
+- **Para S11 State / Logs / Evidence Storage:** S11 debe usar SCH-03, SCH-05 y SCH-07 como base para almacenamiento logico simple y auditable, manteniendo `project-truth/` como autoridad y tratando evidencia runtime como candidata hasta registro gobernado.
+- **Para S12 Knowledge Base and Source Policy Implementation:** S12 debe usar SCH-01, SCH-08 y SCH-09 para source policy minima, contexto autorizado, Knowledge Gap y Curation Request, sin RAG/vector base, busqueda libre ni expansion de fuentes.
+- **Para S13 Odoo 18 Execution Environment:** S13 debe usar SCH-10 junto con SCH-01/SCH-05/SCH-06 para describir evidencia del entorno Odoo 18 sin crear entorno ni implementacion.
+- **Para S14 Security and Secrets:** S14 debe consumir los elementos de fuente, evidencia, estado y control solo como categorias logicas; esta seccion no define permission rules, vault, secrets policy ejecutable ni accesos.
+- **Para S15 Pilot Module Blueprint:** S15 debe limitar cualquier uso de schemas al piloto internal requests / simple approvals y registrar evidencia/control sin crear PRD, SDD, backlog funcional ni modulo.
+- **Para S16-S19:** los schemas apoyan orden de spikes, trazabilidad final, categorias de output y acceptance criteria; no cierran aceptacion final ni reemplazan owner approval.
+
+##### 5. Explicit Non-Decisions
+
+- Esta seccion no crea schemas fisicos, archivos de schema, JSON Schema, DDL, YAML schema, contratos finales de API, tablas, modelos ORM ni formatos definitivos.
+- Esta seccion no crea validators reales, scripts, CLIs, agents ejecutables, commands reales, skills/playbooks reales, plugins, MCP, runtime, RAG/vector base, backlog, PRD, SDD ni implementacion.
+- Esta seccion no decide rutas, nombres de archivos, repositorios runtime, toolchain, lenguaje, librerias, storage fisico, base de datos, CI/CD ni estructura final.
+- Esta seccion no modela agents, commands o playbooks como autoridad; solo permite registrar sus outputs como evidencia candidata cuando corresponda.
+- Esta seccion no cambia source policy minima, owner approval, status semantics, iteration gates ni reglas de governance.
+- Esta seccion no expande V1 fuera de Odoo-only, Odoo 18 y piloto de solicitudes internas / aprobaciones simples.
+- Esta seccion no usa ni referencia `framework/` como input.
+
+##### 6. Open Questions / Owner Decisions
+
+- none
+
+##### 7. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- El set minimo SCH-01..SCH-10 queda definido solo a nivel conceptual y no crea schemas fisicos, archivos, formatos finales ni implementacion.
+- Cada schema queda justificado por control, trazabilidad o evidencia y trazado a CRIT-06, CRIT-07, TOM, decision aceptada, AP, BR o seccion previa aplicable.
+- Los schemas sirven a controles deterministicos, evidencia, trazabilidad, estado, source policy y piloto Odoo 18 sin convertir OpenCode, agents, commands, playbooks ni runtime outputs en autoridad.
+- Los handoffs a S10, S11 y S12 son suficientes para validators conceptuales, storage/evidence logico y source policy/Knowledge Gap sin cerrar decisiones futuras.
+- Los handoffs a S13-S15 preservan Odoo-only, Odoo 18 y piloto internal requests / simple approvals.
+- La seccion respeta source-vs-runtime de S05, minima/no permanencia de CRIT-07, separacion control deterministico de AP-04 y evidencia auditable de AP-09.
+- La seccion no introduce RAG/vector base, SDK/server core, dashboard productizado, CI/CD completo, advanced storage/DB, multiuser/team operation, plugins/MCP, broad integrations ni post-V1 capabilities.
+- La seccion mantiene `framework/` excluido y no reabre CRIT-01..07, TOM ni decisiones aceptadas.
+
+##### 8. Section Output / Handoff
+
+- S09 entrega a S10 el set SCH-01..SCH-10 como base conceptual para seleccionar validators V1 minimos y controles deterministicos candidatos.
+- S09 entrega a S11 categorias logicas para estado, gates, logs, evidencia, outputs runtime candidatos y trazabilidad auditable.
+- S09 entrega a S12 categorias logicas para Authority Source, Context Packet, Source Policy, Knowledge Gap y Curation Request sin RAG/vector ni expansion de fuentes.
+- S09 entrega a S13-S15 una base limitada para evidencia Odoo 18 del piloto internal requests / simple approvals, sin crear entorno, modulo, PRD, SDD, backlog ni implementacion.
 
 #### 10. Validators V1 Minimum Set
 
-Status: not-started
+Status: in-verification
 
-Inputs esperados:
+Owner approval: not-requested
 
-- Seccion 9 de la iteracion correspondiente.
-- Decisiones aceptadas sobre validators minimos y control deterministico.
+##### 1. Purpose
 
-Outputs esperados:
+S10 define el set minimo conceptual de validators V1 para CAFL, derivado de SCH-01..SCH-10 como candidatos de control deterministico. Los validators conceptuales sirven a gates, evidencia y execution checks sin crear validators reales, toolchain ejecutable, scripts ni implementacion.
 
-- Set minimo conceptual de validators para alimentar gates, evidence y execution checks.
+El objetivo es fijar categorias logicas de validacion compartidas para:
 
-Restricciones especificas:
+- derivar controles deterministicos candidatos desde los schemas conceptuales de S09;
+- alimentar gates de avance con checks verificables pero sin sustituir owner approval ni juicio tecnico;
+- alimentar S11 con el conjunto de resultados candidatos que el storage/evidence debera registrar;
+- preservar la separacion source-vs-runtime: los resultados de validators son evidencia candidata hasta registro gobernado, nunca autoridad por si mismos;
+- mantener V1 boundaries: Odoo-only, Odoo 18, piloto de solicitudes internas / aprobaciones simples.
 
-- No crear validators reales, toolchain ejecutable ni scripts.
+##### 2. Inputs / Scope
 
-Acceptance criteria minimos:
+Inputs trazables usados:
 
-- Cada validator esperado queda trazable a un control requerido y no sustituye juicio tecnico ni owner approval.
+- S09 SCH-01..SCH-10: categorias logicas de schema de las que derivan los validators como controles deterministicos candidatos.
+- S08: validators pertenecen al mecanismo de control deterministico (script/CLI/validator candidates); su resultado no reemplaza owner approval ni evidencia gobernada.
+- S07: OpenCode coordina handoffs y puede invocar validator candidates; no es autoridad de estado, gate, storage ni source policy.
+- CRIT-06: modelo logico de estado, evidencia, trazabilidad, IDs y logs que los validators deben soportar.
+- CRIT-07: direction de validators minimos, no permanentes, como contraparte de schemas minimos.
+- AP-04: control deterministico separado del razonamiento LLM y reservado para script/CLI/validator candidates.
+- AP-05: progreso contract/gate/evidence-driven sin autocompletado; owner approval requerido para gates y cierres.
+- AP-09: evidencia simple, auditable y Git-compatible; resultados runtime son evidencia candidata.
+- S04: zona conceptual de control deterministico candidato y estado/logs/evidencia auditable.
+- S05: `project-truth/` conserva autoridad; outputs runtime incluido resultados de validators son candidatos.
+- DEC-ACCEPTED-138: decisiones sobre validators/control aceptadas.
+- DEC-ACCEPTED-140: decisiones sobre evidencia aceptadas.
+- DEC-ACCEPTED-145: decisiones sobre evidencia aceptadas.
+- TOM: control, evidencia y handoff anchors.
+- BR-01: V1 Odoo-only boundary.
+
+Alcance de S10:
+
+- Nombrar categorias conceptuales minimas de validator para V1.
+- Describir que controla cada validator a nivel logico, sin implementarlo.
+- Indicar el schema S09 del que deriva, el control requerido al que responde y a que seccion posterior alimenta.
+- Trazar cada validator a CRIT, TOM, decision aceptada, AP, BR o seccion previa.
+- Definir handoff rules a S11 (storage/evidencia de resultados), S12 (source policy), S13-S15 (piloto Odoo 18).
+
+Fuera de alcance:
+
+- Crear validators reales, scripts, CLIs, toolchain ejecutable ni implementacion.
+- Crear schemas fisicos, JSON Schema, YAML schema, DDL, tablas, modelos ORM ni formatos definitivos.
+- Cerrar gates, otorgar owner approval ni convertir outputs runtime en autoridad.
+- Introducir RAG/vector base, SDK/server, MCP/plugins, CI/CD, advanced storage, multiuser, integraciones amplias ni capacidades post-V1.
+- Expandir V1 fuera de Odoo-only, Odoo 18 y piloto de solicitudes internas / aprobaciones simples.
+- Usar o referenciar `framework/` como input.
+
+##### 3. Validators V1 Minimum Set
+
+Los validators siguientes son categorias logicas minimas derivadas de SCH-01..SCH-10 como controles deterministicos candidatos. No son archivos ejecutables, no son scripts, no son CLIs finales, no son configuracion de toolchain y no fijan implementacion. Cada validator debe poder evolucionar o ser reemplazado tras V1 porque CRIT-07 exige schemas y validators minimos no permanentes.
+
+| ID | Validator conceptual | Schema derivado | Control requerido al que responde | Input conceptual | Output / resultado conceptual | Condicion de bloqueo potencial | Trazabilidad | Handoff |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| VAL-01 | Authority Source Validator | SCH-01 | Verificar que toda fuente referenciada en un componente tiene estado de autoridad declarado y relacion trazable a decision/CRIT/TOM | Referencia a fuente en un componente Blueprint o output runtime | Confirmacion de autoridad declarada / alerta de fuente no autorizada o candidata sin registro | Componente rechazado si referencia fuente no registrada y no marcada como candidata | CRIT-06 source governance; AP-06; S05; DEC-ACCEPTED-163; SCH-01 | S10 informa a S11 resultado candidato; S12 gobierna gaps de fuente; S12 gestiona Curation Request si fuente no autorizada. |
+| VAL-02 | Traceability Link Validator | SCH-02 | Verificar que cada componente del Blueprint tiene al menos un enlace trazable a CRIT, TOM, decision aceptada, AP, BR o seccion previa; detectar gaps de trazabilidad | Componente o seccion a auditar; registro de links trazables existentes | Mapa de cobertura trazable / lista de gaps; confirmacion o alerta por componente | Alerta de gap que bloquea avance a siguiente seccion si el componente no tiene traza minima requerida | CRIT-06 trazabilidad/IDs; RULE-04; AP-01; SCH-02 | S11 registra resultados de cobertura; S17 consume para trazabilidad final sin cerrarla aqui. |
+| VAL-03 | Work State Transition Validator | SCH-03 | Verificar que las transiciones de estado de secciones, iteraciones y gates son legales segun blueprint-state.yaml y las semanticas de status aprobadas; detectar transiciones no permitidas | Estado actual de seccion/iteracion/gate en blueprint-state.yaml; transicion propuesta | Confirmacion de transicion valida / alerta de transicion ilegal; log candidato | Bloqueo de transicion si no cumple el grafo de estados aprobados o si falta owner approval para cierre/aprobacion | CRIT-06 estado/IDs/logs; AP-05; blueprint-state.yaml semantics; SCH-03 | S11 conserva log de transiciones validas; S19 audita acceptance criteria sin autocierre. |
+| VAL-04 | Gate Prerequisite Validator | SCH-04 | Verificar que los prerequisitos de un gate estan documentados y que la evidencia requerida existe como candidata antes de solicitar owner approval; no sustituye la decision owner | Gate a validar; prerequisitos requeridos documentados; evidencia candidata disponible | Checklist de prerequisitos cubiertos / lista de prerequisitos faltantes; estado del gate | Alerta de gate bloqueado si prerequisito faltante; owner approval sigue siendo requerida para cierre | CRIT-06 evidencia/estado; AP-05; RULE-01/RULE-02; SCH-04 | S11 registra evidencia de prerequisitos; S19 audita aceptacion; S16 consume para orden final. |
+| VAL-05 | Evidence Record Validator | SCH-05 | Verificar que cada evidencia candidata tiene origen trazable, tipo declarado, resumen verificable y estado candidato/registrado; detectar evidencia sin trazabilidad o sin estado | Registro de evidencia candidata | Confirmacion de evidencia bien formada / alerta de evidencia sin trazabilidad, origen o estado | Alerta si evidencia usada en gate no tiene trazabilidad; evidencia mal formada no puede usarse como soporte de gate sin correccion | CRIT-06 evidencia/IDs; AP-09; DEC-ACCEPTED-140/145; SCH-05 | S11 almacena evidencia registrada; S13-S15 consumen para evidencia Odoo 18 piloto. |
+| VAL-06 | Deterministic Control Completeness Validator | SCH-06 | Verificar que cada control deterministico candidato tiene regla verificable, input/output conceptual, condicion de bloqueo y trazabilidad declarados; detectar controles vacios o sin trazabilidad | Control deterministico candidato definido en S10 u otra seccion | Confirmacion de control completo / alerta de campo faltante; log candidato | Alerta si control deterministico carece de condicion de bloqueo o trazabilidad definida | CRIT-06 control/evidencia; AP-04; DEC-ACCEPTED-138; SCH-06 | S11 registra resultados de controles; S13-S15 usan controles candidatos para evidencia piloto. |
+| VAL-07 | Runtime Output Classification Validator | SCH-07 | Verificar que cada output de OpenCode, agent conceptual, command candidato, script/validator candidato o reporte es clasificado como evidencia candidata y no como autoridad; detectar outputs promovidos indebidamente a autoridad | Output runtime a clasificar; origen declarado; estado de candidatura | Confirmacion de clasificacion candidata / alerta de output tratado como autoridad sin registro gobernado | Alerta si output runtime es referenciado como autoridad en un componente sin pasar por registro gobernado | CRIT-06 logs/source governance; AP-03/AP-04/AP-05; S05; S07; S08; SCH-07 | S10 informa a S11 resultado; S11 almacena logs/evidencia candidata. |
+| VAL-08 | Context Packet Completeness Validator | SCH-08 | Verificar que cada context packet tiene identificador, seccion objetivo, anchors de trazabilidad, restricciones heredadas, fallback triggers y declaracion de no-autoridad; detectar packets incompletos | Context packet de una seccion | Confirmacion de packet completo / lista de campos faltantes o mal formados | Alerta si packet carece de anchors de trazabilidad o fallback triggers requeridos para el trabajo seccional | CRIT-06 context/source governance; AP-06; S05; S07; S08; SCH-08 | S11 conserva evidencia de uso de packets; S12 gobierna source policy y Knowledge Gap. |
+| VAL-09 | Source Policy Compliance Validator | SCH-09 | Verificar que solo fuentes declaradas en la source policy minima (Odoo official docs, github.com/odoo/odoo) son usadas en componentes V1; detectar uso de fuentes no autorizadas o gaps no registrados | Referencia de fuente en componente; source policy declarada | Confirmacion de cumplimiento source policy / lista de fuentes no autorizadas o gaps no registrados | Alerta si fuente no autorizada es usada sin Curation Request registrada y aprobacion owner | CRIT-06 source governance; AP-06/AP-12; DEC-ACCEPTED-163; SCH-09 | S12 gestiona Knowledge Gap y Curation Request; S13-S15 usan fuentes dentro de source policy. |
+| VAL-10 | Odoo Pilot Artifact Scope Validator | SCH-10 | Verificar que artefactos conceptuales del piloto Odoo 18 estan dentro del scope de solicitudes internas / aprobaciones simples, usan fuentes Odoo autorizadas y tienen evidencia/control asociados; detectar expansion de scope o uso de fuentes no autorizadas | Artefacto conceptual del piloto Odoo 18 | Confirmacion de artefacto dentro de scope / alerta de expansion de scope o fuente no autorizada | Alerta si artefacto piloto referencia entorno, modulo, PRD, SDD, backlog funcional o implementacion fuera de V1 boundary | CRIT-06 evidence/IDs; AP-08; BR-01; DEC-ACCEPTED-162/163; SCH-10 | S13 define entorno conceptual Odoo 18; S15 consume para modulo piloto; S11 registra evidencia/control. |
+
+##### 4. Cross-Section Guidance / Handoff Rules
+
+- **Para S11 State / Logs / Evidence Storage:** S11 debe recibir de S10 los resultados candidatos de VAL-01..VAL-10 como evidencia candidata a registrar. S11 debe definir como almacenar logs de transiciones de estado (VAL-03), resultados de prerequisitos de gate (VAL-04), confirmaciones de evidencia bien formada (VAL-05) y resultados de control deterministico (VAL-06) de forma simple, auditable y Git-compatible, sin crear storage fisico ni rutas finales. Ningun resultado de validator es autoridad por si mismo; requiere registro gobernado para ser evidencia formal.
+- **Para S12 Knowledge Base and Source Policy Implementation:** S12 debe usar los resultados de VAL-01 (authority source) y VAL-09 (source policy compliance) como triggers de Knowledge Gap y Curation Request. Cuando VAL-01 detecta fuente no autorizada o VAL-09 detecta gap de source policy, S12 es el mecanismo conceptual que gestiona la respuesta sin ampliar fuentes por cuenta propia.
+- **Para S13 Odoo 18 Execution Environment:** S13 debe consumir VAL-10 (Odoo pilot artifact scope) y VAL-05 (evidence record) para definir los controles conceptuales del entorno Odoo 18 sin crear entorno ni implementacion. S13 debe verificar que artefactos conceptuales del entorno respetan BR-01 y DEC-ACCEPTED-162/163.
+- **Para S14 Security and Secrets:** S14 puede consumir VAL-01 (authority source) y VAL-09 (source policy compliance) como categorias logicas de control; S14 no define permission rules ejecutables, vault ni secrets policy final a partir de este set.
+- **Para S15 Pilot Module Blueprint:** S15 debe limitar el uso de validators al piloto internal requests / simple approvals; VAL-10 es el control principal para preservar V1 scope en S15 sin crear PRD, SDD, backlog funcional ni modulo ejecutable.
+- **Para S16-S19:** los validators apoyan el orden de spikes (S16), trazabilidad final (S17), categorias de output de backlog (S18) y acceptance criteria (S19); no cierran aceptacion final ni reemplazan owner approval.
+- **Restriccion general:** Ningun validator puede cerrar un gate, otorgar owner approval, convertir outputs runtime en autoridad ni expandir scope V1. Los resultados de validators son siempre evidencia candidata hasta registro gobernado.
+
+##### 5. Explicit Non-Decisions
+
+- Esta seccion no crea validators reales, scripts, CLIs, toolchain ejecutable, configuracion de framework de testing ni implementacion.
+- Esta seccion no crea schemas fisicos, archivos de schema, JSON Schema, DDL, YAML schema, contratos finales de API, tablas, modelos ORM ni formatos definitivos.
+- Esta seccion no decide lenguaje de implementacion de validators, librerias, frameworks, rutas, nombres de archivos, repositorios runtime, CI/CD ni estructura final.
+- Esta seccion no cierra gates, no otorga owner approval, no convierte resultados de validators en autoridad y no cambia status semantics.
+- Esta seccion no modela agents, commands o playbooks como autoridad; sus resultados son siempre candidatos.
+- Esta seccion no cambia source policy minima, owner approval, status semantics, iteration gates ni reglas de governance.
+- Esta seccion no expande V1 fuera de Odoo-only, Odoo 18 y piloto de solicitudes internas / aprobaciones simples.
+- Esta seccion no usa ni referencia `framework/` como input.
+- Esta seccion no genera el orden final de spikes, la matriz de trazabilidad final, los outputs de backlog ni los acceptance criteria finales; esos pertenecen a S16-S19.
+
+##### 6. Open Questions / Owner Decisions
+
+- none
+
+##### 7. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- El set minimo VAL-01..VAL-10 queda definido solo a nivel conceptual como candidatos de control deterministico derivados de SCH-01..SCH-10; no crea validators reales, scripts, CLIs ni implementacion.
+- Cada validator queda justificado por un control requerido y trazado a CRIT-06, CRIT-07, TOM, AP, BR, decision aceptada o seccion previa aplicable.
+- Cada validator preserva que su resultado es evidencia candidata y no sustituye juicio tecnico, owner approval ni evidencia gobernada.
+- Ningun validator cierra gates, otorga owner approval ni convierte outputs runtime en autoridad.
+- Los validators preservan la separacion source-vs-runtime de S05 y la separacion LLM/control deterministico de AP-04.
+- Los handoffs a S11, S12, S13-S15 y S16-S19 son suficientes para storage/evidencia logica, source policy/Knowledge Gap, piloto Odoo 18 y cierre sin cerrar decisiones futuras.
+- La seccion respeta Odoo-only, Odoo 18, piloto internal requests / simple approvals, source policy minima (DEC-ACCEPTED-163) y exclusion de `framework/`.
+- La seccion no introduce RAG/vector base, SDK/server core, dashboard productizado, CI/CD completo, advanced storage/DB, multiuser/team operation, plugins/MCP, broad integrations ni post-V1 capabilities.
+- Todos los componentes son trazables a TOM, CRIT aprobado o decision aceptada (RULE-04).
+
+##### 8. Section Output / Handoff
+
+- S10 entrega a S11 el set conceptual VAL-01..VAL-10 como controles deterministicos candidatos cuyos resultados deben ser almacenados como evidencia candidata de forma simple, auditable y Git-compatible.
+- S10 entrega a S12 los validators VAL-01 (authority source) y VAL-09 (source policy compliance) como triggers conceptuales de Knowledge Gap y Curation Request sin ampliar fuentes.
+- S10 entrega a S13-S15 los validators VAL-05, VAL-06 y VAL-10 como controles conceptuales para evidencia del entorno Odoo 18 y del modulo piloto limitados a BR-01 y DEC-ACCEPTED-162/163.
+- S10 entrega a S16-S19 el set conceptual VAL-01..VAL-10 como base para orden de spikes, trazabilidad final, categorias de output y acceptance criteria sin autocierre ni autoaprobacion.
+- S10 no cierra ninguna decision sobre toolchain, lenguaje, rutas, storage fisico, CI/CD ni implementacion; esos pertenecen a spikes y fases posteriores con autorizacion explicita del owner.
 
 #### 11. State / Logs / Evidence Storage
 
@@ -1153,8 +1339,8 @@ Acceptance criteria minimos:
 | Iteration 1 | 6 | Initial Spike Map | closed | approved | none |
 | Iteration 2 | 7 | OpenCode Operating Design | closed | approved | none |
 | Iteration 2 | 8 | Agents / Commands / Scripts / Validators Split | closed | approved | none |
-| Iteration 3 | 9 | Schemas V1 Minimum Set | not-started | not-requested | none |
-| Iteration 3 | 10 | Validators V1 Minimum Set | not-started | not-requested | none |
+| Iteration 3 | 9 | Schemas V1 Minimum Set | approved | approved | none |
+| Iteration 3 | 10 | Validators V1 Minimum Set | in-verification | not-requested | none |
 | Iteration 3 | 11 | State / Logs / Evidence Storage | not-started | not-requested | none |
 | Iteration 3 | 12 | Knowledge Base and Source Policy Implementation | not-started | not-requested | none |
 | Iteration 4 | 13 | Odoo 18 Execution Environment | not-started | not-requested | none |
