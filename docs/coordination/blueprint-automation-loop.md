@@ -11,6 +11,7 @@
 
 ## 2. MVP Workflow
 
+- `/blueprint-next` is the repeatable execution entrypoint for one Blueprint Automation Loop run and executes with `cafl-blueprint-orchestrator`.
 - `cafl-blueprint-orchestrator` selects one eligible section per run from `project-truth/blueprint-state.yaml` and checks dependencies, current iteration, owner gates, and allowed status transitions.
 - `cafl-blueprint-author` elaborates only the selected section in `project-truth/implementation-blueprint.md`, using the required inputs and prior approved context from `project-truth/blueprint-state.yaml`.
 - In author mode, the author produces the compact section author report at `reports/blueprint/{section_id}-author-report.md`; `last_author_report` points to this author report.
@@ -23,14 +24,16 @@
 
 ## 3. Agent Responsibilities
 
-- `cafl-blueprint-orchestrator`: coordinates the loop, selects eligible sections, enforces dependencies and status transitions, routes author/verifier work, detects owner gates, and acts as gatekeeper at iteration end.
+- `cafl-blueprint-orchestrator`: primary agent; coordinates the loop, selects eligible sections, enforces dependencies and status transitions, routes author/verifier work, detects owner gates, and acts as gatekeeper at iteration end.
 - `cafl-blueprint-orchestrator` must not implement Blueprint section content directly.
 - `cafl-blueprint-orchestrator` does not write section reports; section reports are owned by author mode, fixer mode, and verifier.
-- `cafl-blueprint-author`: writes selected section content, keeps content within the selected section, updates required operational state/report fields, and in fixer mode changes only items reported by the verifier.
+- `cafl-blueprint-author`: subagent; writes selected section content, keeps content within the selected section, updates required operational state/report fields, and in fixer mode changes only items reported by the verifier.
 - `cafl-blueprint-author` must not verify its own work, self-approve, advance future sections, or change acceptance criteria to pass.
-- `cafl-blueprint-verifier`: audits section output against contract, inputs, authority order, prior approved context, non-goals, and traceability.
+- `cafl-blueprint-verifier`: subagent; audits section output against contract, inputs, authority order, prior approved context, non-goals, and traceability.
 - `cafl-blueprint-verifier` must not fix issues, implement content, change acceptance criteria, or approve the section.
 - Fixer is author mode. Gatekeeper is orchestrator mode. No separate fixer or gatekeeper agent exists in MVP.
+- OpenCode permissions enforce tool access, subagent routing, and coarse file write access for the three agents.
+- Section-level editing boundaries and YAML-field-level restrictions remain contract, verifier, and governance constraints until deterministic validators exist.
 
 ## 4. State Transitions
 
@@ -66,7 +69,7 @@
 
 ## 8. Non-Goals
 
-- Do not create executable agents, separate fixer/gatekeeper agents, commands, scripts, schemas, validators, runtime, RAG/vector base, backlog, PRD, or SDD.
+- Do not create additional executable agents, separate fixer/gatekeeper agents, commands beyond `/blueprint-next`, scripts, schemas, validators, runtime, RAG/vector base, backlog, PRD, or SDD.
 - Do not modify source code or use `framework/` as input or reference.
 - Do not reopen CRIT-01..07, TOM, or accepted decisions.
 - Do not advance future sections unless that section was explicitly selected and allowed by state/dependencies.

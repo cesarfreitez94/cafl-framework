@@ -4,6 +4,15 @@ mode: primary
 permission:
   bash: deny
   webfetch: deny
+  websearch: deny
+  task:
+    "*": deny
+    cafl-blueprint-author: allow
+    cafl-blueprint-verifier: allow
+  edit:
+    "*": deny
+    project-truth/blueprint-state.yaml: allow
+    reports/blueprint/*-gate-report.md: allow
 ---
 
 # CAFL Blueprint Orchestrator

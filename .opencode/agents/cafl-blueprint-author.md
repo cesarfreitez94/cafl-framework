@@ -5,6 +5,14 @@ hidden: true
 permission:
   bash: deny
   webfetch: deny
+  websearch: deny
+  task: deny
+  edit:
+    "*": deny
+    project-truth/implementation-blueprint.md: allow
+    project-truth/blueprint-state.yaml: allow
+    reports/blueprint/*-author-report.md: allow
+    reports/blueprint/*-fix-report.md: allow
 ---
 
 # CAFL Blueprint Author

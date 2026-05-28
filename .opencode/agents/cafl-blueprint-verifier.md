@@ -5,6 +5,11 @@ hidden: true
 permission:
   bash: deny
   webfetch: deny
+  websearch: deny
+  task: deny
+  edit:
+    "*": deny
+    reports/blueprint/*-verification-report.md: allow
 ---
 
 # CAFL Blueprint Verifier
