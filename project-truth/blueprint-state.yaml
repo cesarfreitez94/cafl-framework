@@ -269,7 +269,7 @@ sections:
     iteration_position: 8
     depends_on: [S07]
     fix_iterations: 1
-    last_author_report: null
+    last_author_report: reports/blueprint/S08-author-report.md
     last_fix_report: reports/blueprint/S08-fix-report.md
     last_verification_report: reports/blueprint/S08-verification-report.md
     open_issues: []
