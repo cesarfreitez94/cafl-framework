@@ -225,28 +225,87 @@ Esta seccion funciona como guardrail para las secciones futuras. No disena runti
 
 #### 2. Architecture Principles
 
-Status: not-started
+##### 1. Status
 
-Inputs esperados:
+Status: approved
 
-- Seccion 1 aprobada dentro de la iteracion correspondiente.
-- TOM aprobado y decisiones aceptadas aplicables a principios operativos.
+Owner approval: approved explicitly by owner.
 
-Outputs esperados:
+##### 2. Purpose
 
-- Principios de arquitectura para guiar secciones posteriores.
+Esta seccion define los principios arquitectonicos de CAFL V1 que deben guiar las secciones posteriores del Blueprint. Los principios traducen el TOM aprobado y las decisiones aceptadas a reglas de diseno conceptual, sin crear runtime, layout fisico final, agents ejecutables, commands reales, schemas fisicos, validators reales, scripts, backlog, PRD, SDD ni implementacion.
 
-Restricciones especificas:
+Los principios son vinculantes para el Blueprint: cualquier componente posterior debe respetarlos o registrar un conflicto/open question segun las reglas del working contract. Esta seccion no decide rutas fisicas, archivos finales, tooling concreto, permisos OpenCode finales, entorno Odoo exacto ni orden final de spikes.
 
-- No introducir principios sin respaldo en TOM, CRIT aprobado o decision aceptada.
+##### 3. Inputs Used
 
-Acceptance criteria minimos:
+- Seccion 1 aprobada: scope, non-goals, fixed decisions, deferred areas y guardrails del Blueprint.
+- TOM aprobado por DEC-ACCEPTED-161.
+- Decisiones aceptadas aplicables: DEC-ACCEPTED-013..033, 035..053, 055..069, 071..088, 089..105, 106..130, 131..158 y 162..164.
+- Decisiones rechazadas aplicables: no agents-only, no repo/framework como verdad, no cierre por opinion, no evidencia solo narrativa, no busqueda web libre, no RAG/base vectorial obligatorio, no SDK/server core obligatorio, no V1 puramente manual.
+- Riesgos aplicables: RISK-006, RISK-010, RISK-020, RISK-023, RISK-024, RISK-043, RISK-052, RISK-055, RISK-057, RISK-058, RISK-059, RISK-061, RISK-064 y RISK-065.
 
-- Cada principio queda trazable y no contradice decisiones aceptadas o rechazadas.
+##### 4. Architecture Principles
+
+| ID | Principio | Implicacion para secciones posteriores | Trazabilidad |
+| --- | --- | --- | --- |
+| AP-01 | Fuente de verdad unica y trazabilidad bidireccional. | Todo diseno posterior debe derivar de `project-truth/`, TOM o decision aceptada; ningun componente sin respaldo puede quedar como V1 salvo owner decision. La Traceability Matrix debe poder enlazar TOM/decision -> componente y componente -> TOM/decision. | S01; DEC-ACCEPTED-001, 002, 010, 042, 086, 107, 113, 116; TOM `Regla De Uso`, `Estado Autoritativo`; RISK-006, RISK-011. |
+| AP-02 | OpenCode es runtime principal, pero no autoridad de estado, gate ni evidencia por si solo. | El operating design posterior debe usar OpenCode como entorno principal sin convertir salidas LLM, memoria de chat o commands candidatos en estado autoritativo o decision final. | DEC-ACCEPTED-028, 058, 094, 107, 136, 139; TOM `Roles Y Capacidades`, `Estado Autoritativo`; DEC-REJECTED-013, 021, 023; RISK-023, RISK-024, RISK-035. |
+| AP-03 | Modelo hibrido progresivo, no agents-only. | Capacidades posteriores deben asignarse conceptualmente entre agents, commands candidatos, scripts/CLI/validators candidatos, rules/config, skills/playbooks y humano critico, sin crear mecanismos ejecutables en el Blueprint. | DEC-ACCEPTED-056, 068, 069, 136, 137, 140; TOM `Alcance Operativo V1`, `Principios De Responsabilidad`; DEC-REJECTED-011, 033, 036; RISK-022, RISK-055, RISK-057. |
+| AP-04 | Separacion entre razonamiento asistido y control verificable. | LLM/agents pueden recomendar, disenar, diagnosticar y redactar; validaciones estructurales, estado, evidencia, rework counters, source policy y ejecucion Odoo deben quedar destinados a control deterministico conceptual cuando aplique. | DEC-ACCEPTED-063, 069, 084, 090, 100, 145; TOM `Automatico, Asistido Y Exclusivamente Humano`; DEC-REJECTED-013, 017, 021; RISK-010, RISK-024, RISK-026. |
+| AP-05 | Avance por contratos, gates, evidencia y cierre verificable. | El diseno posterior debe preservar PRD/SDD ligeros, task/context packet + DoR, gates minimos, checks transversales, evidencia reproducible y separacion recommendation/verification/decision; no puede permitir autocierre. | DEC-ACCEPTED-033, 041, 047, 052, 074, 078, 079, 090, 091, 094, 097, 100; TOM `Flujo Operativo Punta A Punta`; DEC-REJECTED-010, 017, 018; RISK-004, RISK-005, RISK-013, RISK-033. |
+| AP-06 | Contexto minimo autorizado y source policy por defecto. | Las secciones de KB/source policy y mecanismos deben preservar context routing, token budget, Knowledge Gap y Curation Request; la base pre-autorizada queda limitada a documentacion oficial Odoo y GitHub `odoo/odoo`. | DEC-ACCEPTED-042, 065, 082, 116, 126, 127, 128, 150, 163; TOM `Knowledge Governance En El Flujo V1`; DEC-REJECTED-025, 026, 027; RISK-018, RISK-043, RISK-052, RISK-062. |
+| AP-07 | V1 Odoo-only con Odoo 18 y piloto confirmado. | El Blueprint debe optimizar decisiones para un flujo end-to-end verificable de modulo Odoo 18 y para el piloto de solicitudes internas / aprobaciones simples, sin convertir esta seccion en PRD/SDD/backlog del piloto. | DEC-ACCEPTED-016, 021, 024, 135, 153, 155, 156, 162; TOM `Alcance Operativo V1`, `Instancia En El Piloto V1 Confirmado`; DEC-REJECTED-002, 003; RISK-059, RISK-066. |
+| AP-08 | V1 minimo suficiente y anti-scope-creep. | Capacidades como RAG/base vectorial, SDK/server core, dashboard/UI, CI/CD completo, DB avanzada, multiusuario/equipo, plugins/MCP, curation avanzada, integraciones reales por defecto y deployment productivo no deben entrar al core V1 sin decision explicita. | S01; DEC-ACCEPTED-023, 032, 148, 149, 151, 152, 157, 164; TOM `Simplificaciones Del Piloto`, `Lo Que El TOM NO Hace`; DEC-REJECTED-034, 035, 038; RISK-008, RISK-058, RISK-065. |
+| AP-09 | Storage, logs y evidencia deben ser simples, auditables y compatibles con Git, hasta que el Blueprint detalle su forma. | Secciones posteriores pueden definir storage conceptual/fisico candidato solo dentro de su alcance; esta seccion fija que debe favorecer auditabilidad, versionado, trazabilidad y no double work. | DEC-ACCEPTED-107, 108, 111, 115, 141, 146; TOM `Reglas Para Evitar Trabajo Doble Documental`, `Handoff Al Blueprint`; RISK-006, RISK-056. |
+| AP-10 | Seguridad, riesgo, compliance, secretos y datos son criterios transversales. | El diseno posterior debe mantener triage de seguridad/riesgo/compliance en gates y escalar riesgos criticos; secrets handling queda para seccion/spike posterior sin crear secretos ni policies ejecutables aqui. | DEC-ACCEPTED-045, 059, 064, 076, 092, 101; TOM `Control Y Bloqueos`, `Owner Approval Obligatorio`; RISK-021, RISK-027, RISK-040, RISK-063. |
+| AP-11 | Validacion tecnica por spikes antes de cerrar decisiones fisicas inciertas. | Lenguaje scripts/CLI, entorno Odoo 18 exacto, permisos OpenCode, schema/validator toolchain, storage/log conventions, source policy enforcement, evidence capture y secrets handling deben resolverse mediante Blueprint/spikes, no por suposicion. | DEC-ACCEPTED-049, 142, 143, 158; TOM `Technical Validations / Spikes Que Blueprint Debe Planificar`; RISK-020, RISK-059, RISK-060, RISK-061. |
+| AP-12 | Diseno greenfield desde `project-truth/`; `framework/` excluido. | Ninguna seccion posterior puede usar `framework/` como layout, evidencia, fuente de agents, commands, contracts, gates, schemas, validators, runtime o KB. | S01; DEC-ACCEPTED-003, 133, 134; DEC-SUPERSEDED-002, 003; DEC-REJECTED-032; TOM `Lo Que El TOM NO Hace`; RISK-064. |
+
+##### 5. Cross-Section Guidance
+
+- Seccion 3 debe usar AP-07 y AP-08 para separar V1/post-V1 sin mover capacidades diferidas al core V1.
+- Seccion 4 debe usar AP-02, AP-03, AP-04, AP-09 y AP-12 para proponer solo un runtime layout candidate conceptual, sin rutas finales ni runtime real.
+- Seccion 5 debe usar AP-01, AP-06, AP-09 y AP-12 para separar fuente, estado autoritativo y runtime sin duplicar fuentes de verdad.
+- Seccion 6 debe usar AP-11 para mapear spikes desde riesgos, decisiones y dependencias, sin ejecutarlos.
+- Secciones 7 y 8 deben usar AP-02, AP-03, AP-04 y AP-05 para disenar operacion OpenCode y split de mecanismos sin crear agents/commands/scripts/validators reales.
+- Secciones 9 a 12 deben usar AP-01, AP-04, AP-06 y AP-09 para schemas/validators/storage/source policy conceptuales y trazables.
+- Secciones 13 a 15 deben usar AP-07, AP-10 y AP-11 para entorno Odoo 18, security/secrets y soporte del piloto sin PRD/SDD/backlog.
+- Secciones 16 a 19 deben usar todos los principios para cerrar orden de spikes, matriz de trazabilidad, categorias hacia backlog y acceptance criteria sin aprobar implementacion.
+
+##### 6. Explicit Non-Decisions
+
+- Esta seccion no decide runtime layout, rutas fisicas, nombres de archivos, formatos finales, schemas fisicos, validators reales, command interfaces, prompts finales, permissions OpenCode, entorno Odoo 18 exacto, storage definitivo, secrets policy ejecutable ni orden final de spikes.
+- Esta seccion no crea agentes ejecutables, commands reales, scripts, validators, schemas, RAG/base vectorial, backlog, PRD, SDD ni implementacion.
+- Esta seccion no amplia la source policy ni autoriza fuentes fuera de la base minima aprobada.
+- Esta seccion no reabre CRIT-01..07, TOM approved, piloto V1 confirmado, Odoo 18 target, SDK/server fuera de core V1 ni RAG/base vectorial fuera de V1.
+
+##### 7. Open Questions / Owner Decisions
+
+- none
+
+##### 8. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, sin owner approval.
+- Cada principio queda trazable a TOM, decision aceptada, CRIT aprobado o riesgo de soporte.
+- Los principios no contradicen decisiones aceptadas, rechazadas o superseded.
+- La seccion guia secciones posteriores sin avanzar su contenido especifico ni crear layout/runtime fisico final.
+- La seccion mantiene el Blueprint conceptual y respeta los non-goals globales: no runtime, no agents ejecutables, no commands reales, no schemas fisicos, no validators reales, no scripts, no RAG/base vectorial, no backlog, no PRD, no SDD y no implementacion.
+- La seccion preserva la exclusion de `framework/` como input o referencia.
+
+##### 9. Section Output
+
+- Para la seccion 3, entrega principios de alcance V1/post-V1 y anti-scope-creep.
+- Para la seccion 4, entrega principios para un runtime layout candidate conceptual sobre OpenCode y modelo hibrido.
+- Para la seccion 5, entrega principios para separar fuente de verdad, estado autoritativo, runtime y evidencia.
+- Para la seccion 6, entrega principios para derivar spikes desde incertidumbres fisicas y riesgos.
+- Para secciones posteriores, entrega invariantes arquitectonicas de trazabilidad, source policy, gates/evidencia, seguridad/riesgo/compliance, no double work y no uso de `framework/`.
 
 #### 3. V1 / Post-V1 Boundary
 
-Status: not-started
+Status: approved
+
+Owner approval: approved explicitly by owner.
 
 Inputs esperados:
 
@@ -264,6 +323,79 @@ Restricciones especificas:
 Acceptance criteria minimos:
 
 - Cada limite queda trazable y no reabre decisiones aprobadas.
+
+##### 1. Purpose
+
+- Establecer el limite conceptual entre V1 core, capacidades V1 condicionales/spike y post-V1/deferred, para evitar scope creep y guiar secciones posteriores sin convertir esta seccion en backlog, PRD, SDD ni implementacion.
+- Mantener V1 alineado con el TOM aprobado, CRIT-01..07, DEC-ACCEPTED-161, DEC-ACCEPTED-162, DEC-ACCEPTED-163 y DEC-ACCEPTED-164.
+
+##### 2. Boundary Rules
+
+- BR-01 — Una capacidad entra en V1 core solo si esta respaldada por TOM, CRIT aprobado o decision aceptada y es necesaria para el flujo minimo Odoo 18 end-to-end del piloto confirmado. Trazabilidad: RULE-04; TOM `Alcance Operativo V1`; CRIT-01; DEC-ACCEPTED-153/156/162.
+- BR-02 — Una capacidad queda V1 conditional/spike cuando esta permitida como incertidumbre o candidato conceptual, pero requiere validacion posterior antes de convertirse en diseno operativo. Trazabilidad: TOM open items for Blueprint/spikes; CRIT-02/03/07; DEC-ACCEPTED-138.
+- BR-03 — Una capacidad queda post-V1/deferred cuando las decisiones aceptadas, rechazadas, TOM o riesgos la excluyen del core V1 o la marcan como expansion posterior. Trazabilidad: DEC-ACCEPTED-148/149/151/152/157/164; DEC-REJECTED-016/034/035/038; RISK-008/058/065/066.
+- BR-04 — Ningun limite en esta seccion reabre CRIT-01..07, TOM aprobado, seleccion del piloto, target Odoo 18, source policy minima, exclusion de `framework/`, SDK/server fuera de core V1 ni RAG/base vectorial fuera de V1. Trazabilidad: DEC-ACCEPTED-133/134/135/161/162/163/164; DEC-ACCEPTED-148; RISK-064.
+
+##### 3. V1 Core Boundary
+
+| Area | V1 core boundary | Traceability |
+| --- | --- | --- |
+| Operating model | CAFL V1 opera como framework/plataforma sobre OpenCode con modelo hibrido progresivo; no es agents-only y OpenCode no es por si solo estado autoritativo, decision de gate ni evidencia suficiente. | DEC-ACCEPTED-013/028/136; TOM mechanism constraints; S02 context |
+| Product/technical target | V1 es Odoo-only y apunta a Odoo 18. | DEC-ACCEPTED-135; TOM `Alcance Operativo V1`; CRIT-01/07 |
+| Pilot scope | La instancia de piloto que acota V1 es solicitudes internas / aprobaciones simples; esta seccion no lo convierte en PRD, SDD ni backlog final. | DEC-ACCEPTED-162; TOM pilot instance; S01 non-goals |
+| End-to-end evidence | V1 debe poder demostrar un ciclo minimo real Odoo 18 end-to-end con evidencia verificable; la definicion operativa queda para secciones posteriores. | DEC-ACCEPTED-153/156; CRIT-01; RISK-010/057/059 |
+| Minimum control automation | V1 incluye control minimo conceptual sobre estructura, trazabilidad, evidencia, source policy/Knowledge Gap basics, rework/debt/approval cuando aplique y ejecucion Odoo minima; no define aqui commands, validators ni scripts reales. | DEC-ACCEPTED-140/145; CRIT-04/05/06; S01/S02 restrictions |
+| Knowledge/source governance | V1 usa source policy minima pre-autorizada: documentacion oficial Odoo y GitHub oficial `odoo/odoo`; otras fuentes requieren Curation Request y aprobacion. No hay free web search ni RAG/base vectorial V1. | DEC-ACCEPTED-163; TOM Knowledge Governance; RISK-062 |
+| Source of truth and traceability | `project-truth/` permanece como autoridad; todo componente posterior debe mantener trazabilidad bidireccional conceptual hacia TOM/CRIT/decisiones. | S01/S02 context; RULE-04/05; CRIT-04/05 |
+| Evidence/storage posture | La orientacion de V1 es simple, auditable y compatible con Git para estado/logs/evidencia conceptual, sin cerrar almacenamiento fisico definitivo en esta seccion. | S02 context; TOM mechanism constraints; CRIT-04/05/06 |
+
+##### 4. V1 Conditional / Spike Boundary
+
+| Area | Conditional boundary | Traceability |
+| --- | --- | --- |
+| Runtime layout and mechanism split | OpenCode + commands + scripts/CLI/validators + almacenamiento simple auditable es direccion candidata, no arquitectura definitiva; su detalle pertenece a secciones posteriores y/o spikes. | DEC-ACCEPTED-138; TOM open items; CRIT-07 |
+| Odoo 18 execution environment | La forma exacta de entorno Odoo 18 queda como incertidumbre de Blueprint/spike; no se fija infraestructura ni deployment final aqui. | TOM open items; CRIT-01; RISK-010/057/059 |
+| UI/OWL/Playwright | UI, OWL o Playwright solo pueden considerarse si el piloto lo justifica y una decision posterior lo mantiene dentro de V1; por defecto no son V1 core. | TOM pilot instance; S02 context; RISK-008/065/066 |
+| Permissions, commands, skills and secrets | Permisos, commands/skills y politica ejecutable de secretos requieren diseno posterior; esta seccion solo marca que no deben contradecir source policy, gates ni evidencia. | TOM open items; S02 context; CRIT-02/03/04 |
+| Knowledge Governance without RAG | La implementacion minima de source registry, knowledge artifacts, Knowledge Gap y Curation Request se define despues sin introducir RAG/base vectorial. | TOM Knowledge Governance; DEC-ACCEPTED-163; DEC-ACCEPTED-148 |
+
+##### 5. Post-V1 / Deferred Boundary
+
+| Capability | Boundary decision | Traceability |
+| --- | --- | --- |
+| RAG / base vectorial | Deferred to V2/post-V1; not approved for V1 unless a future explicit owner decision changes the scope. | DEC-ACCEPTED-148; DEC-REJECTED-016/034; RISK-028/048/053 |
+| SDK/server as core | Outside V1 core by default; later inclusion requires favorable spike and explicit owner decision. | DEC-ACCEPTED-149/164; DEC-REJECTED-035; TOM mechanism constraints |
+| Broad automated documentation ingestion | Not default V1 scope; keep knowledge governance incremental. | DEC-ACCEPTED-151; TOM Knowledge Governance; RISK-058 |
+| Real external integrations | Not default V1 scope for the pilot. | DEC-ACCEPTED-152; DEC-REJECTED-038; TOM pilot instance |
+| Dashboard/UI productization | Deferred unless narrowly justified by the pilot; not V1 core. | TOM pilot instance; S02 context; RISK-058 |
+| CI/CD completo | Deferred beyond the minimal V1 evidence/execution needs. | S02 context; RISK-058 |
+| Advanced DB/storage | Deferred; V1 favors simple auditable storage until later sections decide conceptual posture and spikes. | S02 context; CRIT-04/05/06; RISK-058 |
+| Multiuser/team operations | Deferred beyond internal pilot/minimum owner-controlled flow unless future decision expands scope. | S02 context; RISK-008/065/066 |
+| Plugins/MCP | Deferred; not part of default V1 core. | S02 context; RISK-058 |
+| Advanced curation | Deferred beyond the minimum source policy, Knowledge Gap and Curation Request baseline. | TOM Knowledge Governance; DEC-ACCEPTED-163; RISK-028/048/053 |
+| Broad post-V1 capabilities | Deferred to V2/post-V1, not rejected. | DEC-ACCEPTED-157; S02 context |
+
+##### 6. Anti-Scope-Creep Controls
+
+- Any proposed V1 capability without TOM, CRIT or accepted-decision support must be eliminated, marked post-V1/deferred, or registered as owner decision required; it must not be silently accepted.
+- Any attempt to expand source policy, add RAG/vector base, move SDK/server into core, broaden the pilot, add real external integrations by default, or reintroduce `framework/` is outside this section's authority and requires explicit owner decision.
+- Conditional/spike classification is not approval to implement; it only preserves an uncertainty for later conceptual Blueprint sections.
+
+##### 7. Open Questions / Owner Decisions
+
+- none
+
+##### 8. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, sin owner approval.
+- Cada limite V1 core, V1 conditional/spike y post-V1/deferred queda trazado a TOM, CRIT aprobado, decision aceptada/rechazada o riesgo de soporte incluido en el context packet.
+- La seccion no reabre decisiones aprobadas ni mueve capacidades post-V1 a V1 core sin decision owner explicita.
+- La seccion se mantiene conceptual y no crea runtime, agents ejecutables, commands reales, schemas fisicos, validators reales, scripts, RAG/base vectorial, backlog, PRD, SDD ni implementacion.
+- La seccion no usa ni referencia `framework/` como input y mantiene su exclusion.
+
+##### 9. Section Output / Handoff
+
+- Para secciones posteriores, S03 entrega el limite conceptual que separa V1 core, V1 conditional/spike y post-V1/deferred; cualquier detalle operativo posterior debe permanecer dentro de estos limites o registrar owner decision required.
 
 #### 4. Runtime Layout Candidate
 
@@ -629,8 +761,8 @@ Acceptance criteria minimos:
 | Iteracion | Numero de seccion | Nombre de seccion | Status | Owner approval | Blocker retroactivo detectado |
 | --- | --- | --- | --- | --- | --- |
 | Iteration 1 | 1 | Blueprint Scope and Non-Goals | approved | approved | none |
-| Iteration 1 | 2 | Architecture Principles | not-started | not-requested | none |
-| Iteration 1 | 3 | V1 / Post-V1 Boundary | not-started | not-requested | none |
+| Iteration 1 | 2 | Architecture Principles | approved | approved | none |
+| Iteration 1 | 3 | V1 / Post-V1 Boundary | approved | approved | none |
 | Iteration 1 | 4 | Runtime Layout Candidate | not-started | not-requested | none |
 | Iteration 1 | 5 | Source-vs-Runtime Structure | not-started | not-requested | none |
 | Iteration 1 | 6 | Initial Spike Map | not-started | not-requested | none |

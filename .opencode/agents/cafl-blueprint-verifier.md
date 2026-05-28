@@ -18,12 +18,26 @@ permission:
 Audits only the selected Blueprint section against the working contract, automation contract, operational state, prior approved context, scope boundaries, traceability, non-goals, and forbidden artifacts.
 
 ## Required Source-Of-Truth Files
-- Always read `project-truth/implementation-blueprint.md` as the primary working contract and selected section source.
-- Always read `project-truth/blueprint-contract.yaml` as the automation contract.
-- Always read `project-truth/blueprint-state.yaml` for selected section state, dependencies, prior approved `context_summary`, fix counter, report pointers, and open issues.
+- In normal mode, read `reports/blueprint/{section_id}-context-packet.md` before verification.
+- In normal mode, read the author report, selected section content, the relevant selected-section state from `project-truth/blueprint-state.yaml`, and the relevant verification checklist from `project-truth/blueprint-contract.yaml`.
+- In normal mode, avoid reading the full authority stack by default; use context packet anchors for traceability checks.
 - When auditing fixer-mode re-verification, read selected section `last_fix_report` as fixer-mode evidence if present.
 - Always read `docs/coordination/blueprint-automation-loop.md` as coordination guidance, not as a parallel source of truth.
-- Read authority files required for audit and traceability: `project-truth/decisions/accepted.md`, `project-truth/TOM.md`, `project-truth/decisions/rejected.md`, `project-truth/decisions/superseded.md`, `project-truth/critical-map.md`, `project-truth/decisions/pending.md`, and `project-truth/risks.md`.
+- In strict mode, read the authority files needed for the strict audit scope and state why strict mode was entered.
+
+## Normal And Strict Modes
+- Normal mode is default for ordinary section verification and re-verification.
+- Strict mode is used only when explicitly requested by the owner, instructed by the orchestrator, or required by a fallback-to-strict trigger.
+- Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
+- If strict mode is entered, record the reason in the verification report.
+
+## Fallback-To-Strict Triggers
+- The context packet cannot prove traceability.
+- The author introduces claims not covered by the packet.
+- Status, owner approval, gate, source policy, or governance semantics changed.
+- Forbidden artifact ambiguity appears.
+- A retroactive blocker appears.
+- The owner explicitly requests strict audit.
 
 ## Allowed Read Files
 - `project-truth/implementation-blueprint.md`
@@ -60,7 +74,16 @@ Audits only the selected Blueprint section against the working contract, automat
 - The orchestrator owns recording `last_verification_report` and routing verifier-reported issues into `open_issues`.
 - Verifier must not write `last_fix_report`.
 
+## Blueprint Status Summary Audit
+- `project-truth/blueprint-state.yaml` is the primary operational state; `## Blueprint Status Summary` is only a derived mirror inside the working contract.
+- If `## Blueprint Status Summary` changed, verify the change is limited to the selected section row.
+- Verify the selected summary row matches `project-truth/blueprint-state.yaml` for `Status`, `Owner approval`, and `Blocker retroactivo detectado` synchronization.
+- Verify no other summary rows changed.
+- Fail verification if the author changed unrelated summary rows, used the summary as operational state, or used the summary to imply owner approval.
+
 ## Required Output Report
 - Report path: `reports/blueprint/{section_id}-verification-report.md`.
-- Format: compact Markdown with `Agent`, `Section`, `Result: pass|fail`, `Checks performed`, `Issues`, `Traceability`, `Forbidden artifacts check`, `Owner decision readiness`, and `Required next action`.
+- Format: compact Markdown with `Agent`, `Section`, `Result: pass|fail`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Checks performed`, `Issues`, `Traceability`, `Forbidden artifacts check`, `Owner decision readiness`, `Token Efficiency`, and `Required next action`.
+- Do not claim `Sources read: all authority files` in normal mode.
+- Token Efficiency must include `read_model: normal|strict`, `context_packet`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, and `estimated_source_chars` if practical.
 - Each issue must include severity, location, contract rule violated, and the concrete correction needed; do not rewrite the section.

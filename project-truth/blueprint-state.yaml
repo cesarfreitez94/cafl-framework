@@ -86,30 +86,67 @@ sections:
   S02:
     title: "Architecture Principles"
     iteration: I1
-    status: not-started
-    owner_approval: not-requested
+    status: approved
+    owner_approval: approved
     iteration_position: 2
     depends_on: [S01]
     fix_iterations: 0
-    last_author_report: null
+    last_author_report: reports/blueprint/S02-author-report.md
     last_fix_report: null
-    last_verification_report: null
+    last_verification_report: reports/blueprint/S02-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines architecture principles AP-01..AP-12 for all later Blueprint
+      sections. Invariants: single `project-truth/` authority and
+      bidirectional traceability; OpenCode is primary runtime but not
+      authoritative state, gate decision or evidence by itself; CAFL V1 uses a
+      hybrid progressive model, not agents-only; LLM reasoning stays separated
+      from verifiable deterministic control; progress is contract/gate/evidence
+      driven with no self-closure; context routing and minimal source policy are
+      mandatory; V1 remains Odoo-only on Odoo 18 and aligned to the confirmed
+      internal requests / simple approvals pilot; V1 stays minimal with RAG/base
+      vectorial, SDK/server core, dashboard/UI, CI/CD completo, DB avanzada,
+      multiusuario/equipo, plugins/MCP, curation avanzada and broad post-V1
+      capabilities deferred unless future explicit owner decision allows them;
+      storage/logs/evidence should remain simple, auditable and Git-compatible;
+      security/risk/compliance and secrets are cross-cutting criteria; uncertain
+      physical/runtime choices require Blueprint/spikes; design remains
+      greenfield from `project-truth/` with `framework/` excluded. S02 does not
+      decide runtime layout, physical paths, final schemas/validators, commands,
+      permissions, exact Odoo environment, definitive storage, executable
+      secrets policy or final spike order.
 
   S03:
     title: "V1 / Post-V1 Boundary"
     iteration: I1
-    status: not-started
-    owner_approval: not-requested
+    status: approved
+    owner_approval: approved
     iteration_position: 3
     depends_on: [S01, S02]
     fix_iterations: 0
-    last_author_report: null
+    last_author_report: reports/blueprint/S03-author-report.md
     last_fix_report: null
-    last_verification_report: null
+    last_verification_report: reports/blueprint/S03-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the V1 / post-V1 boundary for later Blueprint sections. V1 core
+      is limited to the traceable Odoo-only, Odoo 18, OpenCode-based hybrid
+      operating model for the confirmed internal requests / simple approvals
+      pilot, with minimum evidence/control automation, source policy / Knowledge
+      Gap basics, `project-truth/` traceability, and simple auditable evidence /
+      storage posture. Conditional/spike areas remain conceptual and not
+      implementation approval: runtime layout and mechanism split, exact Odoo 18
+      execution environment, UI/OWL/Playwright only if pilot-justified,
+      permissions/commands/skills/secrets, and Knowledge Governance without
+      RAG/vector base. Deferred/post-V1 boundaries preserve RAG/vector base,
+      SDK/server core, broad ingestion, real external integrations, dashboard/UI
+      productization, full CI/CD, advanced DB/storage, multiuser/team operation,
+      plugins/MCP, advanced curation and broad post-V1 capabilities unless a
+      future explicit owner decision changes scope. Anti-scope-creep controls:
+      unsupported V1 capabilities must be eliminated, deferred, or registered as
+      owner-decision required; no source policy expansion, RAG/vector, SDK/server
+      core, pilot broadening, default external integrations, or `framework/`
+      reintroduction is allowed by this section.
 
   S04:
     title: "Runtime Layout Candidate"

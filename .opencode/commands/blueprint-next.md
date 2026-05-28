@@ -5,10 +5,19 @@ agent: cafl-blueprint-orchestrator
 
 Execute the next eligible Blueprint section using the CAFL Blueprint Automation Loop.
 
+Owner usage:
+- `/blueprint-next` runs in normal mode.
+- `/blueprint-next strict` or `STRICT S03` requests strict mode for the selected section.
+- If OpenCode command arguments are unreliable, treat any owner message containing `strict` or `STRICT {section_id}` with the command invocation as an explicit strict request.
+
 Required constraints:
 - Read `project-truth/blueprint-state.yaml` to select the next eligible section.
 - Use `project-truth/implementation-blueprint.md` as the Blueprint working contract and `project-truth/blueprint-contract.yaml` as the automation contract.
 - Use `docs/coordination/blueprint-automation-loop.md` as coordination guidance only.
+- Default to normal mode for ordinary section authoring and verification.
+- Use strict mode only when explicitly requested by the owner or when a fallback-to-strict trigger fires.
+- In normal mode, generate `reports/blueprint/{section_id}-context-packet.md` before routing `cafl-blueprint-author`.
+- Treat the context packet as bounded execution context for one section run, not as a new source of truth.
 - Max sections this run: 1.
 - Route only through `cafl-blueprint-author` and `cafl-blueprint-verifier` as needed.
 - Do not commit.
@@ -20,4 +29,9 @@ Report at the end:
 - Files changed.
 - State changes.
 - Reports created.
+- Mode: normal|strict.
+- Context packet path and whether it was generated.
+- Full authority fallback count.
+- Large repeated reads avoided.
+- Estimated source chars read, if practical.
 - Next handoff.

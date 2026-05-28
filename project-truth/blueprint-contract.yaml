@@ -39,6 +39,26 @@ allowed_files:
     - project-truth/implementation-blueprint.md
     - project-truth/blueprint-state.yaml
     - reports/blueprint/**
+  write_constraints:
+    project-truth/implementation-blueprint.md:
+      orchestrator_owner_decision_status_sync_only:
+        mode: owner-decision/status-sync
+        trigger: explicit_owner_decision
+        allowed_targets:
+          - selected_section_status_line
+          - selected_section_owner_approval_line
+          - selected_section_blueprint_status_summary_row
+        forbidden_targets:
+          - section_content
+          - principles
+          - purpose
+          - scope
+          - acceptance_criteria
+          - outputs
+          - future_sections
+        forbidden_during:
+          - authoring_routing
+          - verification_routing
 
 forbidden_actions:
   - git commit
@@ -75,6 +95,35 @@ workflow_rules:
   owner_must_commit: true
   max_fix_iterations_per_section: 2
   default_sections_per_run: 1
+  blueprint_state_is_operational_source_of_truth: true
+  implementation_blueprint_contains_derived_status_mirror: true
+  blueprint_status_summary_is_derived_mirror: true
+  summary_mirror_fields: [status, owner_approval, retroactive_blocker]
+  author_may_update_only_selected_summary_row: true
+  author_must_not_use_summary_as_operational_state: true
+  verifier_must_audit_summary_synchronization: true
+  orchestrator_owns_status_mirror_sync_after_owner_decision: true
+  orchestrator_status_mirror_sync_scope:
+    - selected_section_status_line
+    - selected_section_owner_approval_line
+    - selected_section_blueprint_status_summary_row
+  orchestrator_must_not_sync_mirror_during_authoring_or_verification_routing: true
+  orchestrator_must_not_edit_blueprint_content_for_mirror_sync: true
+  default_read_mode: normal
+  strict_mode_entry:
+    - owner_explicit_request
+    - fallback_to_strict_trigger
+  strict_mode_required_for:
+    - governance_rule_changes
+    - source_policy_changes
+    - owner_approval_semantics
+    - status_semantics
+    - iteration_gate_closure
+    - final_traceability_matrix
+    - acceptance_criteria_closure
+    - retroactive_blockers
+    - owner_explicit_strict_request
+  strict_mode_must_state_reason: true
 
 context_rules:
   author_must_read_approved_sections_context_summary: true
@@ -84,6 +133,43 @@ context_rules:
   conflict_must_be_registered_not_resolved: true
   conflict_blocking_advance: needs-owner-decision
   conflict_non_blocking: open-question
+  normal_mode_context_packet:
+    required_before_author_routing: true
+    owner: cafl-blueprint-orchestrator
+    path_pattern: reports/blueprint/{section_id}-context-packet.md
+    source_status: bounded_execution_context_not_source_of_truth
+    generated_from:
+      - project-truth_sources
+      - approved_prior_context_summary_values
+    must_include:
+      - section_id
+      - selected_section_title
+      - iteration
+      - current_status_and_owner_approval
+      - dependencies
+      - prior_approved_context_summary_values
+      - inherited_constraints_from_prior_approved_sections
+      - selected_section_inputs_outputs_restrictions_acceptance_criteria_excerpt
+      - compact_authority_anchors
+      - non_goals_and_forbidden_artifacts
+      - traceability_checklist
+      - fallback_to_strict_triggers
+  normal_mode_read_model:
+    orchestrator: targeted_project_truth_excerpts_and_state_contract_slices
+    author: context_packet_selected_section_slice_relevant_state_contract_slices
+    verifier: context_packet_author_report_selected_section_relevant_state_contract_checklist
+    full_authority_stack_by_default: false
+  fallback_to_strict_triggers:
+    - packet_cannot_prove_traceability
+    - packet_conflicts_with_section_or_state
+    - owner_decision_blocker
+    - approved_dependency_missing_context_summary
+    - governance_or_source_policy_or_status_semantics_change
+    - owner_approval_semantics_change
+    - forbidden_artifact_ambiguity
+    - retroactive_blocker
+    - author_claim_not_covered_by_packet
+    - owner_explicit_strict_audit_request
 
 approval_rules:
   section_approved_by: owner_explicit_approval
@@ -103,6 +189,17 @@ reporting:
   note: >
     Reports must be compact. No redundant summaries. One file per section,
     one gate report per iteration. Avoid meta-framework overhead.
+  token_efficiency_required: true
+  sources_read_wording:
+    distinguish_direct_sources_context_packet_and_full_source_fallback: true
+    normal_mode_must_not_claim_all_authority_files_read: true
+  token_efficiency_fields:
+    - read_model
+    - context_packet
+    - full_sources_read
+    - fallback_reason
+    - source_files_read_count
+    - estimated_source_chars_when_practical
 
 mvp_agents:
   cafl-blueprint-orchestrator:

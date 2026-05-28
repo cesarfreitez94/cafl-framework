@@ -21,11 +21,26 @@ permission:
 Elaborates only the selected section in `project-truth/implementation-blueprint.md` and, in fixer mode, changes only verifier-reported issues.
 
 ## Required Source-Of-Truth Files
-- Always read `project-truth/implementation-blueprint.md` as the primary working contract and selected section source.
-- Always read `project-truth/blueprint-contract.yaml` as the automation contract.
-- Always read `project-truth/blueprint-state.yaml` for selected section state, dependencies, prior approved `context_summary`, and open issues.
+- In normal mode, read `reports/blueprint/{section_id}-context-packet.md` before authoring or fixer work.
+- In normal mode, read only the selected section slice from `project-truth/implementation-blueprint.md`, not the full authority stack.
+- In normal mode, read only relevant portions of `project-truth/blueprint-contract.yaml` and `project-truth/blueprint-state.yaml` where possible.
 - Always read `docs/coordination/blueprint-automation-loop.md` as coordination guidance, not as a parallel source of truth.
-- Read authority files required for traceability: `project-truth/decisions/accepted.md`, `project-truth/TOM.md`, `project-truth/decisions/rejected.md`, `project-truth/decisions/superseded.md`, `project-truth/critical-map.md`, `project-truth/decisions/pending.md`, and `project-truth/risks.md`.
+- Do not read full `project-truth/TOM.md`, decisions, `critical-map.md`, or `risks.md` by default in normal mode; use the context packet anchors.
+- In strict mode, read the authority files needed for the strict audit scope and state why strict mode was entered.
+
+## Normal And Strict Modes
+- Normal mode is default for ordinary section authoring and verifier-scoped fixes.
+- Strict mode is used only when explicitly requested by the owner, instructed by the orchestrator, or required by a fallback-to-strict trigger.
+- Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
+- If strict mode is entered, record the reason in the author or fix report.
+
+## Fallback-To-Strict Triggers
+- The context packet lacks a required traceability anchor.
+- The context packet conflicts with selected section content.
+- An owner-decision blocker appears.
+- `context_summary` is missing for an approved dependency.
+- The selected section requires governance rule, source policy, status semantics, or owner approval semantics changes.
+- The selected section requires iteration gate closure, final traceability matrix work, acceptance criteria closure, or retroactive blocker handling.
 
 ## Allowed Read Files
 - `project-truth/implementation-blueprint.md`
@@ -42,7 +57,7 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 - `reports/blueprint/**`
 
 ## Allowed Write Files
-- `project-truth/implementation-blueprint.md`, only inside the selected section.
+- `project-truth/implementation-blueprint.md`, only inside the selected section, except for the matching row in `## Blueprint Status Summary` as defined below.
 - `project-truth/blueprint-state.yaml`, only for the fields and transitions listed below.
 - `reports/blueprint/{section_id}-author-report.md`, only in author mode.
 - `reports/blueprint/{section_id}-fix-report.md`, only in fixer mode.
@@ -70,8 +85,17 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 - Must not change `last_verification_report`, `owner_approval`, iteration fields, or any status other than the two transitions above.
 - Must not update `last_author_report` in fixer mode or `last_fix_report` in author mode.
 
+## Blueprint Status Summary Exception
+- `project-truth/blueprint-state.yaml` remains the primary operational state; `## Blueprint Status Summary` is only a derived mirror inside the working contract.
+- May update only the `## Blueprint Status Summary` row for the selected section.
+- Any summary row update must mirror allowed selected-section state already recorded in `project-truth/blueprint-state.yaml`, limited to `Status`, `Owner approval`, and `Blocker retroactivo detectado` synchronization.
+- Must not update any other summary row.
+- Must not treat `## Blueprint Status Summary` as operational state or use it to imply owner approval.
+
 ## Required Output Report
 - Author mode report path: `reports/blueprint/{section_id}-author-report.md`.
 - Fixer mode report path: `reports/blueprint/{section_id}-fix-report.md`.
-- Format: compact Markdown with `Agent`, `Mode`, `Section`, `Sources read`, `Section changes`, `Traceability`, `Open issues`, `State changes`, and `Verifier handoff`.
+- Format: compact Markdown with `Agent`, `Mode`, `Section`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Section changes`, `Traceability`, `Open issues`, `State changes`, `Token Efficiency`, and `Verifier handoff`.
+- Do not claim `Sources read: all authority files` in normal mode.
+- Token Efficiency must include `read_model: normal|strict`, `context_packet`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, and `estimated_source_chars` if practical.
 - In fixer mode, include only `Verifier issue`, `Fix applied`, `Evidence in section`, and `Remaining issue`; do not perform unrelated cleanup.
