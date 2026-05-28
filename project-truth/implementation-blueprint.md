@@ -399,7 +399,9 @@ Acceptance criteria minimos:
 
 #### 4. Runtime Layout Candidate
 
-Status: not-started
+Status: approved
+
+Owner approval: approved explicitly by owner.
 
 Inputs esperados:
 
@@ -413,11 +415,81 @@ Outputs esperados:
 Restricciones especificas:
 
 - No crear runtime, rutas fisicas finales ni archivos ejecutables.
-- No usar `framework/` como input.
+- No usar ni reintroducir material legacy descartado como input o referencia.
+- No convertir categorias conceptuales en directorios, archivos, comandos, schemas, validators, scripts, agentes ejecutables, MCP/plugins, RAG/base vectorial, backlog, PRD, SDD ni implementacion.
 
 Acceptance criteria minimos:
 
 - El candidato queda conceptual, trazable y sin implementacion.
+
+##### 1. Proposito y alcance
+
+S04 propone un candidato conceptual de layout runtime para CAFL V1. El candidato organiza responsabilidades y separaciones logicas que las secciones posteriores deben refinar, sin aprobar una estructura fisica ni autorizar artefactos ejecutables.
+
+El layout se mantiene dentro de los limites aprobados por S01-S03: V1 es Odoo-only/Odoo 18, usa OpenCode como runtime primario en un modelo hibrido progresivo, conserva `project-truth/` como fuente de verdad, limita el piloto a internal requests / simple approvals y difiere RAG/vector, SDK/server core, UI/dashboard productizado, CI/CD amplio, integraciones amplias y storage avanzado salvo decision owner futura.
+
+##### 2. Principios de layout conceptual
+
+- **Separacion source-vs-runtime:** la autoridad conceptual permanece en la fuente de verdad; el runtime solo ejecuta, coordina o produce evidencia. Trazas: TOM 48-55, TOM 79-93, S01/S02 summaries, RISK-006.
+- **OpenCode como runtime, no como autoridad:** OpenCode puede orquestar interacciones de trabajo, pero no sustituye estado, gates, storage, source policy ni evidencia verificable. Trazas: TOM 63-72, TOM 79-93, DEC-ACCEPTED-136, RISK-020.
+- **Control hibrido progresivo:** agentes pueden razonar; comandos candidatos estandarizan entradas repetibles; scripts/CLI/validators candidatos cubren controles deterministicos; reglas/config sostienen invariantes; skills/playbooks apoyan conocimiento bajo demanda. Trazas: TOM 63-72, CRIT-07, DEC-ACCEPTED-138, RISK-022/023/024.
+- **Evidencia auditable minima:** logs, estado y evidencia deben permanecer separables de prompts y conversaciones para soportar verificacion reproducible. Trazas: TOM 48-55, TOM 351-366, RISK-010.
+- **Fuente y Knowledge Gap minimos:** la politica base de fuentes se limita a documentacion oficial de Odoo y `github.com/odoo/odoo`; cualquier otra fuente requiere curation/owner approval posterior. Trazas: DEC-ACCEPTED-163, S01/S03 summaries.
+- **Spike-dependencia visible:** aspectos aun inciertos se preservan como placeholders conceptuales para validacion tecnica posterior; no implican permiso de implementacion. Trazas: TOM 368-383, RISK-059/061/063.
+
+##### 3. Zonas conceptuales candidatas
+
+Las siguientes zonas son categorias logicas no finales. No son rutas, paquetes, carpetas ni archivos aprobados.
+
+| Zona conceptual | Responsabilidad V1 candidata | Excluye explicitamente | Trazabilidad |
+| --- | --- | --- | --- |
+| Fuente de verdad y decision record | Mantener autoridad humana y documental aprobada; alimentar trazabilidad hacia runtime y evidencia. | Estado operacional exclusivo en OpenCode; fuentes paralelas; cambios de decisiones sin owner approval. | TOM 48-55; S01; S02 AP-01/AP-02; RISK-006; DEC-ACCEPTED-161. |
+| Coordinacion OpenCode | Servir como runtime primario para trabajo asistido, handoffs y uso de mecanismos candidatos. | Ser gate final, storage final, policy engine final o evidencia suficiente por si solo. | TOM 63-72, 79-93; DEC-ACCEPTED-136; RISK-020. |
+| Entradas repetibles / comandos candidatos | Definir, a nivel conceptual, puntos de entrada repetibles para tareas recurrentes del flujo CAFL. | Comandos reales, nombres ejecutables, permisos finales o configuracion OpenCode final. | TOM 63-72; CRIT-07; DEC-ACCEPTED-138; RISK-022/023/024. |
+| Control deterministico candidato | Reservar espacio conceptual para scripts/CLI/validators que validen estructura, DoR, trazabilidad, logs/state/evidence y evidencia Odoo cuando sean aprobados. | Implementar scripts, validators reales, schemas fisicos o toolchain final. | TOM 48-55, 351-366; CRIT-07; DEC-ACCEPTED-138; RISK-010. |
+| Estado, logs y evidencia auditable | Separar lo producido por ejecuciones, controles y pruebas para que pueda auditarse y reproducirse. | Storage avanzado, DB compleja, dashboard/UI productizado o evidencia basada solo en chat/prompt. | TOM 48-55, 351-366; S02 AP-06/AP-09; RISK-010. |
+| Politica de fuentes y Knowledge Gap | Registrar distincion conceptual entre fuentes autorizadas, brechas de conocimiento y solicitudes de curacion. | RAG/vector base, ingestion amplia, fuentes no autorizadas por defecto o knowledge governance avanzado. | DEC-ACCEPTED-163; DEC-ACCEPTED-148; TOM 368-383; RISK-048/058/065. |
+| Integracion Odoo 18 / piloto | Reservar el area conceptual que recibira evidencia de ejecucion Odoo 18 para internal requests / simple approvals. | Cambiar el piloto, crear PRD/SDD/backlog, ejecutar entorno Odoo o ampliar integraciones. | TOM 48-55, 351-366; DEC-ACCEPTED-135; DEC-ACCEPTED-162; RISK-059. |
+| Seguridad, permisos y secretos | Mantener los limites conceptuales de permisos OpenCode y tratamiento de secretos para validacion posterior. | Reglas de permisos finales, secrets reales, vault/configuracion o implementacion de seguridad. | TOM 351-366, 368-383; RISK-061; RISK-063. |
+| Spikes y validaciones tecnicas | Conservar incertidumbres que S06/S16 ordenaran y validaran antes de convertirlas en diseno operacional. | Ejecutar spikes o cerrar incertidumbres tecnicas dentro de S04. | TOM 368-383; RISK-018/025/032; RISK-059/061/063. |
+
+##### 4. Relaciones entre zonas
+
+- La fuente de verdad alimenta coordinacion OpenCode, entradas repetibles, controles deterministicos candidatos, politica de fuentes y criterios de evidencia; ninguna zona runtime puede sobrescribirla.
+- La coordinacion OpenCode puede invocar o guiar mecanismos candidatos, pero los resultados que importan para gates deben quedar respaldados por evidencia auditable y trazable.
+- Los controles deterministicos candidatos deben operar sobre estructuras y evidencias aprobadas en secciones posteriores; S04 solo reserva la separacion conceptual.
+- La zona Odoo 18 / piloto recibe necesidades del piloto fijo y devuelve evidencia de ejecucion; no define alcance funcional nuevo.
+- Seguridad, permisos y secretos cruzan OpenCode, controles candidatos y Odoo 18, pero permanecen pendientes de diseno y spikes posteriores.
+- Spikes y validaciones tecnicas gobiernan incertidumbres, no implementan runtime ni convierten placeholders en artefactos aprobados.
+
+##### 5. Handoff a secciones posteriores
+
+- **S05 Source-vs-Runtime Structure:** debe convertir estas zonas conceptuales en separacion source-vs-runtime sin aprobar estructura fisica final.
+- **S06 / S16 Spikes:** deben ordenar validaciones para lenguaje/toolchain de scripts/CLI, entorno Odoo 18, permisos OpenCode, schemas/validators, storage/log convention, source policy/Knowledge Gap, evidence capture y secrets.
+- **S07 / S08 Operating Design y Mechanism Split:** deben mapear agentes, comandos candidatos, scripts/CLI/validators candidatos, reglas/config y skills/playbooks sin crear artefactos ejecutables.
+- **S09 / S10 / S11 / S12:** deben mantener schemas, validators, evidence/storage y source policy como minimos conceptuales hasta que exista decision de implementacion.
+- **S13 / S14 / S15:** deben conservar Odoo 18, seguridad/secrets y piloto interno simple dentro de los limites V1 aprobados.
+
+##### 6. Fuera de alcance y deferred/post-V1
+
+- RAG/base vectorial, broad ingestion, SDK/server core, MCP/plugins, UI/dashboard productizado, CI/CD amplio, storage avanzado, integraciones amplias, multiuser/team avanzado y curation/knowledge governance avanzado permanecen post-V1 o requieren decision owner futura.
+- Cualquier componente sin trazabilidad al context packet debe eliminarse, marcarse post-V1/deferred o registrarse como owner-decision required antes de avanzar.
+
+##### 7. Open Questions / Owner Decisions
+
+- none
+
+##### 8. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, sin owner approval.
+- Todas las zonas propuestas son conceptuales, no finales, no fisicas y trazadas a anchors del context packet.
+- El layout separa autoridad/source, runtime OpenCode, mecanismos candidatos, control deterministico candidato, evidencia/storage/logs, politica de fuentes, Odoo 18/piloto, seguridad/secrets y spikes.
+- OpenCode no queda definido como estado autoritativo, gate final, storage final, politica final ni evidencia suficiente por si solo.
+- No se crean runtime, rutas fisicas finales, archivos ejecutables, agentes ejecutables, comandos reales, schemas fisicos, validators reales, scripts, RAG/base vectorial, SDK/server, backlog, PRD, SDD ni implementacion.
+
+##### 9. Section Output / Handoff
+
+- S04 entrega un layout conceptual candidato para que S05 refine la separacion source-vs-runtime y para que S06+ identifiquen mecanismos, storage/evidence, OpenCode design, Odoo 18, seguridad/secrets y spikes sin convertir categorias en implementacion.
 
 #### 5. Source-vs-Runtime Structure
 
@@ -763,7 +835,7 @@ Acceptance criteria minimos:
 | Iteration 1 | 1 | Blueprint Scope and Non-Goals | approved | approved | none |
 | Iteration 1 | 2 | Architecture Principles | approved | approved | none |
 | Iteration 1 | 3 | V1 / Post-V1 Boundary | approved | approved | none |
-| Iteration 1 | 4 | Runtime Layout Candidate | not-started | not-requested | none |
+| Iteration 1 | 4 | Runtime Layout Candidate | approved | approved | none |
 | Iteration 1 | 5 | Source-vs-Runtime Structure | not-started | not-requested | none |
 | Iteration 1 | 6 | Initial Spike Map | not-started | not-requested | none |
 | Iteration 2 | 7 | OpenCode Operating Design | not-started | not-requested | none |

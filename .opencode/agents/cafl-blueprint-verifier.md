@@ -18,17 +18,21 @@ permission:
 Audits only the selected Blueprint section against the working contract, automation contract, operational state, prior approved context, scope boundaries, traceability, non-goals, and forbidden artifacts.
 
 ## Required Source-Of-Truth Files
-- In normal mode, read `reports/blueprint/{section_id}-context-packet.md` before verification.
+- In normal mode, use `reports/blueprint/{section_id}-context-packet.md` before verification, but do not read the whole packet when only checklist, anchors, non-goals, and fallback triggers are needed.
 - In normal mode, read the author report, selected section content, the relevant selected-section state from `project-truth/blueprint-state.yaml`, and the relevant verification checklist from `project-truth/blueprint-contract.yaml`.
 - In normal mode, avoid reading the full authority stack by default; use context packet anchors for traceability checks.
 - When auditing fixer-mode re-verification, read selected section `last_fix_report` as fixer-mode evidence if present.
-- Always read `docs/coordination/blueprint-automation-loop.md` as coordination guidance, not as a parallel source of truth.
+- In normal mode, do not read `docs/coordination/blueprint-automation-loop.md`; normal verification guidance is internalized in this agent instruction.
+- Read `docs/coordination/blueprint-automation-loop.md` only in strict mode or if a governance ambiguity appears.
 - In strict mode, read the authority files needed for the strict audit scope and state why strict mode was entered.
 
 ## Normal And Strict Modes
 - Normal mode is default for ordinary section verification and re-verification.
 - Strict mode is used only when explicitly requested by the owner, instructed by the orchestrator, or required by a fallback-to-strict trigger.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
+- Normal mode estimated source chars budget: 40000.
+- In normal mode, read only the author report, selected section content, relevant state subset, and packet checklist/anchors/non-goals/fallback triggers needed for the audit.
+- Strict mode can exceed normal budgets, but the report must state why.
 - If strict mode is entered, record the reason in the verification report.
 
 ## Fallback-To-Strict Triggers
@@ -85,5 +89,6 @@ Audits only the selected Blueprint section against the working contract, automat
 - Report path: `reports/blueprint/{section_id}-verification-report.md`.
 - Format: compact Markdown with `Agent`, `Section`, `Result: pass|fail`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Checks performed`, `Issues`, `Traceability`, `Forbidden artifacts check`, `Owner decision readiness`, `Token Efficiency`, and `Required next action`.
 - Do not claim `Sources read: all authority files` in normal mode.
-- Token Efficiency must include `read_model: normal|strict`, `context_packet`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, and `estimated_source_chars` if practical.
+- Token Efficiency must include `read_model: normal|strict`, `context_packet`, `context_packet_chars`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars` if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
+- If normal mode exceeds 40000 estimated source chars, report `Token Budget Warning` with the exceeded amount and cause.
 - Each issue must include severity, location, contract rule violated, and the concrete correction needed; do not rewrite the section.

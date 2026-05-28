@@ -124,6 +124,10 @@ workflow_rules:
     - retroactive_blockers
     - owner_explicit_strict_request
   strict_mode_must_state_reason: true
+  normal_mode_token_budgets:
+    context_packet_max_chars: 15000
+    author_normal_estimated_source_chars_max: 30000
+    verifier_normal_estimated_source_chars_max: 40000
 
 context_rules:
   author_must_read_approved_sections_context_summary: true
@@ -138,26 +142,24 @@ context_rules:
     owner: cafl-blueprint-orchestrator
     path_pattern: reports/blueprint/{section_id}-context-packet.md
     source_status: bounded_execution_context_not_source_of_truth
+    max_chars: 15000
+    compact_packet_not_mini_audit_dossier: true
     generated_from:
       - project-truth_sources
       - approved_prior_context_summary_values
     must_include:
-      - section_id
-      - selected_section_title
-      - iteration
-      - current_status_and_owner_approval
-      - dependencies
-      - prior_approved_context_summary_values
-      - inherited_constraints_from_prior_approved_sections
-      - selected_section_inputs_outputs_restrictions_acceptance_criteria_excerpt
-      - compact_authority_anchors
-      - non_goals_and_forbidden_artifacts
-      - traceability_checklist
+      - section_objective
+      - selected_section_excerpt
+      - dependency_context_summaries
+      - hard_inherited_constraints
+      - required_traceability_anchors
+      - forbidden_moves_non_goals
+      - acceptance_checklist
       - fallback_to_strict_triggers
   normal_mode_read_model:
     orchestrator: targeted_project_truth_excerpts_and_state_contract_slices
-    author: context_packet_selected_section_slice_relevant_state_contract_slices
-    verifier: context_packet_author_report_selected_section_relevant_state_contract_checklist
+    author: compact_context_packet_selected_section_slice_relevant_state_contract_slices_no_coordination_doc
+    verifier: author_report_selected_section_relevant_state_subset_packet_checklist_anchors_non_goals_fallback_triggers_no_coordination_doc
     full_authority_stack_by_default: false
   fallback_to_strict_triggers:
     - packet_cannot_prove_traceability
@@ -196,10 +198,15 @@ reporting:
   token_efficiency_fields:
     - read_model
     - context_packet
+    - context_packet_chars
     - full_sources_read
     - fallback_reason
     - source_files_read_count
     - estimated_source_chars_when_practical
+    - budget_exceeded
+    - budget_exceeded_by_chars
+    - largest_read_source
+    - optimization_recommendation
 
 mvp_agents:
   cafl-blueprint-orchestrator:

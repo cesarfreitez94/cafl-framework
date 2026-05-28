@@ -36,22 +36,24 @@
 
 - `cafl-blueprint-orchestrator`: primary agent; coordinates the loop, selects eligible sections, enforces dependencies and status transitions, routes author/verifier work, detects owner gates, acts as gatekeeper at iteration end, and owns derived status mirror synchronization after explicit owner decisions.
 - `cafl-blueprint-orchestrator` owns the normal-mode section context packet at `reports/blueprint/{section_id}-context-packet.md`.
-- `cafl-blueprint-orchestrator` should avoid full authority-stack reads in normal mode and use targeted excerpts/slices when building the context packet.
-- `cafl-blueprint-orchestrator` reports run-level token efficiency: selected section, mode, packet generated, packet path, full authority fallback count, large repeated reads avoided, and estimated source chars read if practical.
+- `cafl-blueprint-orchestrator` must keep normal-mode packets compact, prefer identifiers and short anchor notes, and avoid full authority-file reads unless a strict trigger is present.
+- `cafl-blueprint-orchestrator` reports run-level token efficiency: selected section, mode, packet generated, packet path, `context_packet_chars`, full authority fallback count, large repeated reads avoided, estimated source chars read if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
 - `cafl-blueprint-orchestrator` must not implement Blueprint section content directly.
 - `cafl-blueprint-orchestrator` may edit `project-truth/implementation-blueprint.md` only in owner-decision/status-sync mode, limited to the selected section `Status` line, selected section `Owner approval` line, and selected section row in `## Blueprint Status Summary`.
 - `cafl-blueprint-orchestrator` must not use status mirror sync permission during authoring or verification routing.
 - `cafl-blueprint-orchestrator` does not write section reports; section reports are owned by author mode, fixer mode, and verifier.
 - `cafl-blueprint-author`: subagent; writes selected section content, keeps content within the selected section, updates required operational state/report fields, and in fixer mode changes only items reported by the verifier.
-- `cafl-blueprint-author` reads the context packet, selected section slice, and relevant state/contract portions in normal mode; it does not read full TOM/decisions/risks by default.
+- `cafl-blueprint-author` reads the compact context packet, selected section slice, and relevant state/contract portions in normal mode; it does not read full TOM/decisions/risks by default.
+- `cafl-blueprint-author` must not read `docs/coordination/blueprint-automation-loop.md` in normal mode; this coordination guidance is internalized in the author agent instructions. It may read the document only in strict mode or if a governance ambiguity appears.
 - `cafl-blueprint-author` escalates to strict mode if the packet lacks a required traceability anchor, conflicts with section content, exposes an owner-decision blocker, lacks `context_summary` for an approved dependency, or the section requires governance/source policy/status semantics changes.
-- `cafl-blueprint-author` reports token efficiency with `read_model`, `context_packet`, `full_sources_read`, `fallback_reason`, `source_files_read_count`, and `estimated_source_chars` if practical.
+- `cafl-blueprint-author` reports token efficiency with `read_model`, `context_packet`, `context_packet_chars`, `full_sources_read`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars`, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation` if practical.
 - `cafl-blueprint-author` may update only the selected section row in `## Blueprint Status Summary`; the summary is a derived mirror and must not be used as operational state.
 - `cafl-blueprint-author` must not verify its own work, self-approve, advance future sections, or change acceptance criteria to pass.
 - `cafl-blueprint-verifier`: subagent; audits section output against contract, inputs, authority order, prior approved context, non-goals, and traceability.
-- `cafl-blueprint-verifier` reads the context packet, author report, selected section content, relevant selected-section state, and contract verification checklist in normal mode; it does not read the full authority stack by default.
+- `cafl-blueprint-verifier` reads the author report, selected section content, relevant selected-section state, contract verification checklist, and only the packet checklist/anchors/non-goals/fallback triggers needed in normal mode; it does not read the full authority stack by default.
+- `cafl-blueprint-verifier` must not read `docs/coordination/blueprint-automation-loop.md` in normal mode; this coordination guidance is internalized in the verifier agent instructions. It may read the document only in strict mode or if a governance ambiguity appears.
 - `cafl-blueprint-verifier` escalates to strict mode if the packet cannot prove traceability, author claims are not covered by the packet, status/owner/gate/source policy/governance semantics changed, forbidden artifact ambiguity appears, a retroactive blocker appears, or the owner explicitly requests strict audit.
-- `cafl-blueprint-verifier` reports token efficiency with `read_model`, `context_packet`, `full_sources_read`, `fallback_reason`, `source_files_read_count`, and `estimated_source_chars` if practical.
+- `cafl-blueprint-verifier` reports token efficiency with `read_model`, `context_packet`, `context_packet_chars`, `full_sources_read`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars`, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation` if practical.
 - `cafl-blueprint-verifier` must confirm any summary change is limited to the selected section row, matches `project-truth/blueprint-state.yaml`, and does not substitute owner approval.
 - `cafl-blueprint-verifier` must not fix issues, implement content, change acceptance criteria, or approve the section.
 - Fixer is author mode. Gatekeeper is orchestrator mode. No separate fixer or gatekeeper agent exists in MVP.
@@ -71,7 +73,9 @@
 ## 5. Context Continuity Rule
 
 - Before authoring a section in normal mode, the orchestrator must generate a section context packet from `project-truth/` sources and approved prior `context_summary` values.
-- The context packet must include section id, selected section title, iteration, current status and owner approval, dependencies, prior approved `context_summary` values, inherited constraints from prior approved sections, selected section input/outputs/restrictions/acceptance criteria excerpt, relevant TOM / accepted decision / rejected/superseded / critical-map / risk anchors as compact excerpts or identifiers, non-goals and forbidden artifacts, traceability checklist, and fallback-to-strict triggers.
+- The normal-mode context packet must stay under 15000 chars and include only section objective, selected section excerpt, dependency context summaries, hard inherited constraints, required traceability anchors, forbidden moves / non-goals, acceptance checklist, and fallback-to-strict triggers.
+- The packet must prefer identifiers and short anchor notes over long excerpts, include only anchors directly relevant to the selected section, and use a compact `additional anchors available on fallback` note if more anchors are needed than fit the budget.
+- The packet must avoid long lists of decisions, long risk catalogs, broad TOM excerpts, repeated coordination rules, and excessive prose.
 - Before authoring a section, the author must read the context packet, selected section inputs in `project-truth/implementation-blueprint.md`, and approved prior `context_summary` values relevant to the selected section.
 - The verifier must check consistency with the context packet, prior approved sections, and the current operational state.
 - After owner approval of a section, the section `context_summary` in `project-truth/blueprint-state.yaml` must be updated so the next section receives compact continuity context.
@@ -81,10 +85,14 @@
 
 - Normal mode is the default for ordinary section authoring and verification.
 - Normal mode uses an orchestrator-owned context packet to avoid repeated full authority-stack reads by orchestrator, author, and verifier.
+- Normal mode budgets are `context_packet_max_chars: 15000`, `author_normal_estimated_source_chars_max: 30000`, and `verifier_normal_estimated_source_chars_max: 40000`.
+- In normal mode, the orchestrator must not read full authority files unless a strict trigger is present.
+- In normal mode, author and verifier must not read `docs/coordination/blueprint-automation-loop.md`; required coordination guidance is internalized in their agent instructions.
 - Strict mode may read full or larger authority sources, but must state why strict mode was entered.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, and owner explicit strict request.
 - Reports must distinguish sources read directly, context packet used, and full-source fallback if any.
 - Normal-mode reports must not claim `Sources read: all authority files`.
+- Normal-mode reports that exceed budget must include `Token Budget Warning`.
 
 ## 7. Verification Rule
 

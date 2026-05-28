@@ -151,16 +151,32 @@ sections:
   S04:
     title: "Runtime Layout Candidate"
     iteration: I1
-    status: not-started
-    owner_approval: not-requested
+    status: approved
+    owner_approval: approved
     iteration_position: 4
     depends_on: [S01, S02, S03]
     fix_iterations: 0
-    last_author_report: null
+    last_author_report: reports/blueprint/S04-author-report.md
     last_fix_report: null
-    last_verification_report: null
+    last_verification_report: reports/blueprint/S04-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual runtime layout candidate for CAFL V1 without
+      approving physical structure or implementation. Candidate zones are source
+      of truth / decision record, OpenCode coordination, repeatable inputs /
+      command candidates, deterministic control candidates, auditable state /
+      logs / evidence, source policy / Knowledge Gap, Odoo 18 pilot integration,
+      security / permissions / secrets, and spikes / technical validations.
+      Invariants: `project-truth/` remains authority; OpenCode is runtime and
+      coordination support, not authoritative state, final gate, final storage,
+      final source policy or sufficient evidence by itself; V1 remains Odoo-only
+      on Odoo 18 for internal requests / simple approvals. Deferred/post-V1 or
+      future-owner-decision items remain RAG/vector base, SDK/server core, broad
+      ingestion, broad integrations, productized dashboard/UI, full CI/CD,
+      advanced storage/DB, MCP/plugins, multiuser/team operation and advanced
+      curation. Handoffs to S05/S06+ are conceptual only; S04 does not create
+      runtime, final paths, executable agents, real commands, physical schemas,
+      real validators, scripts, backlog, PRD, SDD or implementation.
 
   S05:
     title: "Source-vs-Runtime Structure"

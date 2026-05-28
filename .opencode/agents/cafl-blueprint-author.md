@@ -24,7 +24,8 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 - In normal mode, read `reports/blueprint/{section_id}-context-packet.md` before authoring or fixer work.
 - In normal mode, read only the selected section slice from `project-truth/implementation-blueprint.md`, not the full authority stack.
 - In normal mode, read only relevant portions of `project-truth/blueprint-contract.yaml` and `project-truth/blueprint-state.yaml` where possible.
-- Always read `docs/coordination/blueprint-automation-loop.md` as coordination guidance, not as a parallel source of truth.
+- In normal mode, do not read `docs/coordination/blueprint-automation-loop.md`; normal coordination guidance is internalized in this agent instruction.
+- Read `docs/coordination/blueprint-automation-loop.md` only in strict mode or if a governance ambiguity appears.
 - Do not read full `project-truth/TOM.md`, decisions, `critical-map.md`, or `risks.md` by default in normal mode; use the context packet anchors.
 - In strict mode, read the authority files needed for the strict audit scope and state why strict mode was entered.
 
@@ -32,6 +33,9 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 - Normal mode is default for ordinary section authoring and verifier-scoped fixes.
 - Strict mode is used only when explicitly requested by the owner, instructed by the orchestrator, or required by a fallback-to-strict trigger.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
+- Normal mode estimated source chars budget: 30000.
+- In normal mode, stay within the budget by using the compact context packet and selected section slice as the main sources.
+- Strict mode can exceed normal budgets, but the report must state why.
 - If strict mode is entered, record the reason in the author or fix report.
 
 ## Fallback-To-Strict Triggers
@@ -97,5 +101,6 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 - Fixer mode report path: `reports/blueprint/{section_id}-fix-report.md`.
 - Format: compact Markdown with `Agent`, `Mode`, `Section`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Section changes`, `Traceability`, `Open issues`, `State changes`, `Token Efficiency`, and `Verifier handoff`.
 - Do not claim `Sources read: all authority files` in normal mode.
-- Token Efficiency must include `read_model: normal|strict`, `context_packet`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, and `estimated_source_chars` if practical.
+- Token Efficiency must include `read_model: normal|strict`, `context_packet`, `context_packet_chars`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars` if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
+- If normal mode exceeds 30000 estimated source chars, report `Token Budget Warning` with the exceeded amount and cause.
 - In fixer mode, include only `Verifier issue`, `Fix applied`, `Evidence in section`, and `Remaining issue`; do not perform unrelated cleanup.

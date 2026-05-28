@@ -26,8 +26,8 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - Always read `project-truth/blueprint-state.yaml` as operational state.
 - Read `project-truth/blueprint-contract.yaml` as the automation contract, preferring relevant contract portions over full-file rereads when possible.
 - Read `project-truth/implementation-blueprint.md` as the primary working contract, preferring the selected section slice and status summary slice over full-file rereads when possible.
-- Always read `docs/coordination/blueprint-automation-loop.md` as coordination guidance, not as a parallel source of truth.
-- Normal mode must avoid full authority-stack reads unless a targeted authority excerpt is needed to build the context packet.
+- Normal coordination guidance is internalized in this agent instruction; avoid rereading broad coordination guidance during ordinary normal-mode packet generation.
+- Normal mode must avoid full authority-file reads unless a strict trigger is present.
 - Strict mode may read full or larger authority sources, but must state why strict mode was entered.
 
 ## Normal And Strict Modes
@@ -35,6 +35,8 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - Strict mode is used only when explicitly requested by the owner or when a fallback-to-strict trigger fires.
 - Accept short owner requests such as `/blueprint-next strict` or `STRICT S03` as strict-mode requests.
 - Strict mode is required for governance rule changes, source policy changes, owner approval semantics, status semantics, iteration gate closure, final traceability matrix, acceptance criteria closure, retroactive blockers, or explicit owner strict request.
+- Normal mode token budgets: `context_packet_max_chars: 15000`, `author_normal_estimated_source_chars_max: 30000`, `verifier_normal_estimated_source_chars_max: 40000`.
+- Strict mode can exceed normal budgets, but the run output must state why.
 - In normal mode, generate a section context packet before routing `cafl-blueprint-author`.
 
 ## Section Context Packet
@@ -42,8 +44,14 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - The orchestrator owns packet generation.
 - The packet is not a new source of truth; it is bounded execution context for one section run.
 - Generate the packet from `project-truth/` sources and already approved prior `context_summary` values.
-- Use targeted excerpts/slices where possible instead of reading full authority files.
-- The packet must include `section_id`, selected section title, iteration, current status and owner approval, dependencies, prior approved `context_summary` values, inherited constraints from prior approved sections, selected section input/outputs/restrictions/acceptance criteria excerpt, relevant TOM / accepted decision / rejected/superseded / critical-map / risk anchors as compact excerpts or identifiers, non-goals and forbidden artifacts, traceability checklist, and fallback-to-strict triggers.
+- In normal mode, keep the packet under 15000 chars and make it a compact execution packet, not a mini audit dossier.
+- Include only: section objective, selected section excerpt, dependency context summaries, hard inherited constraints, required traceability anchors, forbidden moves / non-goals, acceptance checklist, and fallback-to-strict triggers.
+- Prefer identifiers and short anchor notes over long excerpts.
+- Include only anchors directly relevant to the selected section.
+- If more anchors are needed than fit the budget, add a compact `additional anchors available on fallback` note instead of expanding the packet.
+- Avoid long decision lists, long risk catalogs, broad TOM excerpts, repeated coordination rules, and excessive prose.
+- Do not read full authority files unless a strict trigger is present; use targeted excerpts/slices or existing approved context summaries in normal mode.
+- Record `context_packet_chars` in the run output.
 
 ## Fallback-To-Strict Triggers
 - Packet cannot prove required traceability.
@@ -115,5 +123,6 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - No section routing report file is permitted.
 - Format: compact Markdown with `Agent`, `Mode`, `Selected item`, `State read`, `Decision`, `State changes`, `Blocked by`, `Token Efficiency`, and `Next handoff`.
 - In any run-level response or gate report, distinguish sources read directly, context packet used, and full-source fallback if any.
-- Token Efficiency must include selected section, mode, packet generated, packet path, full authority fallback count, large repeated reads avoided, and estimated source chars read if practical.
+- Token Efficiency must include selected section, mode, packet generated, packet path, `context_packet_chars`, full authority fallback count, large repeated reads avoided, estimated source chars read if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
+- If any normal-mode budget is exceeded, report `Token Budget Warning` with the exceeded budget and reason.
 - If blocked, report the blocker concretely and do not route further work.
