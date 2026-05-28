@@ -1,6 +1,7 @@
 ---
 description: Verifies selected CAFL Blueprint sections without fixing, approving, or closing them.
 mode: subagent
+hidden: true
 permission:
   bash: deny
   webfetch: deny

@@ -1,6 +1,6 @@
 ---
 description: Coordinates the CAFL Blueprint Automation Loop and owner-gated state transitions.
-mode: subagent
+mode: primary
 permission:
   bash: deny
   webfetch: deny

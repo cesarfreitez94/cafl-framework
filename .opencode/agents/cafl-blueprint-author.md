@@ -1,6 +1,7 @@
 ---
 description: Authors selected CAFL Blueprint sections and verifier-scoped fixes only.
 mode: subagent
+hidden: true
 permission:
   bash: deny
   webfetch: deny
