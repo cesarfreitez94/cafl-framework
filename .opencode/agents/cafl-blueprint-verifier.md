@@ -2,6 +2,7 @@
 description: Verifies selected CAFL Blueprint sections without fixing, approving, or closing them.
 mode: subagent
 hidden: true
+model: openai/gpt-5.5
 permission:
   bash: deny
   webfetch: deny

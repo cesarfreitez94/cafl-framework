@@ -1,6 +1,7 @@
 ---
 description: Coordinates the CAFL Blueprint Automation Loop and owner-gated state transitions.
 mode: primary
+model: opencode-go/deepseek-v4-pro
 permission:
   bash: deny
   webfetch: deny

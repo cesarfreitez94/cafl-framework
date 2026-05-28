@@ -1,6 +1,6 @@
 # CAFL V1 Implementation Blueprint Working Contract
 
-Status: working-contract-created__iteration-01-not-started
+Status: iteration-01-closed__iteration-02-ready
 
 Metodologia: Contract-Driven + ADRs ligeros + Ordered Spike-Driven Validation + Walking Skeleton + Risk-Based V1 Scoping + Bidirectional Traceability Matrix
 
@@ -128,7 +128,7 @@ El Blueprint completo queda approved si y solo si:
 
 ##### 1. Status
 
-Status: approved
+Status: closed
 
 Owner approval: approved explicitly by owner.
 
@@ -227,7 +227,7 @@ Esta seccion funciona como guardrail para las secciones futuras. No disena runti
 
 ##### 1. Status
 
-Status: approved
+Status: closed
 
 Owner approval: approved explicitly by owner.
 
@@ -303,7 +303,7 @@ Los principios son vinculantes para el Blueprint: cualquier componente posterior
 
 #### 3. V1 / Post-V1 Boundary
 
-Status: approved
+Status: closed
 
 Owner approval: approved explicitly by owner.
 
@@ -399,7 +399,7 @@ Acceptance criteria minimos:
 
 #### 4. Runtime Layout Candidate
 
-Status: approved
+Status: closed
 
 Owner approval: approved explicitly by owner.
 
@@ -493,47 +493,194 @@ Las siguientes zonas son categorias logicas no finales. No son rutas, paquetes, 
 
 #### 5. Source-vs-Runtime Structure
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved explicitly by owner.
 
-- Seccion 4 de la iteracion correspondiente.
-- Reglas aprobadas sobre fuente de verdad, estado autoritativo y runtime.
+##### 1. Proposito y alcance
 
-Outputs esperados:
+- Definir la separacion conceptual entre source autoritativo y runtime de asistencia para CAFL V1, usando el layout candidato de S04 sin convertirlo en estructura fisica.
+- Mantener `project-truth/` como fuente de verdad unica para autoridad, decisiones, estado aprobado y trazabilidad; ningun resultado runtime puede reemplazarlo ni duplicarlo.
+- Alimentar S06+ con limites claros para spikes, mecanismos, evidencia/storage, OpenCode, Odoo 18, seguridad/secrets y source policy sin crear artefactos ejecutables.
 
-- Separacion source-vs-runtime para alimentar secciones posteriores.
+##### 2. Entradas trazables
 
-Restricciones especificas:
+| Entrada | Uso en S05 | Trazabilidad |
+| --- | --- | --- |
+| S04 Runtime Layout Candidate | Convertir zonas candidatas en responsabilidades source-vs-runtime conceptuales. | S04 handoff; TOM 351-366; CRIT-06/CRIT-07. |
+| Reglas de autoridad `project-truth/` | Proteger fuente de verdad, decision record, estado operativo aprobado y trazabilidad. | DEC-ACCEPTED-001; S01; S02 AP-01/AP-02/AP-06. |
+| Modelo OpenCode V1 | Ubicar OpenCode como asistencia de coordinacion/runtime, no como autoridad. | DEC-ACCEPTED-028/136; TOM 79-93; S02 AP-03/AP-04. |
+| Politica minima de fuentes | Separar fuentes autorizadas, Knowledge Gap y solicitudes de curacion de outputs runtime. | DEC-ACCEPTED-163; TOM 206-246; S03. |
+| Limites V1 y piloto | Restringir la separacion a Odoo 18, OpenCode y piloto internal requests / simple approvals. | DEC-ACCEPTED-135/162/164; TOM 48-55; S03. |
 
-- No recrear `framework/` ni usarlo como referencia.
-- No crear estructura fisica runtime.
+##### 3. Separacion source-vs-runtime
 
-Acceptance criteria minimos:
+| Categoria conceptual | Lado source / autoridad | Lado runtime / asistencia | Regla de separacion | Trazabilidad |
+| --- | --- | --- | --- | --- |
+| Fuente de verdad y decisiones | `project-truth/` conserva decisiones aceptadas, pendientes, riesgos, TOM, blueprint/state aprobados y trazabilidad oficial. | OpenCode, comandos candidatos o sesiones pueden ayudar a leer, resumir o preparar cambios. | Todo cambio de autoridad requiere registro trazable en `project-truth/`; resumentes o chats no son autoridad. | DEC-ACCEPTED-001; RISK-011; S01/S02. |
+| Estado operativo y gates | El estado aprobado, owner approval y cierre de gates viven solo en el estado/working contract gobernado. | Runtime puede producir reportes, logs o handoffs para revision. | Ningun agente, reporte o output runtime aprueba, cierra ni cambia semanticas de estado por si mismo. | TOM 79-93; approval rules; RISK-006. |
+| Coordinacion OpenCode | Las reglas aprobadas definen que puede coordinarse y que requiere decision. | OpenCode coordina tareas, contexto y asistencia de razonamiento. | OpenCode es soporte primario de runtime, no final storage, policy, gate, evidence suficiente ni source of truth. | DEC-ACCEPTED-028/136; S02 AP-03/AP-04. |
+| Inputs repetibles y comandos candidatos | La autoridad define criterios, alcance y trazabilidad esperada. | Prompts/commands candidatos pueden estructurar ejecuciones futuras. | S05 no aprueba comandos reales, agentes ejecutables, permission rules ni configuracion OpenCode. | DEC-ACCEPTED-138; TOM 351-366; S04. |
+| Control deterministico candidato | La autoridad define necesidad de DoR, trazabilidad, estructura, logs/evidencia y fuente minima. | Scripts/CLI/validators candidatos podrian comprobar reglas en fases posteriores. | Los validadores siguen siendo direccion conceptual; no se crean schemas, scripts ni validadores reales. | DEC-ACCEPTED-145; TOM 48-55/79-93; RISK-022/023/024. |
+| Evidencia candidata, logs y reportes | La evidencia solo se vuelve relevante para autoridad cuando queda trazada y registrada bajo gobierno aprobado. | Ejecuciones, reportes de agente, logs, outputs de comandos o evidencia Odoo pueden proponer evidencia. | La evidencia runtime es candidata hasta su registro trazable; chat/prompt por si solo no basta. | TOM 48-55/351-366; S02 AP-06/AP-09; RISK-006. |
+| Source policy y Knowledge Gap | Fuentes base autorizadas: documentacion oficial Odoo y GitHub oficial `odoo/odoo`; excepciones requieren curacion/owner approval. | Runtime puede detectar brechas, preparar Curation Requests o citar fuentes autorizadas. | No hay free web, RAG/vector ni expansion de fuentes por default en V1. | DEC-ACCEPTED-163; TOM 206-246; RISK-043/052/054/062. |
+| Odoo 18 y piloto | El alcance aprobado fija Odoo 18 e internal requests / simple approvals. | Runtime puede asistir pruebas, preparacion de evidencia y observaciones del piloto. | La separacion no crea PRD, SDD, backlog, entorno Odoo ni implementacion; no cambia el piloto. | DEC-ACCEPTED-135/162; TOM 48-55; S03/S04. |
+| Seguridad, permisos y secretos | Las restricciones aprobadas definen que secretos/permisos requieren validacion posterior. | Runtime puede identificar necesidades y riesgos de permisos/secrets. | No se definen reglas finales de permisos, vault, secretos reales ni configuracion. | TOM 351-366; S04; RISK-061/063. |
+| Spikes e incertidumbres | Los riesgos y decisiones aprobadas determinan que incertidumbres requieren validacion. | Runtime puede preparar propuestas de spike para S06/S16. | S05 no ejecuta spikes ni cierra incertidumbres tecnicas. | TOM 368-383; S04; RISK-020/025. |
 
-- La separacion queda trazable y no duplica fuentes de verdad.
+##### 4. Reglas de flujo entre source y runtime
+
+- **Source a runtime:** el source autorizado entrega alcance, decisiones, restricciones, criterios de evidencia, fuente minima y estado permitido; runtime solo opera dentro de esos limites.
+- **Runtime a source:** los outputs runtime regresan como candidatos: evidencia candidata, hallazgos, logs, reportes, propuestas de cambios, Curation Requests o owner-decision blockers.
+- **Registro autoritativo:** un output runtime solo impacta autoridad cuando una seccion, decision, riesgo, estado o reporte permitido lo incorpora con trazabilidad y aprobacion aplicable.
+- **Conflictos:** si un output runtime contradice `project-truth/`, prevalece `project-truth/` hasta decision owner; el conflicto se registra, no se resuelve por juicio del agente.
+- **Minimalidad:** la separacion usa categorias conceptuales, no rutas finales, arboles de carpetas, schemas, validators, scripts, comandos ni configuracion.
+
+##### 5. Controles anti-duplicacion
+
+- No crear un segundo registro de decisiones, estado, owner approval, gates, risks o source policy fuera de `project-truth/`.
+- Los reportes de autor/verifier, logs y outputs de comandos son evidencia o trazas auxiliares; no son fuente de verdad paralela.
+- La asistencia OpenCode no puede declarar una seccion aprobada, cerrar una iteracion, cambiar owner approval ni redefinir politicas.
+- Si una categoria runtime necesita autoridad nueva, debe quedar como owner-decision required o deferred/post-V1, no como regla implicita de S05.
+
+##### 6. Fuera de alcance y deferred/post-V1
+
+- RAG/base vectorial, SDK/server core, advanced DB/storage, dashboard/UI productizado, CI/CD amplio, MCP/plugins, broad ingestion, broad integrations, multiuser/team avanzado y advanced curation permanecen fuera de V1 core o requieren decision owner futura.
+- S05 no crea runtime, estructura fisica final, rutas, archivos, agentes ejecutables, commands reales, schemas, validators, scripts, PRD, SDD, backlog, Odoo environment, secretos ni implementacion.
+- `framework/` no se usa ni se recrea como entrada, ejemplo o fuente de migracion.
+
+##### 7. Handoff a secciones posteriores
+
+- **S06 / S16:** ordenar spikes para validar incertidumbres sin ejecutar implementacion.
+- **S07 / S08:** mapear mecanismos OpenCode, agentes, comandos candidatos, scripts/CLI/validators candidatos y reglas/playbooks manteniendo la separacion autoridad-runtime.
+- **S09 / S10 / S11:** definir schemas, validators y state/log/evidence storage minimos como conceptos trazables antes de cualquier implementacion.
+- **S12:** concretar source policy / Knowledge Gap sin RAG/vector ni fuentes libres por default.
+- **S13 / S14 / S15:** mantener Odoo 18, seguridad/secrets y piloto interno simple dentro del alcance V1 aprobado.
+
+##### 8. Open Questions / Owner Decisions
+
+- none
+
+##### 9. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, sin owner approval.
+- La separacion source-vs-runtime es conceptual, trazable y no crea estructura fisica runtime.
+- Autoridad, decisiones, estado, owner approval, gates y source policy permanecen en `project-truth/` y no se duplican.
+- Runtime assistance, mecanismos candidatos, evidencia candidata, logs y reportes quedan subordinados a registro trazable y aprobacion aplicable.
+- OpenCode no queda definido como estado autoritativo, gate final, storage final, politica final ni evidencia suficiente por si solo.
+- No se introducen runtime, rutas fisicas finales, agentes ejecutables, commands reales, schemas fisicos, validators reales, scripts, RAG/base vectorial, SDK/server, backlog, PRD, SDD, Odoo environment, secretos ni implementacion.
 
 #### 6. Initial Spike Map
 
-Status: not-started
+##### 1. Status
 
-Inputs esperados:
+Status: closed
 
-- Secciones 1 a 5 de la iteracion correspondiente.
-- Riesgos aceptados y technical validations/spikes registrados en TOM.
+Owner approval: approved explicitly by owner.
 
-Outputs esperados:
+##### 2. Purpose
 
-- Mapa inicial de spikes para alimentar orden final de validaciones.
+Esta seccion define el mapa inicial de spikes tecnicos de CAFL V1 para que S16 pueda convertirlo en orden final de validaciones. El mapa no ejecuta spikes, no cierra incertidumbres fisicas y no autoriza implementacion; solo organiza dependencias, criterios de precedencia y trazabilidad minima hacia TOM, riesgos aceptados y decisiones aceptadas.
 
-Restricciones especificas:
+El objetivo es evitar que las incertidumbres registradas por S01-S05 se conviertan en diseno operacional prematuro. Cada spike queda ubicado dentro de una cadena de dependencia: primero se protegen alcance, seguridad y source policy; luego se validan capacidades del runtime OpenCode y el ciclo Odoo 18; despues se ordenan toolchains de control/evidencia; finalmente se dejan como condicionales las capacidades fuera del core V1.
 
-- No ejecutar spikes.
-- No dejar spikes como lista plana cuando la seccion sea elaborada.
+##### 3. Scope / Inputs
 
-Acceptance criteria minimos:
+Entradas usadas para este mapa:
 
-- Cada spike esperado queda vinculado a riesgo, decision o dependencia sin ejecutarse.
+- S01-S05 aprobadas: scope V1 Odoo-only sobre Odoo 18, OpenCode como runtime primario, piloto interno de solicitudes/aprobaciones simples, `project-truth/` como autoridad, `framework/` excluido y post-V1 diferido.
+- TOM technical validations/spikes TOM-S01..TOM-S14.
+- Riesgos aceptados vinculados a OpenCode, Odoo 18, source policy, evidencia, seguridad/secrets, testing minimo, token budget y anti-scope-creep.
+- Decisiones aceptadas DEC-ACCEPTED-049/050, 135, 142/143, 149/164, 153 y 158.
+
+Fuera de alcance:
+
+- Ejecutar spikes, registrar resultados tecnicos o cerrar incertidumbres.
+- Crear runtime, agents ejecutables, commands reales, schemas fisicos, validators reales, scripts, RAG/base vectorial, backlog, PRD, SDD o implementacion.
+- Reabrir OpenCode como runtime primario, Odoo 18 como target V1, piloto confirmado, source policy minima o limites V1/post-V1.
+- Usar `framework/` como input o referencia.
+
+##### 4. Initial Spike Map
+
+El mapa se organiza por bandas de dependencia. Las bandas expresan precedencia conceptual para S16; no son fases de ejecucion aprobada. Un spike posterior no debe cerrarse antes de que sus precondiciones hayan sido validadas o registradas como excepcion/owner decision.
+
+| Banda | Razon de precedencia | Spikes incluidos | Dependencias hacia bandas posteriores |
+| --- | --- | --- | --- |
+| A. Guardrails de alcance, fuentes y seguridad | Evita validar capacidades sobre supuestos prohibidos o inseguros. | SP-01, SP-02, SP-03 | Condiciona OpenCode, evidence, Odoo y toolchains. |
+| B. Capacidades base de OpenCode y Odoo 18 | Valida los dos ejes operativos de V1 antes de seleccionar mecanismos de control. | SP-04, SP-05, SP-06 | Alimenta schemas/validators, comandos/skills candidatos y ciclo evidenciable. |
+| C. Toolchain conceptual de control y evidencia | Solo tiene sentido despues de saber que fuente, runtime y Odoo minimo son viables. | SP-07, SP-08, SP-09, SP-10 | Alimenta diseno operativo posterior y criterios de verificabilidad. |
+| D. Condicionales anti-scope-creep | No bloquean el core V1 salvo decision futura; se mantienen separados para no contaminar el orden base. | SP-11, SP-12, SP-13 | Solo S16 puede ubicarlos como condicionales con decision owner si aplica. |
+
+###### Banda A — Guardrails de alcance, fuentes y seguridad
+
+| ID | Spike conceptual | Dependencias / orden | TOM anchors | Riesgos | Decisiones aceptadas |
+| --- | --- | --- | --- | --- | --- |
+| SP-01 | Validar enforcement minimo de source policy y Knowledge Gap sin RAG/vector: como detectar fuente faltante, version oficial o gap antes de usar informacion tecnica. | Primero: si la fuente no es gobernable, los demas spikes pueden producir conclusiones no trazables. | TOM-S08, TOM-S09 | RISK-006, RISK-043, RISK-044, RISK-045, RISK-050, RISK-058 | DEC-ACCEPTED-158; limites de source policy aprobados por S01-S05. |
+| SP-02 | Validar postura minima de secrets: como impedir que tokens, credenciales y secretos Odoo entren en repo, logs o evidencia. | Antes de OpenCode/Odoo/evidence porque esos spikes pueden tocar credenciales o logs. | TOM-S12 | RISK-063 | DEC-ACCEPTED-158; guardrails S01-S05 sobre seguridad/secrets. |
+| SP-03 | Validar frontera V1/post-V1 para capacidades condicionales antes de considerarlas en cualquier spike operacional. | Depende de SP-01 y SP-02; bloquea que SDK/server, OpenAPI/PDF, UI/OWL o Playwright entren como V1 por arrastre tecnico. | TOM-S05, TOM-S13, TOM-S14 | RISK-058, RISK-065, RISK-047 | DEC-ACCEPTED-149, DEC-ACCEPTED-164, DEC-ACCEPTED-158. |
+
+###### Banda B — Capacidades base de OpenCode y Odoo 18
+
+| ID | Spike conceptual | Dependencias / orden | TOM anchors | Riesgos | Decisiones aceptadas |
+| --- | --- | --- | --- | --- | --- |
+| SP-04 | Validar capacidades y limites de permisos OpenCode requeridos para operar V1 sin convertir OpenCode en autoridad, gate final o evidencia suficiente por si solo. | Depende de SP-01/SP-02; precede commands/skills y token-routing porque permisos condicionan que mecanismos pueden existir. | TOM-S03 | RISK-020, RISK-025, RISK-061, RISK-018, RISK-032 | DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-158. |
+| SP-05 | Validar diseno candidato de commands/skills OpenCode sin crearlos ni ejecutarlos: entradas, salidas y limites conceptuales. | Depende de SP-04; precede split agents/commands/scripts/validators de S08 y toolchain de control. | TOM-S04 | RISK-020, RISK-025, RISK-018 | DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-158. |
+| SP-06 | Validar forma minima del entorno Odoo 18 y ciclo install/update/test como incertidumbre tecnica, sin construir entorno. | Corre despues de secrets y source policy; precede evidencia end-to-end y cualquier seleccion de toolchain que dependa de Odoo. | TOM-S02, TOM-S10 | RISK-059, RISK-010, RISK-039 | DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-158. |
+
+###### Banda C — Toolchain conceptual de control y evidencia
+
+| ID | Spike conceptual | Dependencias / orden | TOM anchors | Riesgos | Decisiones aceptadas |
+| --- | --- | --- | --- | --- | --- |
+| SP-07 | Validar criterios de lenguaje/toolchain para scripts/CLI candidatos, comparando facilidad local, JSON/YAML/JSONL, integracion Odoo, velocidad, mantenibilidad y friccion con OpenCode. | Depende de SP-04, SP-05 y SP-06; no selecciona lenguaje final antes de conocer runtime/permisos/Odoo. | TOM-S01 | RISK-060, RISK-020 | DEC-ACCEPTED-142, DEC-ACCEPTED-143, DEC-ACCEPTED-158. |
+| SP-08 | Validar toolchain conceptual para schemas/validators sin crear schemas fisicos ni validators reales. | Depende de SP-07 y de las necesidades de evidencia/control derivadas de SP-04..SP-06. | TOM-S06 | RISK-010, RISK-006 | DEC-ACCEPTED-158; trazabilidad S01-S05. |
+| SP-09 | Validar convencion simple, auditable y Git-compatible para storage/logs como criterio conceptual, separada de chat/prompts. | Depende de SP-01 y se coordina con SP-08; precede evidencia final porque define donde podria registrarse control verificable. | TOM-S07 | RISK-006, RISK-010 | DEC-ACCEPTED-158; S04/S05 source-vs-runtime. |
+| SP-10 | Validar captura de evidencia reproducible y separable de prompts/chat para ciclo Odoo 18 minimo. | Depende de SP-06, SP-08 y SP-09; no puede cerrarse antes de conocer Odoo minimo y convencion de control/evidencia. | TOM-S10, TOM-S11 | RISK-010, RISK-039, RISK-006 | DEC-ACCEPTED-153, DEC-ACCEPTED-158. |
+
+###### Banda D — Condicionales anti-scope-creep
+
+| ID | Spike conceptual | Dependencias / orden | TOM anchors | Riesgos | Decisiones aceptadas |
+| --- | --- | --- | --- | --- | --- |
+| SP-11 | Evaluar SDK/server solo como capacidad no core V1 y solo si una decision owner futura lo solicita tras spike favorable. | Depende de SP-03; no bloquea core V1 ni se mezcla con OpenCode baseline. | TOM-S05 | RISK-058, RISK-065 | DEC-ACCEPTED-149, DEC-ACCEPTED-164, DEC-ACCEPTED-158. |
+| SP-12 | Evaluar OpenAPI/PDF processing solo si una decision futura de alcance lo requiere. | Depende de SP-01/SP-03 para evitar fuente no oficial o interpretacion no trazable. | TOM-S13 | RISK-047, RISK-065, RISK-043 | DEC-ACCEPTED-158; limites V1/post-V1 de S01-S05. |
+| SP-13 | Evaluar Frontend/OWL/Playwright solo si aparece requisito piloto aprobado que lo justifique. | Depende de SP-03 y de decision owner/piloto; no forma parte del core V1 por defecto. | TOM-S14 | RISK-065 | DEC-ACCEPTED-158; piloto V1 confirmado por S01-S05. |
+
+##### 5. Ordering Rationale
+
+- **A antes de B:** source policy, Knowledge Gap y secrets son precondiciones de seguridad/trazabilidad. Sin ellas, un resultado de OpenCode, Odoo o evidencia puede ser no reproducible, no versionado o inseguro.
+- **B antes de C:** permisos y commands/skills candidatos de OpenCode, junto con la viabilidad del entorno Odoo 18, determinan que toolchain de scripts/CLI, schemas/validators, storage/logs y evidencia puede ser razonable validar despues.
+- **C antes de cierre de orden final:** S16 necesitara saber que validaciones de control/evidencia dependen de lenguaje, schemas, storage y ciclo Odoo minimo para ordenar ejecucion real sin convertir este mapa en implementacion.
+- **D separada del core:** SDK/server, OpenAPI/PDF y UI/OWL/Playwright son condicionales o post-V1. Mantenerlos fuera de la ruta base preserva AP-08/anti-scope-creep y evita que una validacion opcional bloquee el core V1.
+
+##### 6. Handoff to S16
+
+S16 debe tomar este mapa como input inicial y producir el orden final de validaciones tecnicas. Para cada spike, S16 debera conservar o ajustar:
+
+- precondiciones y dependencias entre bandas;
+- trazabilidad TOM/riesgo/decision;
+- condicion V1 core versus condicional/post-V1;
+- criterios para registrar resultado posterior sin crear implementacion dentro del Blueprint;
+- cualquier owner decision requerida para capacidades condicionales.
+
+S16 no debe interpretar esta seccion como ejecucion, resultado favorable, seleccion de toolchain, aprobacion de runtime fisico ni autorizacion para crear artefactos ejecutables.
+
+##### 7. Open Questions
+
+- Ningun blocker owner nuevo se detecta en esta seccion.
+- Las capacidades SP-11, SP-12 y SP-13 quedan explicitamente condicionadas a decision futura o requisito piloto aprobado; no bloquean la ruta base de V1.
+- El detalle exacto de criterios de exito/fallo de cada spike queda para S16 o secciones operativas posteriores, sin ejecutarlos aqui.
+
+##### 8. Acceptance Criteria
+
+- Cada spike esta vinculado a al menos un TOM anchor y a riesgos/decisiones aceptadas o dependencia explicita.
+- El mapa no es una lista plana: contiene bandas, precedencias y dependencias justificadas.
+- Ningun spike se ejecuta ni se marca como cerrado.
+- Ningun artefacto prohibido es creado o especificado como implementacion.
+- Las capacidades post-V1 o condicionales quedan separadas de la ruta core V1 y sujetas a owner decision cuando aplique.
+- `framework/` permanece excluido como input y referencia.
+
+##### 9. Section Output
+
+La salida de S06 es un mapa inicial de 13 spikes conceptuales ordenados por dependencias en cuatro bandas: guardrails, capacidades base OpenCode/Odoo 18, toolchain conceptual de control/evidencia y condicionales anti-scope-creep. Este mapa queda listo para verificacion y para alimentar S16 sin ejecutar validaciones ni cerrar incertidumbres tecnicas.
 
 ### Iteration 2 - Diseno operativo de mecanismos
 
@@ -832,12 +979,12 @@ Acceptance criteria minimos:
 
 | Iteracion | Numero de seccion | Nombre de seccion | Status | Owner approval | Blocker retroactivo detectado |
 | --- | --- | --- | --- | --- | --- |
-| Iteration 1 | 1 | Blueprint Scope and Non-Goals | approved | approved | none |
-| Iteration 1 | 2 | Architecture Principles | approved | approved | none |
-| Iteration 1 | 3 | V1 / Post-V1 Boundary | approved | approved | none |
-| Iteration 1 | 4 | Runtime Layout Candidate | approved | approved | none |
-| Iteration 1 | 5 | Source-vs-Runtime Structure | not-started | not-requested | none |
-| Iteration 1 | 6 | Initial Spike Map | not-started | not-requested | none |
+| Iteration 1 | 1 | Blueprint Scope and Non-Goals | closed | approved | none |
+| Iteration 1 | 2 | Architecture Principles | closed | approved | none |
+| Iteration 1 | 3 | V1 / Post-V1 Boundary | closed | approved | none |
+| Iteration 1 | 4 | Runtime Layout Candidate | closed | approved | none |
+| Iteration 1 | 5 | Source-vs-Runtime Structure | closed | approved | none |
+| Iteration 1 | 6 | Initial Spike Map | closed | approved | none |
 | Iteration 2 | 7 | OpenCode Operating Design | not-started | not-requested | none |
 | Iteration 2 | 8 | Agents / Commands / Scripts / Validators Split | not-started | not-requested | none |
 | Iteration 3 | 9 | Schemas V1 Minimum Set | not-started | not-requested | none |
