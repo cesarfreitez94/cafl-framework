@@ -126,25 +126,102 @@ El Blueprint completo queda approved si y solo si:
 
 #### 1. Blueprint Scope and Non-Goals
 
-Status: not-started
+##### 1. Status
 
-Inputs esperados:
+Status: approved
 
-- TOM aprobado y decisiones aceptadas relacionadas con alcance y limites.
-- Reglas globales de este working contract.
+Owner approval: approved explicitly by owner.
 
-Outputs esperados:
+##### 2. Purpose
 
-- Alcance y non-goals del Blueprint para alimentar secciones posteriores.
+Esta seccion define el alcance externo y los non-goals del Implementation Blueprint V1. Su proposito es fijar que es el Blueprint dentro de CAFL V1, que debe transformar desde el TOM aprobado hacia diseno tecnico/conceptual y que limites no puede cruzar durante su elaboracion.
 
-Restricciones especificas:
+El Implementation Blueprint es el artefacto principal post-TOM para convertir el modelo operativo aprobado en decisiones de diseno tecnico trazables, validaciones tecnicas planificadas y salidas controladas hacia backlog posterior. No reemplaza `project-truth/`, no aprueba backlog y no autoriza implementacion.
 
-- No reabrir CRIT-01..07, TOM ni piloto V1.
-- No crear backlog ni implementacion.
+Esta seccion funciona como guardrail para las secciones futuras. No disena runtime layout en detalle, source-vs-runtime structure, OpenCode operating design, split de agents/commands/scripts/validators, schemas, validators, storage, KB, source policy implementation, entorno Odoo, security, pilot module, spikes, traceability matrix ni backlog categories.
 
-Acceptance criteria minimos:
+##### 3. Scope
 
-- La seccion queda trazable a fuentes autorizadas y no introduce componentes sin respaldo.
+- El Blueprint debe transformar el TOM aprobado, CRIT-01..07 approved y decisiones aceptadas en diseno tecnico/conceptual de CAFL V1 sin reabrirlos.
+- El Blueprint debe mantener `project-truth/` como fuente de verdad aprobada y `project-truth/implementation-blueprint.md` como artefacto principal del Blueprint.
+- El Blueprint debe preservar el scope V1 aprobado: CAFL opera sobre OpenCode, dominio Odoo, target V1 Odoo 18, flujo end-to-end verificable y piloto V1 confirmado de solicitudes internas / aprobaciones simples.
+- El Blueprint debe disenar, solo en las secciones asignadas, la traduccion tecnica/conceptual del TOM hacia principios de arquitectura, limite V1/post-V1, runtime layout candidate, source-vs-runtime structure, mecanismos OpenCode, split de mecanismos, schemas/validators conceptuales, storage, source policy implementation, entorno Odoo 18, security/secrets, soporte del piloto, spikes, trazabilidad y acceptance criteria.
+- El Blueprint debe planificar technical validations/spikes requeridos por TOM, decisiones aceptadas y riesgos, sin ejecutarlos.
+- El Blueprint debe preparar salidas hacia backlog posterior solo como categorias de trabajo cuando llegue la seccion 18, no como tareas detalladas.
+- El Blueprint debe mantener la source policy minima pre-autorizada: documentacion oficial Odoo y repositorio oficial GitHub `odoo/odoo`.
+- El Blueprint debe reconocer que SDK/server queda fuera de core V1 y que RAG/base vectorial queda fuera de V1.
+- El Blueprint debe instanciar el diseno sobre el piloto confirmado sin crear PRD final, SDD final ni backlog funcional del piloto.
+
+##### 4. Non-Goals
+
+- El Blueprint no reabre CRIT-01..07, el TOM approved, la seleccion del piloto V1, Odoo 18 como target V1, la source policy minima pre-autorizada ni SDK/server fuera de core V1.
+- El Blueprint no crea runtime.
+- El Blueprint no crea backlog tecnico detallado.
+- El Blueprint no implementa modulo Odoo.
+- El Blueprint no crea PRD final ni SDD final del piloto.
+- El Blueprint no crea agents ejecutables, commands reales, schemas fisicos, validators reales ni scripts.
+- El Blueprint no configura OpenCode ni crea permisos, plugins, MCP, skills ejecutables o tooling real.
+- El Blueprint no crea RAG/base vectorial y no carga toda la documentacion desde el dia 1.
+- El Blueprint no usa `framework/` como input, referencia, evidencia secundaria, layout base, fuente de agents, commands, contracts, gates, schemas, validators, runtime ni knowledge base.
+- El Blueprint no crea CRIT-08, no recrea `framework/` y no crea documentos paralelos que compitan con `project-truth/`.
+- Esta seccion no adelanta decisiones tecnicas fisicas que corresponden a secciones futuras del Blueprint.
+
+##### 5. Fixed Decisions
+
+- CRIT-01..07 estan completos y approved; no se reabren en el Blueprint.
+- El TOM esta approved por DEC-ACCEPTED-161; el Blueprint lo usa como input directo y no lo reabre.
+- `project-truth/` sigue siendo la fuente de verdad aprobada; el repo previo y `framework/` no son autoridad de diseno.
+- CAFL V1 es Odoo-only y el target V1 es Odoo 18.
+- OpenCode es runtime principal y CAFL V1 usa un modelo hibrido progresivo; V1 no es agents-only ni puramente manual o solo narrativa.
+- El piloto V1 confirmado es solicitudes internas / aprobaciones simples por DEC-ACCEPTED-162; el Blueprint no reabre su seleccion.
+- La source policy minima pre-autorizada por DEC-ACCEPTED-163 es documentacion oficial Odoo y repositorio oficial GitHub `odoo/odoo`; cualquier otra fuente requiere Curation Request y aprobacion antes de usarse para disenar o implementar.
+- SDK/server queda fuera de core V1 por DEC-ACCEPTED-164; solo puede entrar con spike favorable posterior y decision explicita del owner.
+- RAG/base vectorial no queda aprobado para V1 y se difiere a V2/post-V1 salvo decision futura explicita.
+- Despliegue productivo real, integraciones externas reales por defecto, dashboard/UI del framework, CI/CD completo, DB avanzada, multiusuario/equipo, plugins/MCP y curation avanzada no forman parte del core V1.
+
+##### 6. Deferred Areas
+
+- Secciones 2 a 6: principios de arquitectura, limite V1/post-V1, runtime layout candidate, source-vs-runtime structure e Initial Spike Map quedan para elaboracion posterior dentro de Iteration 1, sin adelantarse en esta seccion.
+- Secciones 7 a 15: OpenCode operating design, split de agents/commands/scripts/validators, schemas, validators, state/logs/evidence storage, source policy implementation, entorno Odoo 18, security/secrets y Pilot Module Blueprint quedan para sus secciones asignadas.
+- Secciones 16 a 19: orden final de spikes, matriz de trazabilidad bidireccional, salidas a backlog y acceptance criteria finales quedan para el cierre del Blueprint.
+- Backlog posterior: queda para despues del Blueprint aprobado; el Blueprint solo puede producir categorias de trabajo, no tareas detalladas ni secuencia de implementacion.
+- Implementacion posterior: runtime real, modulo Odoo, agents ejecutables, commands reales, schemas fisicos, validators reales, scripts, configuracion OpenCode, storage fisico real, logs reales y evidence capture real quedan fuera del Blueprint.
+- Post-V1: RAG/base vectorial, SDK/server core, dashboard/UI, CI/CD completo, integraciones reales por defecto, legal-compliance avanzado, KB amplia, OpenAPI/PDF automatico, DB avanzada, multiusuario/equipo, plugins/MCP, curation avanzada, OWL avanzado y Playwright quedan diferidos salvo condicion o decision futura explicita.
+
+##### 7. Scope Guardrails
+
+- Todo componente del Blueprint debe tener respaldo trazable en TOM, CRIT aprobado o decision aceptada; si no lo tiene, debe eliminarse, marcarse post-V1 o registrarse como `owner decision required`.
+- El orden de autoridad del working contract aplica sin cambios: decisiones aceptadas, TOM, decisiones rechazadas, decisiones superseded, critical map, decisiones pendientes y riesgos como soporte.
+- Si aparece un conflicto entre fuentes, esta seccion no lo resuelve por criterio propio; debe registrarlo como `open-question` o `needs-owner-decision` segun bloqueo.
+- Ninguna seccion puede convertir recomendaciones en implementacion, crear backlog, crear runtime ni avanzar contenido asignado a secciones futuras.
+- Esta seccion no puede crear nombres definitivos de archivos runtime, rutas fisicas finales, ADRs detallados, commands finales, schemas finales, validators finales, scripts ni decisiones fisicas que correspondan a secciones posteriores.
+- La source policy no se amplia dentro del Blueprint sin Curation Request y aprobacion owner; la busqueda web libre no es fuente directa de diseno o implementacion.
+- `framework/` permanece excluido como input y no puede ser auditado, migrado, recreado ni usado como referencia por conveniencia.
+- Los documentos fuera de `project-truth/` no pueden convertirse en fuente paralela ni competir con `implementation-blueprint.md`.
+- El avance a secciones futuras requiere instruccion y aprobacion correspondiente; esta ejecucion solo deja la seccion 1 en `pending-owner-approval`.
+
+##### 8. Open Questions / Owner Decisions
+
+- none
+
+##### 9. Acceptance Criteria
+
+- La seccion queda en `Status: pending-owner-approval`.
+- La seccion define que es el Implementation Blueprint dentro de CAFL V1 y como transforma el TOM approved hacia diseno tecnico/conceptual.
+- La seccion lista scope, non-goals, fixed decisions, deferred areas y guardrails sin crear componentes sin respaldo.
+- La seccion reconoce explicitamente que CRIT-01..07 y TOM approved no se reabren.
+- La seccion reconoce explicitamente el piloto V1 confirmado, Odoo 18 target V1, source policy minima pre-autorizada, SDK/server fuera de core V1 y RAG/base vectorial fuera de V1.
+- La seccion confirma que el Blueprint no crea runtime, backlog tecnico detallado, implementacion Odoo, PRD final, SDD final, agents ejecutables, commands reales, schemas fisicos, validators reales ni scripts.
+- La seccion no elabora secciones 2 a 19 ni modifica reglas globales del working contract.
+- La seccion no introduce decisiones no trazadas a `project-truth/` ni documentos paralelos.
+
+##### 10. Section Output
+
+- Para la seccion 2, entrega limites de scope y non-goals que los principios de arquitectura no pueden violar.
+- Para la seccion 3, entrega decisiones fijas y areas diferidas que deben guiar el limite V1/post-V1 sin reabrir CRIT-01..07 ni TOM.
+- Para la seccion 4, entrega guardrails para mantener el runtime layout candidate conceptual, sin runtime real, rutas fisicas finales ni uso de `framework/`.
+- Para la seccion 5, entrega guardrails para separar source-vs-runtime sin duplicar fuentes de verdad, sin documentos paralelos y sin recrear `framework/`.
+- Para la seccion 6, entrega limites para mapear spikes desde decisiones y riesgos sin ejecutarlos ni convertirlos en backlog o implementacion.
 
 #### 2. Architecture Principles
 
@@ -551,7 +628,7 @@ Acceptance criteria minimos:
 
 | Iteracion | Numero de seccion | Nombre de seccion | Status | Owner approval | Blocker retroactivo detectado |
 | --- | --- | --- | --- | --- | --- |
-| Iteration 1 | 1 | Blueprint Scope and Non-Goals | not-started | not-requested | none |
+| Iteration 1 | 1 | Blueprint Scope and Non-Goals | approved | approved | none |
 | Iteration 1 | 2 | Architecture Principles | not-started | not-requested | none |
 | Iteration 1 | 3 | V1 / Post-V1 Boundary | not-started | not-requested | none |
 | Iteration 1 | 4 | Runtime Layout Candidate | not-started | not-requested | none |
