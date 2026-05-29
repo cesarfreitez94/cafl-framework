@@ -1,6 +1,6 @@
 # CAFL V1 Implementation Blueprint Working Contract
 
-Status: iteration-02-closed__iteration-03-ready
+Status: iteration-03-closed__iteration-04-ready
 
 Metodologia: Contract-Driven + ADRs ligeros + Ordered Spike-Driven Validation + Walking Skeleton + Risk-Based V1 Scoping + Bidirectional Traceability Matrix
 
@@ -898,7 +898,7 @@ Reglas de asignacion por tipo de control:
 
 #### 9. Schemas V1 Minimum Set
 
-Status: approved
+Status: closed
 
 Owner approval: approved explicitly by owner.
 
@@ -1008,9 +1008,9 @@ Los schemas siguientes son categorias logicas minimas. No son archivos, no son c
 
 #### 10. Validators V1 Minimum Set
 
-Status: in-verification
+Status: closed
 
-Owner approval: not-requested
+Owner approval: approved
 
 ##### 1. Purpose
 
@@ -1127,47 +1127,414 @@ Los validators siguientes son categorias logicas minimas derivadas de SCH-01..SC
 
 #### 11. State / Logs / Evidence Storage
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved
 
-- Secciones 9 y 10 de la iteracion correspondiente.
-- Modelo logico de estado, logs, evidencia e IDs aprobado en CRIT-06.
+##### 1. Purpose
 
-Outputs esperados:
+S11 define el diseno conceptual de storage para estado, logs y evidencia en CAFL V1. Su objetivo es establecer como se almacenan, retienen y rastrean los artefactos de trabajo del piloto Odoo-only / Odoo 18 / solicitudes internas y aprobaciones simples de forma simple, auditable y Git-compatible, sin crear storage fisico, rutas finales, logs reales ni implementacion.
 
-- Diseno de storage conceptual para alimentar evidence, traceability y backlog categories.
+El objetivo es fijar categorias logicas compartidas para:
 
-Restricciones especificas:
+- modelar donde y como vive el estado autoritativo de secciones, iteraciones y gates;
+- definir el ciclo de vida de evidencia candidata desde su origen (outputs runtime, resultados de validators) hasta su eventual registro gobernado;
+- describir como se capturan logs de transiciones de estado, resultados de prerequisitos de gate, confirmaciones de evidencia bien formada y resultados de control deterministico;
+- establecer la jerarquia de autoridad de storage: `project-truth/` es la unica fuente de verdad aprobada; evidencia runtime es candidata hasta registro gobernado;
+- no duplicar estado ya cubierto por `blueprint-state.yaml` ni por `blueprint-contract.yaml`.
 
-- No crear storage fisico, rutas finales, logs reales ni artifacts.
+##### 2. Inputs / Scope
 
-Acceptance criteria minimos:
+Inputs trazables usados:
 
-- La seccion preserva estado autoritativo, evidencia reproducible y no double work sin implementar storage.
+- S09 SCH-03 Work State Schema: modelo logico del estado de secciones, iteraciones, gates y handoffs.
+- S09 SCH-05 Evidence Record Schema: modelo logico de evidencia simple, auditable y Git-compatible.
+- S09 SCH-07 Runtime Output / Candidate Evidence Schema: modelo logico de outputs de OpenCode, agents conceptuales, commands candidatos y validators candidatos como evidencia candidata no autoritativa.
+- S10 VAL-03 Work State Transition Validator: resultados candidatos de transiciones de estado a registrar en logs de estado.
+- S10 VAL-04 Gate Prerequisite Validator: resultados candidatos de prerequisitos de gate a registrar como evidencia candidata.
+- S10 VAL-05 Evidence Record Validator: confirmaciones candidatas de evidencia bien formada.
+- S10 VAL-06 Deterministic Control Completeness Validator: resultados candidatos de controles deterministicos a registrar.
+- S08: logs, reportes y outputs de agents/commands son evidencia candidata hasta registro trazable bajo la separacion source-vs-runtime de S05.
+- S07: OpenCode como runtime primario y hub de coordinacion; no es autoridad de estado, gate, storage ni source policy.
+- S05: separacion source-vs-runtime; `project-truth/` conserva autoridad; outputs runtime son candidatos.
+- S04: zonas conceptuales de estado, logs y evidencia auditable.
+- CRIT-06: modelo logico de estado, storage logico, persistencia conceptual, IDs, logs, evidencia, fuentes, contexto, rework, deuda, approvals y trazabilidad.
+- CRIT-07: direccion de schemas y validators minimos, no permanentes.
+- AP-01: `project-truth/` como fuente unica de verdad; trazabilidad bidireccional.
+- AP-04: control deterministico separado del razonamiento LLM.
+- AP-05: progreso contract/gate/evidence-driven; no autocierre.
+- AP-09: evidencia simple, auditable y Git-compatible.
+- DEC-ACCEPTED-146: storage candidato V1 simple, auditable, Git-compatible (Markdown, JSON/YAML, JSONL append-only, artifacts; rutas finales para Blueprint).
+- DEC-ACCEPTED-138: runtime candidato con storage fisico simple y auditable como direccion.
+- DEC-ACCEPTED-140: automatizacion minima cubre validacion estructural y logs/estado/evidencia.
+- TOM: handoff al Blueprint para schemas, logs, evidence y storage como trabajo conceptual posterior al TOM aprobado.
+
+Alcance de S11:
+
+- Describir categorias logicas de storage conceptual para estado, logs, evidencia y outputs candidatos.
+- Definir el ciclo de vida de evidencia candidata y las condiciones de registro gobernado.
+- Describir tipos conceptuales de storage compatibles con Git y el modelo de autoridad de `project-truth/`.
+- Definir handoffs a S12 (source policy / Knowledge Gap), S13-S15 (evidencia piloto Odoo 18) y S16-S19 (trazabilidad final, backlog, acceptance criteria).
+
+Fuera de alcance:
+
+- Crear storage fisico, rutas finales, archivos reales ni artifacts.
+- Crear logs reales ni implementacion de logging.
+- Decidir toolchain, lenguaje, librerias, CI/CD ni estructura runtime final.
+- Convertir OpenCode en storage final o autoridad de evidencia.
+- Crear schemas fisicos, validators reales, scripts, commands, agents ejecutables.
+- Crear RAG/vector base, SDK/server, backlog, PRD, SDD ni implementacion.
+- Usar o referenciar `framework/` como input.
+- Expandir V1 fuera de Odoo-only, Odoo 18, piloto internal requests / simple approvals.
+
+##### 3. Conceptual Storage Design
+
+El diseno de storage que sigue es logico y conceptual. No define archivos fisicos, rutas finales, formatos definitivos, base de datos ni toolchain. Cada categoria puede evolucionar o ser reemplazada tras V1 porque CRIT-07 exige schemas y validators minimos no permanentes.
+
+###### 3.1 Jerarquia de autoridad de storage
+
+La jerarquia de autoridad define que nivel de storage puede ser tratado como fuente de verdad y bajo que condiciones:
+
+| Nivel | Descripcion | Autoridad | Condicion de promocion |
+| --- | --- | --- | --- |
+| L1 — project-truth/ | Estado operacional, decisions, blueprint, contract, state | Autoritativo | No requiere promocion; es la fuente aprobada |
+| L2 — Evidencia registrada gobernada | Outputs runtime que pasaron por registro gobernado y fueron aceptados explicitamente | Autoritativo (por registro) | Requiere decision owner o proceso gobernado documentado |
+| L3 — Evidencia candidata | Resultados de validators, outputs de OpenCode, reportes, logs de transiciones | Candidata | Puede ser promovida a L2 con registro gobernado; no es autoridad por si misma |
+| L4 — Evidencia efimera / transitoria | Outputs de sesion, logs de depuracion, contexto de ejecucion no retenido | No autoritativa | No es elegible para promocion sin retener y registrar |
+
+Regla fundamental: ningun output runtime puede actuar como autoridad de estado, gate o evidencia formal sin haber pasado de L3 a L2. `project-truth/` (L1) nunca es reemplazada por outputs runtime.
+
+###### 3.2 Tipos conceptuales de storage
+
+Los tipos conceptuales de storage describen formas logicas compatibles con Git y con el modelo de autoridad. No son implementacion ni definen herramientas finales:
+
+| Tipo conceptual | Descripcion logica | Compatibilidad Git | Nivel de autoridad aplicable | Trazabilidad requerida |
+| --- | --- | --- | --- | --- |
+| Estado autoritativo estructurado | Archivos YAML/JSON que capturan estado operacional de secciones, iteraciones, gates y approvals | Alta (diff claro) | L1 | Trazable a blueprint-state.yaml, blueprint-contract.yaml |
+| Documentos Markdown de evidencia | Archivos Markdown que documentan evidencia registrada con origen, tipo, estado y trazas | Alta | L2, L3 | Trazable a CRIT-06, decision, seccion o AP |
+| Logs de transicion append-only | Registros de transiciones de estado, resultados de gate y resultados de validator en formato JSONL o equivalente conceptual, solo escritura al final | Alta (no sobreescribe historial) | L3 (candidato a L2 con registro gobernado) | Cada entrada trazable a seccion, validator y timestamp conceptual |
+| Outputs de sesion candidatos | Outputs de OpenCode, commands, scripts o validators de una sesion dada, marcados como candidatos | Media (requiere gestion) | L3 | Marcados con origen runtime, seccion y estado candidato |
+| Artefactos de evidencia nombrados | Reportes, checklists, context packets y outputs estructurados que apoyan gates y handoffs | Alta | L2 (si registrados), L3 (si candidatos) | Trazables a seccion, gate, decision o CRIT |
+
+###### 3.3 Ciclo de vida de evidencia candidata
+
+El ciclo de vida describe las etapas desde que se genera un output runtime hasta que puede actuar como evidencia formal:
+
+1. **Origen (L4/L3):** un mecanismo runtime (OpenCode, command candidato, validator candidato, agente conceptual) produce un output. El output nace como candidato con estado `candidate`.
+2. **Captura candidata (L3):** el output se retiene con metadatos minimos: identificador logico, origen, seccion relacionada, timestamp conceptual y estado `candidate`. Corresponde a SCH-07.
+3. **Validacion de forma (L3):** VAL-05 verifica que la evidencia candidata tiene origen trazable, tipo declarado, resumen verificable y estado `candidate`. Los resultados de esta validacion son a su vez candidatos (L3).
+4. **Evaluacion de elegibilidad (L3 → L2):** el responsable o proceso gobernado determina si la evidencia candidata cubre el requisito de un gate, handoff o cierre de seccion. Esta evaluacion requiere decision explicita; no es automatica.
+5. **Registro gobernado (L2):** la evidencia es aceptada, documentada con trazabilidad completa y promovida a L2. Solo en este punto puede actuar como soporte formal de gate o cierre.
+6. **Referencia autoritativa (L1 actualizado):** si la evidencia registrada cambia el estado operacional (status de seccion, gate, approval), ese cambio se refleja en `project-truth/` (L1). L1 es siempre la vista autoritativa.
+
+Ningun paso del ciclo puede ser automatizado hasta el punto de sustituir la evaluacion de elegibilidad ni el registro gobernado; ambos requieren actor humano o proceso explicito aprobado.
+
+###### 3.4 Logs de estado y transiciones
+
+Los logs de estado y transiciones capturan el historial auditab de cambios operacionales y resultados de validators. No son el estado autoritativo; ese vive en `project-truth/blueprint-state.yaml`:
+
+- **Log de transiciones de estado:** registro append-only de cada transicion de status de seccion o iteracion. Cada entrada incluye: identificador de seccion, status previo, status nuevo, actor/rol conceptual, timestamp conceptual y referencia al validator candidato (VAL-03) que verifico la transicion. Fuente de este log: S09 SCH-03, S10 VAL-03.
+- **Log de prerequisitos de gate:** registro append-only de cada evaluacion de prerequisitos de gate. Cada entrada incluye: identificador de gate, checklist de prerequisitos, estado de cada prerequisito (cubierto/faltante), referencia a evidencia candidata y resultado del validator (VAL-04). Fuente: S09 SCH-04, S10 VAL-04.
+- **Log de resultados de validators:** registro append-only de resultados de VAL-01..VAL-10 producidos en una sesion o ciclo de trabajo. Cada entrada incluye: ID de validator, input conceptual evaluado, resultado (conforme/alerta), condicion de bloqueo activada si aplica y estado candidato. Fuente: S09 SCH-06/SCH-07, S10 VAL-01..VAL-10.
+- **Log de contexto de ejecucion:** registro de context packets usados, secciones trabajadas y gaps detectados en una sesion. Permite auditoria retroactiva sin requerir reproduccion completa de sesion. Fuente: S09 SCH-08.
+
+Todos estos logs son L3 por defecto. Su promocion a L2 requiere registro gobernado. Ningun log sustituye al estado en `blueprint-state.yaml` ni puede modificarlo sin actor humano o proceso aprobado.
+
+###### 3.5 Storage de state autoritativo vs storage de evidencia candidata
+
+Para evitar double work y confusion de autoridad, S11 define limites claros:
+
+| Elemento | Donde vive | Quien lo actualiza | Que es |
+| --- | --- | --- | --- |
+| Status de seccion (status, owner_approval) | `project-truth/blueprint-state.yaml` | Agentes autorizados con permisos definidos; owner para approvals | Estado autoritativo (L1) |
+| Blueprint contract rules | `project-truth/blueprint-contract.yaml` | Owner o proceso gobernado | Estado autoritativo (L1) |
+| Historial de transiciones | Log de transiciones (L3, append-only) | Agente autor/fixer con registro candidato | Evidencia candidata (L3) |
+| Resultados de validators | Log de resultados de validators (L3) | Validators candidatos | Evidencia candidata (L3) |
+| Reportes de autor/fixer/verifier | `reports/blueprint/` (Markdown) | Agentes correspondientes | Evidencia candidata (L3) / registrada (L2 si gates la consumen) |
+| Evidencia registrada para gates | Documentos de evidencia Markdown (L2) | Proceso gobernado con registro explicito | Evidencia registrada (L2) |
+
+Regla de no double work: S11 no duplica ni reemplaza `blueprint-state.yaml` ni `blueprint-contract.yaml`. El storage conceptual de S11 cubre el historial auditab y la evidencia candidata, no el estado autoritativo.
+
+###### 3.6 Compatibilidad Git y simplicidad
+
+Todos los tipos de storage conceptuales definidos en S11 deben ser compatibles con Git como sistema de control de versiones, siguiendo AP-09 y DEC-ACCEPTED-146:
+
+- **Texto plano preferido:** Markdown para evidencia legible por humanos; YAML/JSON para estado estructurado; JSONL append-only para logs de historial.
+- **Sin binarios ni blobs:** el storage conceptual no incluye artefactos binarios, bases de datos embebidas ni formatos propietarios.
+- **Diffs legibles:** cada cambio en el storage autoritativo debe producir un diff Git legible que permita auditoria de quien cambio que y cuando.
+- **Sin sobreescritura de historial:** los logs append-only no pueden ser editados retroactivamente sin dejar traza explicita de la correccion y su motivo.
+- **Tamanio manejable:** el storage candidato de sesion (L4/L3) no debe acumularse en `project-truth/`; solo evidencia registrada gobernada (L2) puede residir alli permanentemente.
+
+###### 3.7 Integracion con validacion deterministica y source policy
+
+S11 recibe los resultados candidatos de VAL-01..VAL-10 de S10 como insumos de storage. La integracion funciona asi:
+
+- **VAL-03 (Work State Transition):** sus resultados candidatos alimentan el log de transiciones de estado. Un resultado de VAL-03 que detecte una transicion ilegal es una alerta candidata (L3); no bloquea por si sola sin evaluacion gobernada.
+- **VAL-04 (Gate Prerequisite):** sus resultados candidatos alimentan el log de prerequisitos de gate. Un checklist de prerequisitos cubiertos de VAL-04 puede actuar como evidencia de soporte para solicitar owner approval, pero no sustituye la decision owner.
+- **VAL-05 (Evidence Record):** sus resultados candidatos confirman que una evidencia esta bien formada. Una confirmacion de VAL-05 permite que la evidencia sea elegible para evaluacion de registro gobernado (paso 4 del ciclo de vida).
+- **VAL-06 (Deterministic Control Completeness):** sus resultados candidatos confirman que un control deterministico esta completo. Alimentan el log de resultados de validators.
+- **Source policy (S12):** S11 no gestiona source policy; delega a S12. Si VAL-01 o VAL-09 detectan fuente no autorizada, el log de resultados de validators registra la alerta candidata y S12 es el mecanismo que gestiona la respuesta.
+
+##### 4. Cross-Section Guidance / Handoff Rules
+
+- **Para S12 Knowledge Base and Source Policy Implementation:** S11 entrega a S12 el modelo de ciclo de vida de evidencia candidata y el log de contexto de ejecucion como insumos para source policy minima y Knowledge Gap. S12 debe usar SCH-08 y SCH-09 para gestionar gaps y Curation Requests sin ampliar fuentes por cuenta propia.
+- **Para S13 Odoo 18 Execution Environment:** S11 entrega a S13 el ciclo de vida de evidencia candidata y los tipos de storage compatibles con Git como referencia para definir evidencia del entorno Odoo 18 sin crear entorno ni implementacion. S13 debe registrar evidencia conceptual del entorno bajo los niveles L2/L3 definidos en S11.
+- **Para S14 Security and Secrets:** S11 entrega a S14 las categorias logicas de storage de evidencia y estado para que S14 defina controles de acceso y secrets policy a nivel conceptual sin crear vault, permission rules ejecutables ni secrets finales.
+- **Para S15 Pilot Module Blueprint:** S11 entrega a S15 el modelo de evidencia candidata para que S15 registre evidencia conceptual del piloto internal requests / simple approvals sin crear PRD, SDD, backlog funcional ni modulo ejecutable.
+- **Para S16 Spikes and Technical Validations:** S11 entrega a S16 el log de resultados de validators y las alertas candidatas de VAL-03..VAL-06 como insumos para ordenar validaciones tecnicas futuras sin autocierre.
+- **Para S17 Bidirectional Traceability Matrix:** S11 entrega a S17 el modelo de storage de evidencia registrada (L2) como base para la matriz de trazabilidad final. S17 no puede cerrar la matriz por si solo; requiere owner approval.
+- **Para S18 Blueprint Outputs to Backlog:** S11 entrega a S18 las categorias de evidencia candidata y registrada como base para las categorias de output de backlog sin crear backlog, PRD, SDD ni implementacion.
+- **Para S19 Acceptance Criteria:** S11 entrega a S19 el ciclo de vida de evidencia y los niveles de autoridad como referencia para auditar acceptance criteria sin autocierre ni sustituir owner approval.
+- **Restriccion general:** ningun tipo de storage conceptual definido en S11 puede actuar como autoridad de estado, gate o evidencia formal hasta que la evidencia sea promovida a L2 mediante registro gobernado. Los logs y resultados de validators son siempre L3 hasta ese momento.
+
+##### 5. Explicit Non-Decisions
+
+- Esta seccion no crea storage fisico, archivos reales, directorios, rutas finales ni artifacts.
+- Esta seccion no crea logs reales, implementacion de logging, schemas de base de datos, tablas, DDL, ORMs ni formatos definitivos.
+- Esta seccion no decide toolchain, lenguaje, librerias, sistema de archivos, base de datos, CI/CD ni estructura runtime final.
+- Esta seccion no convierte OpenCode en storage final ni en autoridad de evidencia.
+- Esta seccion no convierte outputs runtime en evidencia formal; el registro gobernado requiere decision explicita y actor humano o proceso aprobado.
+- Esta seccion no crea schemas fisicos, validators reales, scripts, commands, agents ejecutables, skills/playbooks reales, plugins ni MCP.
+- Esta seccion no crea RAG/vector base, SDK/server, backlog, PRD, SDD ni implementacion.
+- Esta seccion no modifica `blueprint-state.yaml` ni `blueprint-contract.yaml` mas alla de los campos autorizados.
+- Esta seccion no cambia source policy minima, owner approval semantics, status semantics ni reglas de governance.
+- Esta seccion no expande V1 fuera de Odoo-only, Odoo 18 y piloto de solicitudes internas / aprobaciones simples.
+- Esta seccion no usa ni referencia `framework/` como input.
+- Esta seccion no decide el formato fisico final de los logs (JSONL, CSV, base de datos, etc.); solo define la categoria conceptual append-only compatible con Git.
+
+##### 6. Open Questions / Owner Decisions
+
+- none
+
+##### 7. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- El diseno conceptual de storage cubre estado autoritativo, logs de transiciones, evidencia candidata y evidencia registrada gobernada sin crear storage fisico, rutas, scripts ni artifacts.
+- La jerarquia L1..L4 preserva `project-truth/` como autoridad y trata evidencia runtime como candidata hasta registro gobernado.
+- SCH-03, SCH-05 y SCH-07 son usados como base logica del modelo de storage.
+- VAL-03, VAL-04, VAL-05 y VAL-06 son integrados como fuentes de evidencia candidata a registrar.
+- No hay double work con `blueprint-state.yaml` ni `blueprint-contract.yaml`; los limites entre estado autoritativo y storage de evidencia candidata estan definidos explicitamente.
+- Todos los tipos de storage conceptuales son compatibles con Git (AP-09, DEC-ACCEPTED-146).
+- Los handoffs a S12-S19 son suficientes para alimentar source policy, evidencia piloto Odoo 18, trazabilidad final, backlog y acceptance criteria.
+- La seccion respeta source-vs-runtime de S05, autoridad unica de AP-01, control deterministico de AP-04, gates/evidence de AP-05 y evidencia simple de AP-09.
+- La seccion no introduce RAG/vector base, SDK/server core, CI/CD completo, advanced storage, multiuser, post-V1 capabilities, backlog, PRD, SDD ni implementacion.
+- La seccion mantiene `framework/` excluido y no reabre CRIT-01..07, TOM ni decisiones aceptadas.
+- Explicit non-decisions cubren todos los artefactos prohibidos.
+
+##### 8. Section Output / Handoff
+
+- S11 entrega a S12 el modelo de ciclo de vida de evidencia candidata y el log de contexto de ejecucion como insumos para source policy minima y Knowledge Gap conceptual.
+- S11 entrega a S13-S15 los niveles de autoridad de storage (L1..L4) y el ciclo de vida de evidencia como referencia para registrar evidencia conceptual del piloto Odoo 18 sin crear entorno, modulo ni implementacion.
+- S11 entrega a S16 el log de resultados de validators y alertas candidatas para ordenar validaciones tecnicas futuras sin autocierre.
+- S11 entrega a S17 el modelo de evidencia registrada (L2) como base para la matriz de trazabilidad final.
+- S11 entrega a S18 las categorias de evidencia candidata y registrada como base para categorias de output de backlog.
+- S11 entrega a S19 el ciclo de vida de evidencia y los niveles de autoridad como referencia para auditar acceptance criteria sin autocierre.
 
 #### 12. Knowledge Base and Source Policy Implementation
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved explicitly by owner.
 
-- Secciones 9, 10 y 11 de la iteracion correspondiente.
-- DEC-ACCEPTED-163 y reglas TOM de Knowledge Governance.
+##### 1. Purpose
 
-Outputs esperados:
+S12 define la implementacion conceptual de source policy y knowledge governance para CAFL V1. Su objetivo es operacionalizar la source policy minima establecida por DEC-ACCEPTED-163 (docs.odoo.com + github.com/odoo/odoo), definir el mecanismo conceptual de Knowledge Gap y el flujo de Curation Request, y establecer como la evidencia de source policy se integra con el ciclo de vida de evidencia de S11, todo sin crear RAG/base vectorial, source registry fisico, validators reales, scripts ni implementacion ejecutable.
 
-- Implementacion conceptual de source policy y knowledge governance para alimentar Odoo execution y pilot support.
+S12 recibe los triggers de Knowledge Gap (VAL-01 / VAL-09) de S10, el modelo de evidencia candidata de S11 y la definicion logica de SCH-09 de S09, y entrega handoffs conceptuales a S13-S15 (Odoo execution, security, pilot module) y a S16-S19 (spike order, traceability matrix, backlog categories, acceptance criteria).
 
-Restricciones especificas:
+##### 2. Inputs / Scope
 
-- No crear RAG/base vectorial.
-- No ampliar fuentes sin Curation Request y aprobacion owner.
-- No implementar source registry, artifacts, validators ni scripts.
+Inputs trazables usados:
 
-Acceptance criteria minimos:
+- S09 SCH-09 Source Policy / Knowledge Gap Schema: categoria logica que define como se estructuran los metadatos de source policy y knowledge governance. Sirve como modelo logico para authority classification, gap detection y Curation Request metadata. Trazable a CRIT-06, CRIT-07, TOM, AP-01/AP-04/AP-06/AP-09, BR-01, DEC-ACCEPTED-163.
+- S10 VAL-01 Authority Source Validator: trigger conceptual de Knowledge Gap cuando detecta fuente no autorizada o sin cumplir criterios de freshness y autoridad. Trazable a CRIT-06, AP-04/AP-06, DEC-ACCEPTED-138/163.
+- S10 VAL-09 Source Policy Compliance Validator: trigger conceptual de Knowledge Gap cuando detecta uso de fuente no elegible o gap de source policy no registrado. Trazable a CRIT-06, AP-06/AP-12, DEC-ACCEPTED-163.
+- S11 ciclo de vida de evidencia candidata (6 pasos: origen, captura, validacion, evaluacion de elegibilidad, registro gobernado, referencia autoritativa) y jerarquia L1..L4: base logica para almacenar evidencia de source policy bajo los mismos niveles de autoridad.
+- S11 log de contexto de ejecucion (SCH-08): insumo para detectar gaps de fuentes en sesiones de trabajo.
+- DEC-ACCEPTED-163: source policy minima — docs.odoo.com + github.com/odoo/odoo son las unicas fuentes pre-autorizadas para V1.
+- DEC-ACCEPTED-164: RAG/base vectorial diferida a V2; prohibida en V1.
+- TOM Knowledge Governance: define Knowledge Gap triggers, Curation Request flow y source policy enforcement como mecanismos gobernados.
+- CRIT-06: trazabilidad, control, evidencia y fuentes gobernadas.
+- CRIT-07: schemas y validators minimos, no permanentes.
+- AP-01: `project-truth/` como fuente unica de verdad; trazabilidad bidireccional.
+- AP-04: control deterministico separado del razonamiento LLM.
+- AP-06: context routing y source policy enforcement son obligatorios.
+- AP-09: evidencia simple, auditable y Git-compatible.
+- AP-12: source policy minima y exclusion de fuentes no autorizadas.
+- BR-01 (S03): V1 boundary — Odoo-only, Odoo 18, piloto internal requests / simple approvals.
 
-- La seccion respeta source policy minima, Knowledge Gap y Curation Request sin implementacion.
+Alcance de S12:
+
+- Definir como la source policy minima se operacionaliza conceptualmente: elegibilidad de fuentes, clasificacion de autoridad, freshness conceptual, deteccion de gaps.
+- Definir como funciona el mecanismo conceptual de Knowledge Gap con los triggers VAL-01/VAL-09 y SCH-09.
+- Definir el flujo conceptual de Curation Request para adicion de fuentes no pre-autorizadas.
+- Definir como la evidencia de source policy se integra con la jerarquia L1..L4 y el ciclo de vida de evidencia de S11.
+- Definir handoffs conceptuales a S13-S15 y S16-S19.
+
+Fuera de alcance:
+
+- Crear RAG/base vectorial, embeddings, vector search ni recuperacion semantica.
+- Crear source registry fisico, base de datos de fuentes, archivos de configuracion de fuentes ni artifacts reales.
+- Crear validators reales, scripts, CLIs, toolchain ejecutable ni implementacion.
+- Expandir source policy mas alla de docs.odoo.com + github.com/odoo/odoo sin Curation Request aprobada por owner.
+- Implementar tooling de Knowledge Governance; solo disenar conceptualmente los flujos.
+- Usar o referenciar el directorio legado excluido como input.
+- Expandir V1 fuera de Odoo-only, Odoo 18, piloto internal requests / simple approvals.
+
+##### 3. Conceptual Source Policy and Knowledge Governance Design
+
+El diseno que sigue es logico y conceptual. No define archivos fisicos, rutas finales, formatos definitivos, herramientas ejecutables ni implementacion. Cada categoria puede evolucionar o ser reemplazada tras V1 dado que CRIT-07 exige schemas y validators minimos no permanentes.
+
+###### 3.1 Source Policy Minima — Operacionalizacion conceptual
+
+La source policy minima para CAFL V1 queda fijada por DEC-ACCEPTED-163 en dos fuentes pre-autorizadas:
+
+| Fuente pre-autorizada | Clasificacion de autoridad | Tipo de contenido aplicable | Razon de pre-autorizacion |
+| --- | --- | --- | --- |
+| docs.odoo.com | Autoridad Odoo oficial — documentacion | Documentacion funcional, API, configuracion, guias Odoo 18 | Fuente oficial de Odoo para el piloto V1 |
+| github.com/odoo/odoo | Autoridad Odoo oficial — codigo fuente | Codigo fuente, modulos, estructura de datos Odoo 18 | Repositorio oficial; permite trazabilidad tecnica a implementacion real |
+
+Cualquier otra fuente (internas, terceras partes, community forks, blogs, documentacion externa) es no pre-autorizada. Su uso en componentes V1 requiere Curation Request y aprobacion owner explicita antes de ser utilizada.
+
+Regla fundamental: la source policy minima es inmutable en V1. No puede ampliarse por criterio de agente ni por conveniencia de sesion. Toda expansion requiere el flujo de Curation Request descrito en 3.3.
+
+Trazabilidad: DEC-ACCEPTED-163; AP-06; AP-12; TOM Knowledge Governance; CRIT-06.
+
+###### 3.2 Clasificacion de autoridad de fuentes y freshness conceptual
+
+Para operacionalizar source policy en V1, se definen las siguientes categorias de clasificacion de autoridad de fuentes:
+
+| Categoria | Descripcion | Condicion de elegibilidad | Accion si no cumple |
+| --- | --- | --- | --- |
+| Pre-autorizada — vigente | Fuente dentro de source policy minima; contenido conceptualmente actual para Odoo 18 | Debe ser docs.odoo.com o github.com/odoo/odoo; referencia debe corresponder a Odoo 18 | Ninguna; fuente elegible |
+| Pre-autorizada — version inconsistente | Fuente dentro de source policy minima pero referencia version distinta de Odoo 18 | Mismas fuentes pre-autorizadas pero version incongruente con V1 scope | Alerta de freshness; registrar gap; no bloquear automaticamente sin evaluacion gobernada |
+| No pre-autorizada — sin Curation Request | Fuente fuera de source policy minima; sin proceso de Curation Request iniciado | Cualquier fuente distinta a las dos pre-autorizadas | Trigger de Knowledge Gap; iniciar Curation Request si se desea usar |
+| No pre-autorizada — con Curation Request pendiente | Fuente fuera de source policy minima; Curation Request iniciada pero aun sin aprobacion owner | Curation Request registrada; decision owner pendiente | No usar fuente hasta aprobacion owner; mantener estado pendiente |
+| No pre-autorizada — aprobada por owner | Fuente originalmente fuera de source policy minima; Curation Request aprobada explicitamente por owner | Aprobacion owner registrada en `project-truth/` | Fuente elegible post-aprobacion; trazabilidad requerida |
+
+Concepto de freshness: en V1 el criterio de freshness es conceptual — una referencia es "fresca" si corresponde a Odoo 18 y a las fuentes pre-autorizadas. No hay mecanismo automatico de verificacion de timestamps ni web crawling; VAL-01 detecta inconsistencias de version o autoridad como alertas candidatas (L3), no como bloqueos automaticos.
+
+Trazabilidad: S09 SCH-09; S10 VAL-01; DEC-ACCEPTED-163; AP-06; AP-12; TOM.
+
+###### 3.3 Mecanismo conceptual de Knowledge Gap
+
+El Knowledge Gap es el mecanismo mediante el cual CAFL V1 registra y gestiona situaciones donde una fuente requerida no esta pre-autorizada o donde se detecta un uso de fuente no conforme con source policy minima.
+
+**Triggers de Knowledge Gap:**
+
+- **VAL-01 alerta de fuente no autorizada:** cuando VAL-01 detecta que un componente referencia una fuente fuera de source policy minima o que la fuente pre-autorizada no corresponde a Odoo 18, emite una alerta candidata (L3). Esta alerta es el trigger primario de Knowledge Gap.
+- **VAL-09 alerta de gap de source policy:** cuando VAL-09 detecta uso de fuente no elegible o gap de conformidad con source policy, emite una alerta candidata (L3). Esta alerta es el trigger secundario de Knowledge Gap.
+- **Log de contexto de ejecucion (SCH-08 / S11):** gaps detectados en sesiones de trabajo donde no habia fuente pre-autorizada disponible para un requerimiento tecnico del piloto Odoo 18 pueden registrarse como Knowledge Gaps en el log de ejecucion.
+
+**Respuesta conceptual al Knowledge Gap:**
+
+1. El trigger (alerta VAL-01 o VAL-09, o gap en log de ejecucion) es capturado como evidencia candidata (L3) bajo SCH-09.
+2. Se registra el gap con los metadatos minimos conceptuales: identificador logico, fuente requerida o detectada, tipo de gap (fuente no autorizada / version inconsistente / gap de contenido), referencia al componente V1 afectado, timestamp conceptual, estado `gap-open`.
+3. Si el gap corresponde a una fuente no pre-autorizada que se desea utilizar, se inicia el flujo de Curation Request (3.3 → 3.4).
+4. Si el gap corresponde a una version inconsistente de fuente pre-autorizada, se registra como alerta candidata y se resuelve mediante evaluacion gobernada (no automatica) que puede confirmar o desestimar el uso sin ampliar source policy.
+5. El gap permanece en estado `gap-open` hasta que se resuelva mediante Curation Request aprobada, descarte gobernado o decision owner. La resolucion requiere actor humano o proceso aprobado; no es automatica.
+6. La resolucion del gap se registra actualizando el metadato bajo SCH-09 a estado `gap-resolved` o `gap-discarded` con referencia a la decision o Curation Request que lo cerro.
+
+Regla: ningun Knowledge Gap puede ser cerrado automaticamente por agente. La evaluacion de elegibilidad y el registro gobernado requieren decision explicita. Trazabilidad: S09 SCH-09; S10 VAL-01/VAL-09; S11 evidencia L3→L2; TOM Knowledge Governance; CRIT-06; AP-04; AP-06.
+
+###### 3.4 Flujo conceptual de Curation Request
+
+El flujo de Curation Request es el mecanismo gobernado para agregar fuentes no pre-autorizadas a la source policy de CAFL V1. Es un flujo de gobernanza conceptual, no un workflow ejecutable ni un script.
+
+**Pasos conceptuales del flujo:**
+
+1. **Solicitud de curation:** un actor (agente o humano) identifica que necesita usar una fuente fuera de source policy minima. Registra una solicitud con los metadatos conceptuales minimos: fuente candidata, justificacion tecnica (por que se necesita para el piloto V1), componente(s) afectados, tipo de uso previsto. Estado inicial: `curation-requested`.
+2. **Gate de aprobacion owner:** la solicitud llega al owner para evaluacion. El owner es el unico actor autorizado para aprobar ampliaciones de source policy. Los criterios de evaluacion son: coherencia con V1 boundary (Odoo-only, Odoo 18, piloto), trazabilidad a CRIT/decision/TOM, ausencia de alternativa en source policy minima, riesgo de scope creep. Este gate no puede ser sustituido por criterio de agente.
+3. **Resultado del gate:**
+   - Si el owner aprueba: la fuente candidata pasa a estado `curation-approved`; se registra la decision en `project-truth/` con trazabilidad completa; la fuente queda elegible para uso en los componentes declarados.
+   - Si el owner rechaza: la fuente candidata pasa a estado `curation-rejected`; el Knowledge Gap asociado pasa a `gap-discarded`; el componente afectado debe adaptarse para usar solo fuentes pre-autorizadas.
+4. **Registro y trazabilidad:** toda Curation Request (aprobada o rechazada) queda registrada como evidencia gobernada (L2) bajo SCH-09 con referencia a la decision owner, el componente afectado y el estado final. La trazabilidad es obligatoria; una Curation Request sin registro completo no es valida.
+5. **Actualizacion de source policy:** si la Curation Request es aprobada, la ampliacion de source policy se registra en `project-truth/` como estado autoritativo (L1). No se actualiza en runtime ni en artifacts; solo en la fuente de verdad gobernada.
+
+Restriccion critica: este flujo no puede ser acortado ni eludido. Cualquier uso de fuente no pre-autorizada sin Curation Request aprobada es una violacion de source policy minima y debe ser reportada como Knowledge Gap con estado `gap-open` de alta prioridad.
+
+Trazabilidad: DEC-ACCEPTED-163; TOM Knowledge Governance; CRIT-06; AP-01; AP-06; AP-12; S09 SCH-09; S10 VAL-09.
+
+###### 3.5 Integracion con el ciclo de vida de evidencia de S11
+
+La evidencia de source policy se integra con la jerarquia L1..L4 y el ciclo de vida de 6 pasos de S11 de la siguiente manera:
+
+| Elemento de source policy | Nivel S11 inicial | Condicion de promocion | Nivel final posible |
+| --- | --- | --- | --- |
+| Alerta VAL-01 (fuente no autorizada) | L3 — evidencia candidata | Evaluacion gobernada; registro explicito | L2 si se registra como soporte de gate o Knowledge Gap formal |
+| Alerta VAL-09 (gap de source policy) | L3 — evidencia candidata | Evaluacion gobernada; registro explicito | L2 si se registra como soporte de Curation Request |
+| Metadato de Knowledge Gap (SCH-09) | L3 — candidato al registrarse el gap | Registro gobernado con decision explicita | L2 una vez resuelto y registrado formalmente |
+| Curation Request aprobada | L2 — registrada en `project-truth/` | Ya es evidencia gobernada al aprobarse | L1 si la decision modifica estado autoritativo en `project-truth/` |
+| Source policy autoritativa | L1 — `project-truth/` | No requiere promocion; es la fuente aprobada | L1 permanente |
+
+Ciclo de vida de evidencia de source policy (mapeado a los 6 pasos de S11):
+
+1. **Origen:** VAL-01 o VAL-09 producen alerta candidata; o log de ejecucion (SCH-08) detecta gap. Output nace en L3/L4.
+2. **Captura candidata:** la alerta o gap se retiene con metadatos SCH-09 en estado `candidate` / `gap-open`.
+3. **Validacion de forma:** VAL-05 verifica que el registro de gap tiene origen trazable, tipo declarado y estado `candidate`. Resultado de VAL-05 es a su vez candidato (L3).
+4. **Evaluacion de elegibilidad:** el owner o proceso gobernado determina si el gap requiere Curation Request, descarte o aceptacion como riesgo controlado. Esta evaluacion no es automatica.
+5. **Registro gobernado:** gap resuelto o Curation Request aprobada se registran como L2. Solo en este punto la evidencia apoya formalmente un gate o decision.
+6. **Referencia autoritativa:** si la resolucion modifica source policy (Curation Request aprobada), se actualiza L1 (`project-truth/`). L1 es siempre la vista autoritativa.
+
+Trazabilidad: S11 ciclo de vida 6 pasos; S11 jerarquia L1..L4; S09 SCH-09; S10 VAL-01/VAL-05/VAL-09; AP-01; AP-09; CRIT-06.
+
+##### 4. Cross-Section Guidance / Handoff Rules
+
+- **Para S13 Odoo 18 Execution Environment:** S12 entrega a S13 la source policy minima operacionalizada (docs.odoo.com + github.com/odoo/odoo) y la clasificacion de autoridad de fuentes como restriccion a aplicar en la definicion del entorno conceptual Odoo 18. S13 debe verificar que cualquier referencia a fuentes Odoo 18 cumple source policy antes de usarla como insumo. S13 no puede ampliar source policy por iniciativa propia; si detecta un gap, debe activar el flujo de Knowledge Gap definido en S12.
+- **Para S14 Security and Secrets:** S12 entrega a S14 el modelo de Curation Request y Knowledge Gap como patron de gobernanza conceptual aplicable a la gestion de secrets y sources de seguridad. S14 puede modelar la aprobacion de secrets sources bajo el mismo patron de gate owner sin crear vault, permission rules ejecutables ni secrets policy final.
+- **Para S15 Pilot Module Blueprint:** S12 entrega a S15 la restriccion explícita de source policy para el piloto internal requests / simple approvals: solo fuentes pre-autorizadas pueden fundamentar decisiones de diseno del modulo piloto. Si el piloto requiere una fuente adicional, debe pasar por Curation Request antes de usarla. S15 no crea PRD, SDD, backlog funcional ni modulo ejecutable.
+- **Para S16 Spikes and Technical Validations:** S12 entrega a S16 los Knowledge Gaps sin resolver y las Curation Requests pendientes como insumos para el orden final de spikes. Gaps de fuentes no resueltos pueden generar spikes de validacion de source policy. S16 no cierra gaps por autoridad propia.
+- **Para S17 Bidirectional Traceability Matrix:** S12 entrega a S17 los registros de Curation Requests aprobadas y los Knowledge Gaps resueltos como evidencia gobernada (L2) elegible para la matriz de trazabilidad final. S17 no puede cerrar la matriz sin owner approval.
+- **Para S18 Blueprint Outputs to Backlog:** S12 entrega a S18 las categorias de Knowledge Gap y Curation Request como categorias de output de backlog para futuros ciclos de gobernanza de fuentes. S18 no crea backlog funcional ni implementacion.
+- **Para S19 Acceptance Criteria:** S12 entrega a S19 los criterios de source policy operacionalizados (elegibilidad, freshness conceptual, Knowledge Gap resuelto, Curation Request trazada) como referencia para acceptance criteria de componentes que consumen fuentes externas. S19 no cierra aceptacion final ni sustituye owner approval.
+- **Restriccion general:** ningun handoff de S12 autoriza uso de fuentes no pre-autorizadas. Todos los handoffs preservan source policy minima. Knowledge Gaps no resueltos no bloquean automaticamente el avance de secciones futuras, pero deben ser declarados como restriccion heredada en las secciones que los consumen.
+
+##### 5. Explicit Non-Decisions
+
+- Esta seccion no crea RAG, base vectorial, embeddings, vector search ni recuperacion semantica de ningun tipo.
+- Esta seccion no crea source registry fisico, base de datos de fuentes, archivos de configuracion de fuentes, APIs de consulta de fuentes ni artifacts ejecutables.
+- Esta seccion no crea validators reales, scripts, CLIs, toolchain ejecutable ni implementacion de Knowledge Governance.
+- Esta seccion no crea schemas fisicos, JSON Schema, YAML schema, DDL, tablas ni modelos ORM.
+- Esta seccion no amplía source policy minima. La adicion de nuevas fuentes queda pendiente de Curation Request y aprobacion owner en ciclos futuros.
+- Esta seccion no decide el formato fisico de registros de Knowledge Gap o Curation Request; solo define las categorias logicas bajo SCH-09.
+- Esta seccion no instancia VAL-01 ni VAL-09 como validators reales; los usa solo como triggers conceptuales de Knowledge Gap.
+- Esta seccion no convierte Knowledge Gap ni Curation Request en workflows ejecutables, BPMN, scripts de aprobacion ni automatizacion.
+- Esta seccion no crea web crawlers, scrapers, monitores de freshness automaticos ni mecanismos de ingestion de fuentes.
+- Esta seccion no cierra gates, no otorga owner approval, no convierte outputs runtime en autoridad y no cambia status semantics.
+- Esta seccion no cambia source policy minima, owner approval semantics, status semantics, iteration gates ni reglas de governance.
+- Esta seccion no expande V1 fuera de Odoo-only, Odoo 18 y piloto de solicitudes internas / aprobaciones simples.
+- Esta seccion no usa ni referencia el directorio legado excluido como input.
+- Esta seccion no genera el orden final de spikes, la matriz de trazabilidad final, los outputs de backlog ni los acceptance criteria finales; esos pertenecen a S16-S19.
+
+##### 6. Open Questions / Owner Decisions
+
+- none
+
+##### 7. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- La source policy minima (DEC-ACCEPTED-163) es respetada: docs.odoo.com + github.com/odoo/odoo son las unicas fuentes pre-autorizadas; cualquier expansion requiere Curation Request y aprobacion owner.
+- El mecanismo de Knowledge Gap es descrito conceptualmente (triggers VAL-01/VAL-09, pasos de respuesta, estados gap-open/gap-resolved/gap-discarded) sin implementacion ejecutable.
+- El flujo de Curation Request es descrito conceptualmente (solicitud, gate owner, resultado, registro, actualizacion de source policy) sin workflow ejecutable, script ni BPMN.
+- La evidencia de source policy se integra con la jerarquia L1..L4 y el ciclo de vida de 6 pasos de S11 de forma coherente y sin contradiccion.
+- Ningun elemento de esta seccion crea RAG, base vectorial, source registry fisico, validators reales, scripts ni implementacion.
+- Los handoffs a S13-S15 y S16-S19 son suficientes para alimentar Odoo execution, security, pilot module, spike ordering, traceability matrix, backlog categories y acceptance criteria sin cerrar decisiones futuras.
+- Todos los componentes son trazables a TOM, CRIT aprobado o decision aceptada (RULE-04 del contrato).
+- La seccion respeta la separacion source-vs-runtime de S05, la autoridad unica de AP-01, el control deterministico de AP-04, el context routing/source policy de AP-06, la evidencia simple de AP-09 y la source policy minima de AP-12.
+- La seccion no introduce RAG/vector base, SDK/server core, CI/CD completo, advanced storage/DB, multiuser/team, plugins/MCP, broad integrations ni post-V1 capabilities.
+- La seccion mantiene el directorio legado excluido y no reabre CRIT-01..07, TOM ni decisiones aceptadas.
+- Las explicit non-decisions cubren todos los artefactos prohibidos.
+
+##### 8. Section Output / Handoff
+
+- S12 entrega a S13 la source policy minima operacionalizada y la clasificacion de autoridad de fuentes como restriccion a aplicar en la definicion del entorno conceptual Odoo 18.
+- S12 entrega a S14 el patron de gobernanza conceptual de Curation Request / Knowledge Gap como modelo para la gestion de secrets sources.
+- S12 entrega a S15 la restriccion de source policy para el piloto: solo fuentes pre-autorizadas pueden fundamentar decisiones de diseno del modulo piloto sin PRD, SDD, backlog funcional ni modulo ejecutable.
+- S12 entrega a S16 los Knowledge Gaps sin resolver y las Curation Requests pendientes como insumos para el orden final de spikes de validacion de source policy.
+- S12 entrega a S17 los registros de Curation Requests aprobadas y Knowledge Gaps resueltos como evidencia gobernada (L2) elegible para la matriz de trazabilidad final.
+- S12 entrega a S18 las categorias de Knowledge Gap y Curation Request como categorias de output de backlog para futuros ciclos de gobernanza de fuentes.
+- S12 entrega a S19 los criterios de source policy operacionalizados como referencia para acceptance criteria de componentes que consumen fuentes externas.
+- S12 no cierra ninguna decision sobre toolchain, lenguaje, rutas, storage fisico, implementacion de Knowledge Governance ni ampliacion de source policy; esos pertenecen a Curation Requests futuras y fases posteriores con autorizacion explicita del owner.
 
 ### Iteration 4 - Ejecucion Odoo y piloto
 
@@ -1339,10 +1706,10 @@ Acceptance criteria minimos:
 | Iteration 1 | 6 | Initial Spike Map | closed | approved | none |
 | Iteration 2 | 7 | OpenCode Operating Design | closed | approved | none |
 | Iteration 2 | 8 | Agents / Commands / Scripts / Validators Split | closed | approved | none |
-| Iteration 3 | 9 | Schemas V1 Minimum Set | approved | approved | none |
-| Iteration 3 | 10 | Validators V1 Minimum Set | in-verification | not-requested | none |
-| Iteration 3 | 11 | State / Logs / Evidence Storage | not-started | not-requested | none |
-| Iteration 3 | 12 | Knowledge Base and Source Policy Implementation | not-started | not-requested | none |
+| Iteration 3 | 9 | Schemas V1 Minimum Set | closed | approved | none |
+| Iteration 3 | 10 | Validators V1 Minimum Set | closed | approved | none |
+| Iteration 3 | 11 | State / Logs / Evidence Storage | closed | approved | none |
+| Iteration 3 | 12 | Knowledge Base and Source Policy Implementation | closed | approved | none |
 | Iteration 4 | 13 | Odoo 18 Execution Environment | not-started | not-requested | none |
 | Iteration 4 | 14 | Security and Secrets | not-started | not-requested | none |
 | Iteration 4 | 15 | Pilot Module Blueprint | not-started | not-requested | none |

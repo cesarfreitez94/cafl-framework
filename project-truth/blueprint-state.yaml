@@ -3,7 +3,7 @@ blueprint:
   working_contract_path: project-truth/implementation-blueprint.md
   total_sections: 19
   total_iterations: 5
-  current_iteration: 2
+  current_iteration: 4
   owner_approval_required: true
   commit_policy: owner_only
   source_of_truth: project-truth/
@@ -40,8 +40,8 @@ iterations:
   I3:
     name: "Artefactos tecnicos de control"
     sections: [S09, S10, S11, S12]
-    status: in-progress
-    owner_gate: not-reached
+    status: closed
+    owner_gate: approved
     depends_on: [I2]
   I4:
     name: "Ejecucion Odoo y piloto"
@@ -292,7 +292,7 @@ sections:
   S09:
     title: "Schemas V1 Minimum Set"
     iteration: I3
-    status: approved
+    status: closed
     owner_approval: approved
     iteration_position: 9
     depends_on: [S07, S08]
@@ -321,8 +321,8 @@ sections:
   S10:
     title: "Validators V1 Minimum Set"
     iteration: I3
-    status: pending-owner-approval
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 10
     depends_on: [S09]
     fix_iterations: 1
@@ -330,35 +330,89 @@ sections:
     last_fix_report: reports/blueprint/S10-fix-report.md
     last_verification_report: reports/blueprint/S10-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual minimum validator set (VAL-01..VAL-10) for CAFL V1,
+      derived one-to-one from S09 SCH-01..SCH-10 as deterministic control
+      candidates. Validators serve gates, evidence, and execution checks without
+      creating real validators, executable toolchain, scripts, or implementation.
+      Each validator maps to a schema, defines a required control, conceptual
+      input/output, potential block condition, and traceability to CRIT-06,
+      CRIT-07, AP-04, AP-05, AP-09, S04, S05, S08, TOM, BR-01, and accepted
+      decisions (DEC-ACCEPTED-138, 140, 145, 162, 163). Handoffs deliver validator
+      results as candidate evidence to S11 (storage/evidence), VAL-01/VAL-09 as
+      Knowledge Gap triggers to S12, VAL-05/VAL-06/VAL-10 as Odoo 18 pilot
+      controls to S13-S15, and the full VAL-01..VAL-10 set to S16-S19 for spike
+      ordering, traceability, backlog categories, and acceptance criteria. No
+      validator closes gates, grants owner approval, or converts runtime outputs
+      into authority. V1 boundaries preserved: Odoo-only, Odoo 18, internal
+      requests/simple approvals pilot, minimal source policy, framework/ excluded.
+      One fix iteration (status sync only). Verification passed with zero issues.
+      Explicit non-decisions eliminate all forbidden artifacts.
 
   S11:
     title: "State / Logs / Evidence Storage"
     iteration: I3
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 11
     depends_on: [S09, S10]
-    fix_iterations: 0
-    last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    fix_iterations: 2
+    last_author_report: "reports/blueprint/S11-author-report.md"
+    last_fix_report: "reports/blueprint/S11-fix-report.md"
+    last_verification_report: "reports/blueprint/S11-verification-report.md"
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines conceptual storage design for state, logs and evidence in CAFL V1.
+      Establishes a 4-level authority hierarchy: L1 project-truth/ authoritative,
+      L2 governed registered evidence, L3 candidate evidence, L4 ephemeral.
+      Defines conceptual storage types (YAML/JSON structured state, Markdown
+      evidence documents, JSONL append-only logs, session candidate outputs, named
+      evidence artifacts) all Git-compatible per AP-09 and DEC-ACCEPTED-146.
+      Defines a 6-step evidence lifecycle: origin, capture, validation, eligibility
+      evaluation, governed registration, authoritative reference. Defines log
+      categories: state transitions, gate prerequisites, validator results,
+      execution context. Integrates VAL-03..VAL-06 results as candidate evidence
+      sources. Delivers handoffs to S12 (evidence lifecycle/execution context log),
+      S13-S15 (authority levels/lifecycle for Odoo 18 pilot evidence), S16
+      (validator results/alerts for spike ordering), S17 (L2 evidence model for
+      traceability matrix), S18 (evidence categories for backlog outputs), S19
+      (lifecycle/levels for acceptance criteria audit). Respects S05 source-vs-runtime
+      separation, S07-S08 mechanism constraints, and all V1 boundaries. Fix
+      iterations: 2 (mirror-sync only on second fix). Verification passed with
+      zero content issues.
 
   S12:
     title: "Knowledge Base and Source Policy Implementation"
     iteration: I3
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 12
     depends_on: [S09, S10, S11]
-    fix_iterations: 0
-    last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    fix_iterations: 1
+    last_author_report: reports/blueprint/S12-author-report.md
+    last_fix_report: reports/blueprint/S12-fix-report.md
+    last_verification_report: reports/blueprint/S12-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual implementation of source policy and knowledge
+      governance for CAFL V1. Operationalizes the minimum source policy
+      (DEC-ACCEPTED-163: docs.odoo.com + github.com/odoo/odoo with no
+      auto-expansion), defines the conceptual Knowledge Gap mechanism triggered
+      by VAL-01 (unauthorized source) and VAL-09 (source policy gap) with
+      gap-open/gap-resolved/gap-discarded states and owner-gated resolution,
+      defines the Curation Request flow (request → owner gate → approve/reject
+      → L1 registration) as the sole path for source policy expansion, and
+      integrates source policy evidence with S11's L1-L4 authority hierarchy
+      and 6-step evidence lifecycle. All design remains conceptual: no RAG,
+      vector base, source registry, validators, scripts, CLIs, web crawlers,
+      BPMN workflows, or implementation artifacts. Delivers handoffs to
+      S13-S15 (Odoo 18 source-policy restriction, Curation Request governance
+      pattern for secrets, pilot module source constraint) and S16-S19
+      (unresolved Knowledge Gaps and pending Curation Requests as spike inputs,
+      resolved evidence for traceability matrix, Knowledge Gap/Curation
+      Request categories for backlog, source-policy criteria for acceptance).
+      One fix iteration (literal `framework/` path references removed).
+      Verification passed with zero issues.
 
   S13:
     title: "Odoo 18 Execution Environment"

@@ -100,11 +100,16 @@ Elaborates only the selected section in `project-truth/implementation-blueprint.
 ## Required Output Report
 - Author mode report path: `reports/blueprint/{section_id}-author-report.md`.
 - Fixer mode report path: `reports/blueprint/{section_id}-fix-report.md`.
-- Format: compact Markdown with `Agent`, `Mode`, `Section`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Section changes`, `Traceability`, `Open issues`, `State changes`, `Token Efficiency`, and `Verifier handoff`.
+- Author mode and non-minor fixer mode format: compact Markdown with `Agent`, `Mode`, `Section`, `Sources read directly`, `Context packet used`, `Full-source fallback`, `Section changes`, `Traceability`, `Open issues`, `State changes`, `Token Efficiency`, and `Verifier handoff`.
 - Do not claim `Sources read: all authority files` in normal mode.
 - Token Efficiency must include `read_model: normal|strict`, `context_packet`, `context_packet_chars`, `full_sources_read: yes|no`, `fallback_reason`, `source_files_read_count`, `estimated_source_chars` if practical, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
 - If normal mode exceeds 30000 estimated source chars, report `Token Budget Warning` with the exceeded amount and cause.
 - In fixer mode, include only `Verifier issue`, `Fix applied`, `Evidence in section`, and `Remaining issue`; do not perform unrelated cleanup.
+- For fixer-mode reports with 5 or fewer `changed_lines_or_fields` entries, use the compact minor fix report format unless the fix changes design semantics, acceptance criteria, traceability, handoffs, or substantive Blueprint content.
+- Compact minor fix reports must include the mandatory structured metadata block, one line per fix applied, remaining issues, state changes, and minimal `Token Efficiency` with only `read_model`, `estimated_source_chars`, and `budget_exceeded`.
+- Compact minor fix reports must include `fix_type`, `changed_files`, `changed_lines_or_fields`, `content_changed`, `status_or_mirror_only`, and `human_readable_change_description` when required by the `fix_type` rules below.
+- Compact minor fix reports must omit expanded traceability tables, large evidence sections, and verbose handoff sections.
+- Do not use the compact minor fix report format when a fix changes design semantics, acceptance criteria, traceability, handoffs, or substantive Blueprint content, even if `changed_lines_or_fields` has 5 or fewer entries.
 - In fixer mode, the fix report must begin with a mandatory structured metadata block immediately after the `Agent`, `Mode`, and `Section` header lines and before any other content:
 
 ```

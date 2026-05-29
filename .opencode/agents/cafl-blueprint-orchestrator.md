@@ -25,9 +25,10 @@ permission:
 Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, enforcing dependencies, gates, fix limits, re-verification routing, and state transitions, and preparing owner-gated decisions without authoring Blueprint section content.
 
 ## Required Source-Of-Truth Files
-- Always read `project-truth/blueprint-state.yaml` as operational state.
-- Read `project-truth/blueprint-contract.yaml` as the automation contract, preferring relevant contract portions over full-file rereads when possible.
+- Always read `project-truth/blueprint-state.yaml` as operational state, but in normal mode target only the fields required for section routing and packet generation.
 - Read `project-truth/implementation-blueprint.md` as the primary working contract, preferring the selected section slice and status summary slice over full-file rereads when possible.
+- Do not read `project-truth/blueprint-contract.yaml` by default in normal mode; contract rules needed for ordinary routing are internalized in this agent instruction.
+- Read `project-truth/blueprint-contract.yaml` only when a governance trigger, rule ambiguity, strict-mode trigger, or contract consistency question appears.
 - Normal coordination guidance is internalized in this agent instruction; avoid rereading broad coordination guidance during ordinary normal-mode packet generation.
 - Normal mode must avoid full authority-file reads unless a strict trigger is present.
 - Strict mode may read full or larger authority sources, but must state why strict mode was entered.
@@ -41,11 +42,21 @@ Coordinates the CAFL Blueprint Automation Loop by selecting eligible sections, e
 - Strict mode can exceed normal budgets, but the run output must state why.
 - In normal mode, generate a section context packet before routing `cafl-blueprint-author`.
 
+## Normal-Mode Targeted Reads
+- To select the next eligible section, read `project-truth/blueprint-state.yaml` targeting only section `status`, `depends_on`, `iteration`, `owner_approval`, `open_issues`, and the current iteration/gate fields needed to prove eligibility.
+- To extract dependency context, read only the `context_summary` fields of declared dependency sections from `project-truth/blueprint-state.yaml`.
+- Do not read full `project-truth/blueprint-state.yaml` or any full authority file in normal mode unless a strict trigger is present.
+- Do not read `project-truth/blueprint-contract.yaml` for ordinary section selection, dependency checks, context packet generation, author routing, verifier routing, or lightweight re-verification routing.
+- Read `project-truth/blueprint-contract.yaml` only for governance triggers, rule ambiguity, strict-mode triggers, or contract consistency questions, and report the trigger.
+- If every declared dependency has a present `context_summary`, include `dependency_context_summaries_complete: yes` in the context packet header.
+- If any declared dependency lacks `context_summary`, trigger strict mode or stop with a concrete blocker; do not route normal-mode author work with incomplete dependency context.
+
 ## Section Context Packet
 - Packet path: `reports/blueprint/{section_id}-context-packet.md`.
 - The orchestrator owns packet generation.
 - The packet is not a new source of truth; it is bounded execution context for one section run.
 - Generate the packet from `project-truth/` sources and already approved prior `context_summary` values.
+- The packet header must include `dependency_context_summaries_complete: yes` when every declared dependency `context_summary` is present.
 - In normal mode, keep the packet under 15000 chars and make it a compact execution packet, not a mini audit dossier.
 - Include only: section objective, selected section excerpt, dependency context summaries, hard inherited constraints, required traceability anchors, forbidden moves / non-goals, acceptance checklist, and fallback-to-strict triggers.
 - Prefer identifiers and short anchor notes over long excerpts.

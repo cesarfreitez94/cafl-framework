@@ -51,11 +51,16 @@ Performs lightweight re-verification only when fixer output declares `fix_type: 
 
 ## Required Read Scope
 - Read only `reports/blueprint/{section_id}-fix-report.md`.
-- Read only the prior `reports/blueprint/{section_id}-verification-report.md` portions needed to confirm prior content checks passed.
-- Read only the exact changed status or mirror lines in `project-truth/implementation-blueprint.md`.
-- Read only the exact selected section state fields in `project-truth/blueprint-state.yaml` needed to verify the declared status or mirror sync.
+- Read only the first occurrence of `Result:` and the `Issues` section 
+  (max 3 lines) from the prior `reports/blueprint/{section_id}-verification-report.md`.
+- Read only the exact changed status or mirror lines in 
+  `project-truth/implementation-blueprint.md`.
+- Read only the exact selected section state fields in 
+  `project-truth/blueprint-state.yaml` needed to verify the declared 
+  status or mirror sync.
 - Maximum estimated source chars: 5000.
-- If the needed read scope would exceed 5000 estimated source chars, immediately stop before performing those reads and emit:
+- If the needed read scope would exceed 5000 estimated source chars, 
+  immediately stop before performing those reads and emit:
   ```
   result: escalate
   escalation_reason: re_verifier_budget_exceeded
@@ -119,3 +124,11 @@ Result is `pass` only if all are true:
 - When emitting `result: escalate`, the `escalation_reason` field must be one of: `missing_fix_type`, `content_fix`, `mixed_fix`, `unknown_fix_type`, `prior_content_checks_not_passed`, `re_verifier_budget_exceeded`.
 - Token Efficiency must include `read_model: status-only`, `estimated_source_chars`, `budget_exceeded: yes|no`, `budget_exceeded_by_chars`, `largest_read_source`, and `optimization_recommendation`.
 - If failing or escalating due to routing, scope, missing structured metadata, missing prior content pass, mismatch, content change, or budget, `Required next action` must be `escalate to cafl-blueprint-verifier` with the concrete `escalation_reason`.
+
+## Prior content-pass confirmation rule
+Read ONLY:
+- The first line containing `Result:` in the prior verification report.
+- The `Issues` section heading and its immediate content (max 3 lines).
+If Result is `pass` and Issues contains no blocking items: content pass confirmed.
+Do not read further. Do not read checks performed, traceability, token efficiency,
+or any other section of the prior report.
