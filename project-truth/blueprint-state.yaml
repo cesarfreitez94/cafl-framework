@@ -3,7 +3,7 @@ blueprint:
   working_contract_path: project-truth/implementation-blueprint.md
   total_sections: 19
   total_iterations: 5
-  current_iteration: 4
+  current_iteration: 5
   owner_approval_required: true
   commit_policy: owner_only
   source_of_truth: project-truth/
@@ -46,13 +46,13 @@ iterations:
   I4:
     name: "Ejecucion Odoo y piloto"
     sections: [S13, S14, S15]
-    status: not-started
-    owner_gate: not-reached
+    status: closed
+    owner_gate: approved
     depends_on: [I3]
-  I5:
+   I5:
     name: "Cierre del Blueprint"
     sections: [S16, S17, S18, S19]
-    status: not-started
+    status: in-progress
     owner_gate: not-reached
     depends_on: [I4]
 
@@ -417,58 +417,140 @@ sections:
   S13:
     title: "Odoo 18 Execution Environment"
     iteration: I4
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 13
     depends_on: [S09, S10, S11, S12]
     fix_iterations: 0
-    last_author_report: null
+    last_author_report: "reports/blueprint/S13-author-report.md"
     last_fix_report: null
-    last_verification_report: null
+    last_verification_report: "reports/blueprint/S13-verification-report.md"
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual Odoo 18 execution environment for CAFL V1 without
+      creating the physical environment, installing Odoo, or executing tests.
+      Establishes three logical environment categories (development, validation,
+      authority reference) and seven logical components: Odoo 18 instance,
+      PostgreSQL, installed pilot module, test execution mechanism, evidence
+      capture mechanism, conceptual execution trigger, and Odoo 18 source
+      reference. Maps evidence flow from the environment into S11's L1-L4
+      authority hierarchy via 6 environment events tied to SCH-05, SCH-06,
+      SCH-10, VAL-05, and VAL-10. Applies S12 source policy constraints
+      (docs.odoo.com + github.com/odoo/odoo only; no auto-expansion). Declares
+      five spike dependencies for S16: exact environment form (Docker/venv/local),
+      DB compatibility, Odoo 18 test runner, evidence capture for minimum cycle,
+      and code source traceability. Explicit non-decisions exclude physical
+      environment, installation, scripts, PRD/SDD/backlog, and implementation.
+      Handoffs: S14 receives logical component descriptions for security/secrets
+      modeling; S15 receives environment categories, logical components, source
+      policy constraints, and evidence model as assumptions for the pilot module
+      blueprint; S16 receives five spike dependencies as priority inputs; S17
+      receives logical component traceability map; S19 receives spike validation
+      dependencies as candidate acceptance criteria. Traces to DEC-ACCEPTED-135,
+      153, 162, 163; CRIT-06, CRIT-07; TOM; BR-01; AP-08, AP-09; SCH-01, SCH-05,
+      SCH-06, SCH-10; VAL-05, VAL-10; RISK-059, RISK-010; and S09-S12 handoffs.
+      V1 boundaries preserved: Odoo-only, Odoo 18, internal requests/simple
+      approvals pilot, minimal source policy, framework/ excluded."
 
   S14:
     title: "Security and Secrets"
     iteration: I4
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 14
     depends_on: [S13]
     fix_iterations: 0
-    last_author_report: null
+    last_author_report: "reports/blueprint/S14-author-report.md"
     last_fix_report: null
-    last_verification_report: null
+    last_verification_report: "reports/blueprint/S14-verification-report.md"
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines the conceptual security and secrets model for CAFL V1 in the Odoo 18
+      execution environment defined in S13. Establishes four conceptual control
+      areas: secrets handling posture (CA-1), permissions and access model (CA-2),
+      evidence protection (CA-3), and security/risk triage in gates (CA-4).
+      Defines logical component security map covering all seven S13 logical
+      components and three environment categories. Integrates with S11 L1-L4
+      authority hierarchy for security evidence and S12 source policy constraints
+      (docs.odoo.com + github.com/odoo/odoo only; Curation Request for expansion).
+      Identifies four spike dependencies for S16 (SPK-S14-01 through SPK-S14-04)
+      with ordering constraints: SPK-S14-01 blocks SPK-S14-02 and SPK-S14-03.
+      Delivers handoffs to S15 (security constraints for pilot module blueprint)
+      and S16 (security spike ordering). All design remains conceptual: no real
+      secrets, tokens, vault, permission rules, executable policies, or
+      implementation artifacts. Traces to AP-10/AP-11/AP-12, CRIT-02/03/04,
+      BR-01/BR-02/BR-04, DEC-ACCEPTED-045/059/064/076/092/101/162/163,
+      RISK-021/027/040/059/061/063, TOM, S11, S12, S13. V1 boundaries preserved:
+      Odoo-only, Odoo 18, internal requests/simple approvals pilot, minimal source
+      policy, framework/ excluded.
 
   S15:
     title: "Pilot Module Blueprint"
     iteration: I4
-    status: not-started
-    owner_approval: not-requested
+    status: closed
+    owner_approval: approved
     iteration_position: 15
     depends_on: [S13, S14]
-    fix_iterations: 0
-    last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    fix_iterations: 1
+    last_author_report: reports/blueprint/S15-author-report.md
+    last_fix_report: reports/blueprint/S15-fix-report.md
+    last_verification_report: reports/blueprint/S15-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Defines conceptually the Pilot Module Blueprint for CAFL V1 at the
+      component level, targeting Odoo 18 for the confirmed internal requests /
+      simple approvals pilot (DEC-ACCEPTED-162). Describes logical artifacts:
+      data models (InternalRequest, ApprovalRecord), form/list/search views,
+      a four-state workflow (draft→submitted→approved/rejected), conceptual
+      security (CA-1: no embedded secrets, CA-2: minimum-access permission
+      model, CA-3: L3 evidence protection, CA-4: security/risk gate), L3
+      candidate evidence events tied to S11's L1-L4 hierarchy, and a conceptual
+      test approach (unit, workflow, scope, source policy). All design remains
+      conceptual: no executable module, no installation, no PRD/SDD/backlog.
+      Consumes S13 handoffs (environment categories, logical components,
+      evidence model) and S14 handoffs (four security control areas,
+      no-embedding principle, spike dependencies SPK-S14-01/02) as inherited
+      constraints. Declares four technical spike dependencies for S16 (module
+      installation, test execution, access model, source code traceability).
+      Delivers to S16 spike inputs, to S17 component traceability map, and to
+      S19 evidence/acceptance criteria candidates. Traces to DEC-ACCEPTED-162,
+      DEC-ACCEPTED-163, DEC-ACCEPTED-135, BR-01, SCH-10, VAL-10, VAL-05,
+      S14 CA-1..CA-4, S13 logical components, S11 L1-L4, AP-08, AP-09, AP-10,
+      CRIT-02/03/04/06/07, RISK-059, RISK-010. V1 boundaries preserved:
+      Odoo-only, Odoo 18, minimal source policy (docs.odoo.com +
+      github.com/odoo/odoo), framework/ excluded, no forbidden artifacts."
 
-  S16:
+   S16:
     title: "Spikes and Technical Validations final order"
     iteration: I5
-    status: not-started
-    owner_approval: not-requested
+    status: approved
+    owner_approval: approved
     iteration_position: 16
     depends_on: [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11, S12, S13, S14, S15]
-    fix_iterations: 0
-    last_author_report: null
-    last_fix_report: null
-    last_verification_report: null
+    fix_iterations: 1
+    last_author_report: reports/blueprint/S16-author-report.md
+    last_fix_report: reports/blueprint/S16-fix-report.md
+    last_verification_report: reports/blueprint/S16-verification-report.md
     open_issues: []
-    context_summary: ""
+    context_summary: >
+      Consolidates all CAFL V1 spikes and technical validations into a single
+      final ordered list with justified dependencies. Integrates S06 SP-01..SP-13
+      (bands A→B→C preserved, band D conditional/separated), S13 five environment
+      spike dependencies (RISK-059 critical), S14 four security spike dependencies
+      (SPK-S14-01..SPK-S14-04 with ordering constraints), and S15 six pilot module
+      spike dependencies. Every spike carries explicit dependencies; no flat list
+      (RULE-06). SP-04 and SP-05 remain open uncertainties per S07/S08. Band D
+      spikes (SP-11..SP-13) stay conditional/separated from core V1. Knowledge
+      Gaps and Curation Requests from S12 are spike inputs, not resolved items.
+      No spike is executed; no validation result is closed. Handoffs: spike
+      catalogue to S17 traceability matrix, spike categories to S18 backlog
+      outputs, and spike validation dependencies to S19 acceptance criteria.
+      Verification passed with zero issues after Tier 1a/1b RULE-06 fix
+      (SP-01/SP-02 concurrent in Tier 1a, SP-03 separated into Tier 1b).
+      Traces to S06, S07, S08, S10, S11, S12, S13, S14, S15, DEC-ACCEPTED-135/
+      149/153/158/162/163/164/045/059/064/076/092/101/136/137/138/140/145/146,
+      AP-02/AP-04/AP-06/AP-10/AP-11/AP-12, CRIT-01/02/03, BR-01/BR-02,
+      RISK-059/021/027/040/010/061/063, and TOM spikes."
 
   S17:
     title: "Bidirectional Traceability Matrix"

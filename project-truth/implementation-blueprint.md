@@ -1,6 +1,6 @@
 # CAFL V1 Implementation Blueprint Working Contract
 
-Status: iteration-03-closed__iteration-04-ready
+Status: iteration-04-closed
 
 Metodologia: Contract-Driven + ADRs ligeros + Ordered Spike-Driven Validation + Walking Skeleton + Risk-Based V1 Scoping + Bidirectional Traceability Matrix
 
@@ -1540,95 +1540,1005 @@ Trazabilidad: S11 ciclo de vida 6 pasos; S11 jerarquia L1..L4; S09 SCH-09; S10 V
 
 #### 13. Odoo 18 Execution Environment
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved
 
-- Iteration 3 aprobada por owner.
-- Secciones 9 a 12 elaboradas y aprobadas.
-- DEC-ACCEPTED-135 y DEC-ACCEPTED-153.
+##### 1. Purpose
 
-Outputs esperados:
+S13 define conceptualmente el entorno de ejecucion Odoo 18 que CAFL V1 necesita para llevar a cabo su ciclo minimo real. Su objetivo es establecer, a nivel conceptual, que componentes, categorias de entorno y requisitos de evidencia son necesarios para que el framework opere sobre Odoo 18 en el contexto del piloto (solicitudes internas / aprobaciones simples), sin crear el entorno fisico, instalar Odoo, ejecutar tests ni crear scripts.
 
-- Definicion conceptual del entorno Odoo 18 para alimentar security, pilot y spikes finales.
+S13 recibe los handoffs conceptuales de S09 (SCH-10 Odoo Pilot Artifact Schema), S10 (VAL-05 Evidence Record Validator, VAL-10 Odoo Pilot Artifact Scope Validator), S11 (jerarquia L1-L4 y ciclo de vida de evidencia candidata) y S12 (source policy minima operacionalizada: docs.odoo.com + github.com/odoo/odoo), y entrega handoffs conceptuales a S14 (Security and Secrets), S15 (Pilot Module Blueprint) y S16 (Spikes and Technical Validations final order).
 
-Restricciones especificas:
+La razon de existencia de esta seccion en el Blueprint es que el entorno exacto de Odoo 18 (Docker vs venv vs local) no esta decidido — esa decision queda para un spike (conforme TOM-S06, DEC-ACCEPTED-135 y DEC-ACCEPTED-153). Sin embargo, el Blueprint debe definir conceptualmente que tipo de entorno se necesita, cuales son sus componentes logicos, como fluye la evidencia desde ese entorno hacia el modelo de storage de S11, y cuales son las restricciones de V1 que el entorno debe respetar. Esto permite que S14 y S15 avancen con restricciones de entorno bien definidas y que S16 tenga insumos suficientes para ordenar los spikes de validacion tecnica.
 
-- No instalar Odoo, crear entorno real, ejecutar tests ni crear scripts.
+##### 2. Inputs / Scope
 
-Acceptance criteria minimos:
+Inputs trazables usados:
 
-- La seccion identifica dependencias de validacion sin ejecutar entorno.
+- S09 SCH-10 Odoo Pilot Artifact Schema: modelo logico del artefacto del piloto Odoo 18, que incluye modelos de datos, vistas, ACL, record rules, flujos de trabajo, tests y evidencia asociada. Trazable a CRIT-06, CRIT-07, TOM, BR-01, AP-08, DEC-ACCEPTED-162, DEC-ACCEPTED-163.
+- S09 SCH-01 Authority Source Schema: modelo logico para clasificacion de fuentes de autoridad, aplicable a referencias Odoo 18 del entorno. Trazable a CRIT-06, AP-01, AP-06, DEC-ACCEPTED-163.
+- S09 SCH-05 Evidence Record Schema: modelo logico de evidencia simple, auditable y Git-compatible. Trazable a AP-09, DEC-ACCEPTED-146.
+- S09 SCH-06 Deterministic Control Schema: modelo logico de control deterministico para evidencia de ejecucion del entorno. Trazable a AP-04, CRIT-07.
+- S10 VAL-05 Evidence Record Validator: control conceptual que verifica que la evidencia producida en el entorno tiene origen trazable, tipo declarado, resumen verificable y estado candidato. Trazable a AP-09, CRIT-06.
+- S10 VAL-10 Odoo Pilot Artifact Scope Validator: control conceptual que verifica que los artefactos del piloto estan dentro de solicitudes internas / aprobaciones simples, referencian fuentes Odoo pre-autorizadas y tienen evidencia y control asociados. Trazable a BR-01, DEC-ACCEPTED-162, DEC-ACCEPTED-163.
+- S11 jerarquia L1-L4 y ciclo de vida de evidencia candidata (6 pasos): base logica para registrar evidencia del entorno Odoo 18 bajo los niveles de autoridad apropiados (L2/L3 como candidata, L1 si modifica estado autoritativo). Trazable a AP-09, DEC-ACCEPTED-146.
+- S12 source policy minima operacionalizada (docs.odoo.com + github.com/odoo/odoo): restriccion de fuentes aplicable a todas las referencias del entorno conceptual. Trazable a DEC-ACCEPTED-163, AP-06, AP-12.
+- DEC-ACCEPTED-135: Odoo target V1 es Odoo 18. La forma exacta del entorno queda para spike/blueprint.
+- DEC-ACCEPTED-153: V1 debe ejecutar y evidenciar un ciclo minimo real en Odoo 18. Incluye install/update/test execution y captura de evidencia; entorno exacto para spike/blueprint.
+- DEC-ACCEPTED-162: piloto V1 = solicitudes internas / aprobaciones simples. Restriccion de scope de la ejecucion en el entorno.
+- DEC-ACCEPTED-163: source policy minima — docs.odoo.com + github.com/odoo/odoo son las unicas fuentes pre-autorizadas para V1.
+- TOM (lineas 184, 248-255, 362, 371, 379, 388): entorno Odoo 18 exacto no definido; spike requirement. Piloto real, acotado, Odoo 18, con modelos/vistas/ACL/record rules/workflow/reglas/tests/docs/evidencia, sin integracion externa compleja por defecto.
+- BR-01 (S03): V1 boundary — Odoo-only, Odoo 18, piloto internal requests / simple approvals. Restriccion fundamental que el entorno debe respetar.
+- AP-08: V1 minimo suficiente y anti-scope-creep. RAG, SDK/server, dashboard/UI, CI/CD, DB avanzada, multiusuario, plugins/MCP, curacion avanzada, integraciones reales fuera de core V1.
+- AP-09: evidencia simple, auditable y Git-compatible.
+- RISK-059: falta de entorno Odoo 18 — critical. Entorno exacto (Docker/venv/local) debe decidirse en spike. Sin entorno no hay ejecucion ni evidencia real.
+- RISK-010: verificacion no reproducible — high. Commands/logs/entorno Odoo por materializar en Blueprint/spikes.
+
+Alcance de S13:
+
+- Definir conceptualmente las categorias de entorno necesarias para CAFL V1 (sin instanciarlas).
+- Describir los componentes logicos del entorno Odoo 18 para el piloto.
+- Definir como la evidencia del entorno se integra con la jerarquia L1-L4 de S11.
+- Describir la relacion conceptual del entorno con S14 (security y secrets) y S15 (piloto).
+- Establecer que significan SCH-10, VAL-05 y VAL-10 para la evidencia del entorno.
+- Declarar dependencias de validacion para el spike de entorno (S16).
+
+Fuera de alcance:
+
+- Instalar Odoo, crear entorno fisico, ejecutar tests ni crear scripts.
+- Decidir el entorno exacto (Docker vs venv vs local); eso es decision de spike.
+- Crear PRD, SDD ni backlog funcional del piloto.
+- Reabrir la seleccion del piloto (DEC-ACCEPTED-162 cerrado).
+- Ampliar source policy (docs.odoo.com + github.com/odoo/odoo solamente).
+- Crear schemas fisicos, validators reales, agents ejecutables, runtime ni implementacion.
+- Usar o referenciar `framework/` como input.
+- Expandir V1 fuera de Odoo-only, Odoo 18, solicitudes internas / aprobaciones simples.
+
+##### 3. Conceptual Odoo 18 Execution Environment Design
+
+El diseno que sigue es logico y conceptual. No define un entorno fisico, no instala Odoo, no ejecuta comandos, no crea rutas finales ni determina herramientas. El entorno exacto (Docker, venv, local) queda abierto para el spike correspondiente, conforme DEC-ACCEPTED-135, DEC-ACCEPTED-153 y RISK-059.
+
+###### 3.1 Categorias conceptuales de entorno
+
+Para CAFL V1, el entorno Odoo 18 se clasifica en tres categorias conceptuales. Estas categorias son logicas, no fisicas; su realizacion exacta depende del spike de entorno (S16):
+
+| Categoria conceptual | Proposito en V1 | Alcance del piloto | Relacion con evidencia | Condicion de avance |
+| --- | --- | --- | --- | --- |
+| Entorno de desarrollo conceptual | Permite la construccion iterativa del modulo piloto (solicitudes internas / aprobaciones simples) con Odoo 18 instalado y funcional | Solo piloto V1; sin integraciones externas complejas | Outputs de construccion son evidencia candidata (L3); no autoritativos hasta registro gobernado | Requiere decision de spike sobre forma exacta (Docker/venv/local) |
+| Entorno de validacion conceptual | Permite ejecutar el ciclo minimo real de DEC-ACCEPTED-153: install, update, test execution y captura de evidencia | Solo piloto V1; resultados de tests y logs de ejecucion capturados como evidencia candidata | Resultados de tests y logs son evidencia candidata (L3); elegibles para L2 si pasan registro gobernado | Mismo requisito de spike; ejecucion real no puede ocurrir sin entorno decidido |
+| Entorno de referencia de autoridad | Permite verificar trazabilidad tecnica del piloto hacia codigo fuente Odoo 18 oficial | Solo lectura de github.com/odoo/odoo; no ejecuta ni modifica codigo fuente Odoo | Registros de trazabilidad son evidencia candidata (L3) bajo SCH-01 y SCH-10 | Source policy minima (DEC-ACCEPTED-163) determina fuentes elegibles |
+
+Estas tres categorias conceptuales son necesarias para cumplir DEC-ACCEPTED-153 (ciclo minimo real con evidencia) y BR-01 (Odoo-only, Odoo 18, piloto acotado). No se instancian en esta seccion; su materializacion depende del spike de entorno.
+
+Trazabilidad: DEC-ACCEPTED-135; DEC-ACCEPTED-153; BR-01; TOM (lineas 248-255); RISK-059; AP-08.
+
+###### 3.2 Componentes logicos del entorno Odoo 18
+
+Los componentes logicos describen que elementos necesita el entorno Odoo 18 para que el ciclo minimo real sea posible. No son implementacion ni prescripcion de herramientas:
+
+| Componente logico | Descripcion conceptual | Obligatorio para V1 | Restriccion aplicable | Referencia |
+| --- | --- | --- | --- | --- |
+| Instancia Odoo 18 | Una instalacion funcional de Odoo 18 en cualquier forma que el spike decida (Docker, venv, local). Debe soportar el modulo piloto. | Si — sin instancia no hay ejecucion real (DEC-ACCEPTED-153) | Solo Odoo 18; ninguna version anterior ni posterior en V1 | DEC-ACCEPTED-135; BR-01 |
+| Base de datos PostgreSQL | Instancia de PostgreSQL compatible con Odoo 18 para persistencia del modulo piloto. Forma exacta (local, contenedor) queda para spike. | Si — Odoo requiere PostgreSQL | Solo para piloto V1; sin schemas de produccion ni datos reales de clientes | TOM linea 248-255; RISK-059 |
+| Modulo piloto instalado | El modulo Odoo 18 del piloto (solicitudes internas / aprobaciones simples) instalado y funcional en la instancia. Diseñado en S15. | Si — es el artefacto ejecutable del piloto V1 | Scope limitado a DEC-ACCEPTED-162; sin integraciones externas complejas | DEC-ACCEPTED-162; SCH-10; VAL-10 |
+| Mecanismo de ejecucion de tests | Forma conceptual de ejecutar los tests del modulo piloto (test runner de Odoo o equivalente). Herramienta exacta queda para spike. | Si — DEC-ACCEPTED-153 requiere test execution con evidencia | Solo tests del piloto; no suite completa de Odoo | DEC-ACCEPTED-153; VAL-10 |
+| Mecanismo de captura de evidencia | Forma conceptual de capturar outputs de ejecucion (logs de tests, resultados de install/update, snapshots de estado) como evidencia candidata. | Si — DEC-ACCEPTED-153 requiere evidencia del ciclo minimo | Evidencia candidata (L3); requiere registro gobernado para ser L2 | S11 L3-L2; VAL-05; SCH-05 |
+| Trigger de ejecucion conceptual | Mecanismo conceptual para iniciar el ciclo minimo (install, update, test execution). Forma exacta (CLI, script, comando Odoo) queda para spike. | Si — ciclo minimo no se ejecuta sin trigger | No crea scripts ni commands reales en esta seccion | DEC-ACCEPTED-153; RISK-010 |
+| Referencia de codigo fuente Odoo 18 | Acceso conceptual a github.com/odoo/odoo para verificacion de trazabilidad tecnica del modulo piloto. Solo lectura. | Si — trazabilidad tecnica requerida por source policy | Solo github.com/odoo/odoo; no forks, community ni terceros | DEC-ACCEPTED-163; SCH-01; VAL-10 |
+
+Ningun componente logico es implementado ni creado en esta seccion. Cada uno tiene una forma exacta que debe decidirse en el spike de entorno. Lo que S13 establece es que estos componentes son necesarios conceptualmente para que V1 sea viable.
+
+Trazabilidad: DEC-ACCEPTED-135; DEC-ACCEPTED-153; DEC-ACCEPTED-162; DEC-ACCEPTED-163; BR-01; TOM; SCH-10; VAL-05; VAL-10; RISK-059; RISK-010.
+
+###### 3.3 Flujo de evidencia desde el entorno hacia la jerarquia L1-L4 de S11
+
+La evidencia que produce el entorno Odoo 18 durante el ciclo minimo real debe integrarse con la jerarquia L1-L4 y el ciclo de vida de 6 pasos definidos en S11. Esta integracion es conceptual; no crea mecanismos reales ni flujos ejecutables:
+
+| Evento de entorno | Tipo de evidencia generada | Nivel S11 inicial | Condicion de promocion | Schema/Validator aplicable |
+| --- | --- | --- | --- | --- |
+| Instalacion del modulo piloto | Log de instalacion, resultado de install (exito/error, dependencias resueltas) | L3 — evidencia candidata | Evaluacion gobernada; registro explicito con trazabilidad | SCH-05 (Evidence Record); VAL-05 (Evidence Record Validator) |
+| Actualizacion del modulo piloto | Log de actualizacion, resultado de update, estado de la instancia | L3 — evidencia candidata | Evaluacion gobernada; registro explicito | SCH-05; VAL-05 |
+| Ejecucion de tests del piloto | Resultados de test runner (tests pasados/fallidos, cobertura conceptual, logs) | L3 — evidencia candidata | Evaluacion gobernada; registro explicito; puede apoyar gate si se promociona a L2 | SCH-05; SCH-06; SCH-10; VAL-05; VAL-10 |
+| Verificacion de scope del piloto | Resultado de VAL-10 (piloto dentro de solicitudes internas / aprobaciones simples, fuentes pre-autorizadas, evidencia asociada) | L3 — evidencia candidata | Evaluacion gobernada | SCH-10; VAL-10 |
+| Trazabilidad a codigo fuente | Referencia verificada a github.com/odoo/odoo para componente del modulo piloto | L3 — evidencia candidata | Evaluacion gobernada; puede apoyar acceptance criteria si se promociona a L2 | SCH-01; VAL-01 (Authority Source) |
+| Snapshot de estado del entorno | Estado logico del entorno al momento de una ejecucion (version Odoo, modulos instalados, resultado general) | L3 — evidencia candidata | Evaluacion gobernada; solo si cubre requisito de gate o handoff | SCH-07 (Runtime Output/Candidate Evidence); VAL-05 |
+
+Regla de autoridad aplicada al entorno: ningun output del entorno Odoo 18 puede actuar como evidencia formal de gate, handoff ni cierre de seccion sin haber pasado por el ciclo de vida de S11 (L3 → L2 mediante registro gobernado). `project-truth/` (L1) no es sustituida por outputs del entorno.
+
+Trazabilidad: S11 jerarquia L1-L4; S11 ciclo de vida 6 pasos; SCH-05; SCH-06; SCH-07; SCH-10; VAL-05; VAL-10; AP-09; DEC-ACCEPTED-146.
+
+###### 3.4 Restricciones de source policy aplicadas al entorno
+
+El entorno Odoo 18 conceptual debe operar dentro de la source policy minima definida por DEC-ACCEPTED-163 y operacionalizada en S12. Las restricciones son:
+
+- **Fuentes pre-autorizadas unicamente:** toda referencia tecnica usada para construir, configurar o validar el entorno debe tener como origen docs.odoo.com o github.com/odoo/odoo. Ninguna otra fuente es elegible sin Curation Request aprobada por owner.
+- **Version Odoo 18 obligatoria:** toda referencia tecnica debe corresponder a Odoo 18. Referencias a versiones anteriores (Odoo 16, 17) o posteriores no son elegibles en V1. VAL-01 detectara inconsistencias de version como alertas candidatas (L3) bajo el mecanismo de S12.
+- **Gaps de source policy en el entorno:** si durante el spike de entorno o la elaboracion de S15 (Pilot Module Blueprint) se detecta que se necesita una fuente no pre-autorizada para alguna decision tecnica del entorno, debe activarse el flujo de Knowledge Gap definido en S12 (VAL-09 trigger → Curation Request → aprobacion owner). S13 no puede ampliar source policy por iniciativa propia.
+- **`framework/` excluido:** ninguna referencia al directorio legado excluido puede usarse como input para el entorno conceptual ni para el modulo piloto.
+
+Trazabilidad: DEC-ACCEPTED-163; S12 source policy minima; S10 VAL-01; S10 VAL-09; AP-06; AP-12; RULE-10.
+
+###### 3.5 Relacion entre el entorno y el piloto (S15)
+
+El entorno Odoo 18 conceptual es el sustrato de ejecucion del piloto V1. La relacion entre S13 y S15 es:
+
+- S13 define los componentes logicos del entorno que S15 asumira disponibles para el modulo piloto. S15 no debe redefinir el entorno; lo consume como restriccion heredada.
+- S15 (Pilot Module Blueprint) diseñara los artefactos del modulo piloto (modelos de datos, vistas, ACL, record rules, flujo de trabajo, tests) dentro de los limites de DEC-ACCEPTED-162 (solicitudes internas / aprobaciones simples) y asumira que el entorno provee una instancia Odoo 18 funcional con PostgreSQL.
+- SCH-10 (Odoo Pilot Artifact Schema de S09) es el modelo logico que conecta los artefactos de S15 con la evidencia del entorno de S13. VAL-10 verifica el scope del piloto; VAL-05 verifica la forma de la evidencia.
+- S13 no diseña el modulo piloto ni crea PRD, SDD ni backlog funcional. Ese trabajo pertenece a S15.
+- La forma exacta de como el entorno ejecuta el modulo piloto (comandos de instalacion, test runner, triggers) queda para el spike de entorno y para la implementacion real; S13 y S15 solo establecen restricciones y requisitos conceptuales.
+
+Trazabilidad: DEC-ACCEPTED-162; SCH-10; VAL-05; VAL-10; BR-01; TOM (lineas 248-255); AP-08.
+
+###### 3.6 Relacion entre el entorno y seguridad (S14)
+
+El entorno Odoo 18 conceptual implica requisitos de seguridad y manejo de secrets que S14 debe abordar. La relacion entre S13 y S14 es:
+
+- S13 identifica los componentes logicos del entorno que tienen implicaciones de seguridad: instancia Odoo 18 (credenciales de administrador), base de datos PostgreSQL (credenciales de acceso), mecanismo de ejecucion de tests (posible acceso a logs con datos sensibles), referencias a github.com/odoo/odoo (tokens de acceso si aplica).
+- S13 no define controles de seguridad ni politicas de secrets. Ese trabajo pertenece a S14.
+- S14 recibe de S13 la descripcion conceptual de los componentes del entorno para modelar los controles de acceso y secrets policy a nivel conceptual sin crear vault, permission rules ejecutables ni secrets finales.
+- RISK-059 (falta de entorno Odoo 18) implica que los controles de seguridad de S14 deben diseñarse para ser aplicables a cualquier forma que el entorno tome (Docker, venv, local), no para una implementacion especifica.
+
+Trazabilidad: RISK-059; TOM; AP-08; DEC-ACCEPTED-153.
+
+###### 3.7 Dependencias de validacion para el spike de entorno
+
+S13 identifica las dependencias de validacion tecnica que el spike de entorno (a ordenar en S16) debe resolver. Estas son las preguntas tecnicas abiertas que bloquean la materializacion real del entorno:
+
+| Dependencia de validacion | Descripcion | Riesgo relacionado | Requisito de evidencia |
+| --- | --- | --- | --- |
+| Forma exacta del entorno | Decidir si el entorno Odoo 18 usa Docker, venv local, instalacion nativa u otra forma. Impacta reproducibilidad y portabilidad. | RISK-059 (critical) | El spike debe producir evidencia candidata (L3) de que la forma elegida permite install, update y test execution completos del piloto |
+| Compatibilidad de la base de datos | Verificar que la instancia PostgreSQL elegida es compatible con los modulos del piloto Odoo 18. | RISK-059; RISK-010 | El spike debe producir evidencia candidata de install exitoso con base de datos |
+| Test runner de Odoo 18 | Validar que el mecanismo de ejecucion de tests de Odoo 18 funciona en el entorno elegido y produce resultados capturables como evidencia. | RISK-010 (high) | El spike debe producir log de tests con al menos un test del piloto ejecutado y resultado candidato a L3 |
+| Captura de evidencia del ciclo minimo | Verificar que los outputs del entorno (logs de install, update, test) pueden capturarse, retenerse y procesarse bajo el modelo de evidencia de S11 (L3, VAL-05, SCH-05). | RISK-010; AP-09 | El spike debe producir al menos un artefacto de evidencia candidata bien formada bajo VAL-05 |
+| Trazabilidad de codigo fuente | Verificar que las referencias a github.com/odoo/odoo para el modulo piloto son alcanzables y corresponden a Odoo 18. | DEC-ACCEPTED-163; RISK-010 | El spike debe confirmar acceso a github.com/odoo/odoo y trazabilidad a la version correcta |
+
+Ninguna de estas dependencias puede ser resuelta conceptualmente; requieren el spike de entorno con ejecucion real. S13 las declara para que S16 las incluya en el orden de spikes con la prioridad correspondiente.
+
+Trazabilidad: RISK-059; RISK-010; DEC-ACCEPTED-135; DEC-ACCEPTED-153; DEC-ACCEPTED-163; AP-09; S11; VAL-05; SCH-05.
+
+##### 4. Cross-Section Guidance / Handoff Rules
+
+- **Para S14 Security and Secrets:** S13 entrega a S14 la descripcion conceptual de los componentes logicos del entorno (instancia Odoo 18, PostgreSQL, trigger de ejecucion, mecanismo de captura de evidencia) como insumo para definir controles de seguridad y secrets policy a nivel conceptual. S14 debe modelar controles aplicables a cualquier forma del entorno sin crear vault, permission rules ejecutables ni secrets finales.
+- **Para S15 Pilot Module Blueprint:** S13 entrega a S15 las categorias conceptuales de entorno, los componentes logicos del entorno, las restricciones de source policy (docs.odoo.com + github.com/odoo/odoo), el modelo de evidencia del entorno (L1-L4, ciclo de vida de S11, SCH-10, VAL-05, VAL-10) y las restricciones del piloto (DEC-ACCEPTED-162: solicitudes internas / aprobaciones simples). S15 asume el entorno logico como disponible y diseña los artefactos del modulo piloto sin redefinir el entorno ni crear PRD, SDD, backlog funcional ni modulo ejecutable.
+- **Para S16 Spikes and Technical Validations:** S13 entrega a S16 las cinco dependencias de validacion del spike de entorno (forma exacta, compatibilidad DB, test runner, captura de evidencia, trazabilidad de codigo fuente) como insumos prioritarios para el orden final de spikes. RISK-059 (critical) posiciona el spike de entorno como bloqueante de la ejecucion real del piloto. S16 no puede cerrar estas dependencias por autoridad propia; requiere spike de ejecucion real.
+- **Para S17 Bidirectional Traceability Matrix:** S13 entrega a S17 el mapa de componentes logicos del entorno y su trazabilidad a DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-162, DEC-ACCEPTED-163, BR-01, TOM, SCH-10, VAL-05 y VAL-10 como base para la matriz bidireccional del entorno Odoo 18.
+- **Para S19 Acceptance Criteria:** S13 entrega a S19 las dependencias de validacion del spike de entorno como criterios de aceptacion candidatos para el componente de entorno Odoo 18 en V1. S19 no puede cerrar acceptance criteria del entorno sin evidencia gobernada del spike correspondiente (L2).
+- **Restriccion general:** ningun handoff de S13 crea el entorno fisico, instala Odoo, ejecuta comandos ni crea scripts. Todo handoff es conceptual y su materializacion depende del spike de entorno y de los ciclos de implementacion con autorizacion explicita del owner.
+
+##### 5. Explicit Non-Decisions
+
+- Esta seccion no instala Odoo 18 ni crea ninguna instancia real de entorno Odoo.
+- Esta seccion no decide si el entorno Odoo 18 usara Docker, venv, instalacion nativa u otra forma; esa decision pertenece al spike de entorno (S16).
+- Esta seccion no crea schemas fisicos, JSON Schema, YAML schema, DDL, tablas ni modelos ORM para el entorno o el piloto.
+- Esta seccion no crea validators reales, scripts, CLIs, commands, toolchain ejecutable ni implementacion de entorno.
+- Esta seccion no crea el modulo piloto ni ninguno de sus artefactos ejecutables (modelos de datos Odoo, vistas, ACL, record rules, flujos de trabajo, tests, datos de prueba).
+- Esta seccion no crea PRD final, SDD final ni backlog funcional del piloto.
+- Esta seccion no reabre la seleccion del piloto; DEC-ACCEPTED-162 (solicitudes internas / aprobaciones simples) esta cerrado y es restriccion no negociable.
+- Esta seccion no amplia source policy minima; docs.odoo.com + github.com/odoo/odoo son las unicas fuentes pre-autorizadas; cualquier ampliacion requiere Curation Request y aprobacion owner.
+- Esta seccion no ejecuta tests del piloto ni captura evidencia real del ciclo minimo; eso requiere el entorno fisico materializado por el spike.
+- Esta seccion no define controles de seguridad, secrets policy, vault, tokens, certificados ni configuraciones de seguridad; ese trabajo pertenece a S14.
+- Esta seccion no crea RAG/base vectorial, SDK/server, dashboard/UI, CI/CD completo, base de datos avanzada, operacion multiusuario, plugins/MCP ni integraciones externas fuera de core V1.
+- Esta seccion no convierte outputs runtime en evidencia formal; el registro gobernado (L3 → L2) requiere decision explicita y actor humano o proceso aprobado.
+- Esta seccion no modifica `blueprint-state.yaml` ni `blueprint-contract.yaml` mas alla de los campos autorizados.
+- Esta seccion no cambia source policy minima, owner approval semantics, status semantics ni reglas de governance.
+- Esta seccion no usa ni referencia `framework/` como input.
+- Esta seccion no genera el orden final de spikes, la matriz de trazabilidad final, los outputs de backlog ni los acceptance criteria finales; esos pertenecen a S16-S19.
+
+##### 6. Open Questions / Owner Decisions
+
+- none
+
+##### 7. Acceptance Criteria
+
+- La seccion queda en `Status: in-verification` para auditoria del verifier, con `Owner approval: not-requested`.
+- El diseño conceptual del entorno Odoo 18 cubre las tres categorias logicas (desarrollo, validacion, referencia de autoridad) sin crear ninguna instancia fisica, script ni artefacto ejecutable.
+- Los siete componentes logicos del entorno estan identificados y trazados a DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-162, DEC-ACCEPTED-163, BR-01, SCH-10, VAL-05 y VAL-10.
+- El flujo de evidencia desde el entorno hacia la jerarquia L1-L4 de S11 esta definido para todos los eventos relevantes del ciclo minimo (instalacion, actualizacion, tests, verificacion de scope, trazabilidad).
+- Las restricciones de source policy de S12 estan aplicadas al entorno: solo docs.odoo.com + github.com/odoo/odoo, solo Odoo 18.
+- Las dependencias de validacion del spike de entorno estan identificadas (cinco dependencias) con su riesgo relacionado y requisito de evidencia candidata.
+- Los handoffs a S14 (seguridad/secrets), S15 (piloto), S16 (spikes), S17 (trazabilidad), S19 (acceptance criteria) son suficientes para alimentar esas secciones sin crear implementacion.
+- La seccion respeta BR-01 (Odoo-only, Odoo 18, solicitudes internas / aprobaciones simples) y AP-08 (V1 minimo suficiente, anti-scope-creep).
+- La seccion no introduce RAG/vector base, SDK/server core, dashboard productizado, CI/CD completo, advanced storage/DB, multiuser/team operation, plugins/MCP, broad integrations ni post-V1 capabilities.
+- Todos los componentes son trazables a TOM, CRIT aprobado o decision aceptada (RULE-04).
+- Las explicit non-decisions cubren todos los artefactos prohibidos.
+- RISK-059 y RISK-010 estan declarados como riesgos activos que el spike de entorno debe resolver.
+
+##### 8. Section Output / Handoff
+
+- S13 entrega a S14 los componentes logicos del entorno (instancia Odoo 18, PostgreSQL, trigger de ejecucion, captura de evidencia) como insumo para definir conceptualmente controles de seguridad y secrets policy sin crear vault ni secretos reales.
+- S13 entrega a S15 las categorias de entorno, componentes logicos, restricciones de source policy, modelo de evidencia (L1-L4, SCH-10, VAL-05, VAL-10) y restricciones del piloto (DEC-ACCEPTED-162) como base para el Blueprint del modulo piloto sin PRD, SDD, backlog ni modulo ejecutable.
+- S13 entrega a S16 las cinco dependencias de validacion del spike de entorno — forma exacta (Docker/venv/local), compatibilidad DB, test runner Odoo 18, captura de evidencia ciclo minimo, trazabilidad de codigo fuente — como insumos prioritarios para el orden final de spikes con RISK-059 como bloqueante critico.
+- S13 entrega a S17 el mapa de componentes logicos del entorno con su trazabilidad completa a decisiones, schemas y validators como base para la matriz bidireccional del entorno Odoo 18.
+- S13 entrega a S19 las dependencias de validacion del spike de entorno como criterios de aceptacion candidatos para el componente de entorno Odoo 18 en V1.
+- S13 no cierra ninguna decision sobre toolchain, forma del entorno, lenguaje, CI/CD, implementacion del entorno ni forma del piloto; esos pertenecen al spike de entorno y a fases posteriores con autorizacion explicita del owner.
 
 #### 14. Security and Secrets
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved explicitly by owner.
 
-- Seccion 13 de la iteracion correspondiente.
-- Reglas TOM sobre seguridad, riesgo, compliance, datos y owner approval.
+##### 14.1 Purpose
 
-Outputs esperados:
+This section establishes a **conceptual security and secrets model** for CAFL V1 in the context of the Odoo 18 execution environment defined in S13. It identifies the logical security control areas, secrets handling posture, permissions model, and evidence protection requirements needed by the minimum end-to-end Odoo 18 pilot flow — without creating real secrets, tokens, certificates, configurations, or executable policies.
 
-- Modelo conceptual de seguridad y secrets para alimentar pilot support y spikes finales.
+This section feeds:
+- **S15** — security constraints and secrets handling posture as inputs to the Pilot Module Blueprint.
+- **S16** — security spike dependencies for final spike ordering.
 
-Restricciones especificas:
+**Explicit non-goals of this section:** No vault, no real secrets, no permission rules, no executable policies, no scripts, no runtime artifacts, no PRD, no SDD, no backlog, no implementation.
 
-- No crear secretos, tokens, certificados, configuraciones reales ni policies ejecutables.
+##### 14.2 Scope and Inherited Constraints
 
-Acceptance criteria minimos:
+S14 applies to CAFL V1 boundary only: Odoo-only, Odoo 18, internal requests / simple approvals pilot, minimal source policy. The following inherited constraints govern the full section:
 
-- La seccion cubre controles esperados sin exponer ni generar secretos.
+| Constraint | Source | Implication for S14 |
+|---|---|---|
+| RULE-04 | Blueprint contract | Every security component must trace to TOM, approved CRIT, or accepted decision. No unbacked component. |
+| RULE-09 | Blueprint contract | No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, or implementation. |
+| RULE-10 | Blueprint contract | `framework/` excluded as input or reference. |
+| AP-10 | Architecture Principles (S02) | Security, risk, compliance, secrets, and data are cross-cutting criteria; maintain triage in all gates; escalate critical risks. |
+| AP-11 | Architecture Principles (S02) | Uncertain physical/runtime choices (secrets handling, permissions) require spikes, not assumptions. |
+| AP-12 | Architecture Principles (S02) | Design is greenfield from `project-truth/`; `framework/` excluded. |
+| BR-01 | V1 Boundary (S03) | V1 core only if backed by TOM/CRIT/accepted decision and necessary for minimum pilot flow. |
+| S05 source-vs-runtime | S05 | Security and permissions restrictions define what requires later runtime validation; no final rules, vault, real secrets, or configuration here. |
+| S11 L1-L4 hierarchy | S11 | Security evidence must follow L1=authoritative, L2=governed registered, L3=candidate, L4=ephemeral. |
+| S11 6-step lifecycle | S11 | Security evidence follows: origin → capture → validation → eligibility → governed registration → authoritative reference. |
+| S12 source policy | S12 | docs.odoo.com + github.com/odoo/odoo only; no auto-expansion; Curation Request for any expansion. |
+| S13 logical components | S13 | Odoo 18 instance, PostgreSQL, installed pilot module, test execution mechanism, evidence capture mechanism, conceptual execution trigger, Odoo 18 source reference. Three environment categories: development, validation, authority reference. |
+
+##### 14.3 Conceptual Security Control Areas
+
+Security controls in CAFL V1 are organized into **four conceptual control areas**. These are logical categories only; no runtime implementation or executable policy is defined here.
+
+###### 14.3.1 Control Area 1 — Secrets Handling Posture
+
+**Definition:** The conceptual model for how secrets (credentials, tokens, API keys, database passwords, service accounts) are categorized and protected within the CAFL V1 Odoo 18 environment — without creating or storing any actual secrets.
+
+**Conceptual posture elements:**
+
+1. **Secret categories identified (conceptual):** Database credentials (PostgreSQL), Odoo administrative credentials, test execution credentials, evidence capture access credentials. These are category names only; no actual values, tokens, or credentials are defined here.
+
+2. **Separation principle:** Secrets must be conceptually separated by environment category (development, validation, authority reference) as established in S13. A secret used in development must not cross into validation or authority reference categories without explicit owner approval.
+
+3. **Non-embedding principle:** Secrets must not be embedded in source artifacts, evidence records, schemas, or validator definitions. This principle applies to `project-truth/` artifacts, pilot module source, and all evidence produced under S11's 6-step lifecycle.
+
+4. **Spike dependency:** The concrete mechanism for secrets storage and injection (environment variables, secrets manager, vault, .env files) is a **spike dependency for S16** (Spike: Secrets Handling Mechanism). The choice depends on the environment form resolved by S13's spike on exact environment form (Docker/venv/local). No assumption is made here; see Section 14.7.
+
+5. **Traceability:** RISK-021 (secrets leakage), RISK-061 (secrets in Odoo), AP-10, DEC-ACCEPTED-045, TOM security/risk section.
+
+###### 14.3.2 Control Area 2 — Permissions and Access Model
+
+**Definition:** The conceptual model for what permissions are needed by which logical components to execute the minimum Odoo 18 pilot flow, without defining actual permission rules, roles, or access control lists.
+
+**Conceptual model elements:**
+
+1. **Logical permission surfaces identified:** Odoo 18 instance administrative access, PostgreSQL connection access, pilot module installation access, test execution access, evidence capture write access. These are logical categories derived from S13's seven logical components.
+
+2. **Principle of minimal surface:** Each logical component should require only the minimum access needed for its role in the pilot flow. This principle is conceptual and guides spike validation; it is not an executable policy here.
+
+3. **Owner approval gate:** Permissions that cross environment boundaries or grant administrative-level access to production-equivalent data require explicit owner approval before implementation, consistent with CRIT-03 (owner approval for critical gates) and AP-10.
+
+4. **Framework exclusion:** No permissions model derives from or references `framework/` artifacts (RULE-10, AP-12).
+
+5. **Spike dependency:** The concrete permissions model — specific roles, ACL definitions, Odoo module-level access rights — is a **spike dependency for S16** (Spike: Permissions Model). See Section 14.7.
+
+6. **Traceability:** RISK-027 (permissions), AP-10, AP-11, CRIT-02, CRIT-03, DEC-ACCEPTED-059, DEC-ACCEPTED-076, TOM security/owner-approval section.
+
+###### 14.3.3 Control Area 3 — Evidence Protection
+
+**Definition:** The conceptual model for protecting the integrity and authority of evidence produced by the Odoo 18 execution environment under S11's L1-L4 hierarchy and 6-step lifecycle.
+
+**Conceptual model elements:**
+
+1. **Evidence authority levels (from S11):** L1 = `project-truth/` authoritative; L2 = governed registered evidence; L3 = candidate evidence; L4 = ephemeral. Security controls must be calibrated to protect L1 and L2 evidence above all, as these feed authoritative reference decisions.
+
+2. **Evidence integrity principle:** Evidence records produced by the evidence capture mechanism (S13 logical component) must not be modified after capture without producing a new governed registration event. Tampering with L2-registered evidence without a new lifecycle event is a security violation at the conceptual level.
+
+3. **Non-embedding principle (evidence):** Evidence records must not contain embedded secrets, credentials, or personally identifiable information. This applies to all evidence flowing through SCH-05, SCH-06, SCH-10, VAL-05, and VAL-10 (S13 environment events).
+
+4. **Source policy protection:** Evidence derived from Odoo 18 source (docs.odoo.com + github.com/odoo/odoo only, per S12) must maintain source attribution. Evidence that loses source attribution cannot be registered as L2 governed evidence.
+
+5. **Curation Request as security gate:** Any proposed expansion of evidence sources beyond the S12 minimal source policy must pass through the Curation Request governance pattern established in S12. This applies to evidence sourced for security validations as well as functional validations.
+
+6. **Traceability:** S11 (L1-L4, 6-step lifecycle), S12 (source policy, Curation Request), S13 (evidence capture mechanism, SCH-10, VAL-05, VAL-10), RISK-021, RISK-061, CRIT-04, DEC-ACCEPTED-163.
+
+###### 14.3.4 Control Area 4 — Security and Risk Triage in Gates
+
+**Definition:** The conceptual model for how security and risk concerns are evaluated at each Blueprint gate, including the escalation path for critical security risks and the owner approval trigger.
+
+**Conceptual model elements:**
+
+1. **Cross-cutting triage principle (AP-10):** Security, risk, compliance, secrets, and data are evaluated at every gate. A gate cannot be marked as passing if known critical security risks are unresolved.
+
+2. **Risk triage categories:** Security risks in CAFL V1 are triaged as: (a) **resolved** — risk has an accepted decision and conceptual mitigation path; (b) **spike-dependent** — risk cannot be resolved without spike validation; (c) **owner-decision required** — risk involves a cross-boundary or architectural choice requiring owner approval. Categories (b) and (c) are not gate blockers at the Blueprint level but must be explicitly declared.
+
+3. **Critical risk escalation:** Risks classified as RISK-059 (environment form), RISK-021 (secrets leakage), RISK-027 (permissions), RISK-040 (compliance), RISK-061 (secrets in Odoo), and RISK-063 (security runtime) are tracked as spike-dependent or owner-decision required. None are resolved here; they are passed to S16 for spike ordering.
+
+4. **Owner approval trigger:** Any security component that crosses into executable policy, vault creation, real credentials, or cross-environment permission grants triggers an owner approval requirement before Blueprint advancement. This is consistent with CRIT-03 and AP-10.
+
+5. **Compliance posture:** CAFL V1 is an internal framework for internal requests / simple approvals pilot only. No external compliance certifications are in scope for V1 (BR-01). Compliance obligations that arise from the Odoo 18 deployment context are spike-dependent (RISK-040).
+
+6. **Traceability:** AP-10, CRIT-02, CRIT-03, CRIT-04, RISK-021, RISK-027, RISK-040, RISK-059, RISK-061, RISK-063, DEC-ACCEPTED-092, DEC-ACCEPTED-101, TOM security/risk/compliance/owner-approval sections.
+
+##### 14.4 Security Model Applied to S13 Logical Components
+
+The following table maps each S13 logical component to its conceptual security considerations in S14. No executable controls are defined; this is a traceability and scoping map.
+
+| S13 Logical Component | Security concern | Control area | Spike needed |
+|---|---|---|---|
+| Odoo 18 instance | Administrative credentials, module install permissions | CA-1 (Secrets), CA-2 (Permissions) | Secrets Handling, Permissions Model |
+| PostgreSQL | DB credentials, connection access | CA-1 (Secrets), CA-2 (Permissions) | Secrets Handling, Permissions Model |
+| Installed pilot module | Module-level access rights, code source traceability | CA-2 (Permissions), CA-3 (Evidence) | Permissions Model |
+| Test execution mechanism | Test runner credentials/access, result capture integrity | CA-1 (Secrets), CA-3 (Evidence) | Secrets Handling, Security Validation |
+| Evidence capture mechanism | Write access to evidence store, non-embedding of secrets | CA-3 (Evidence) | Security Validation |
+| Conceptual execution trigger | Trigger authentication concept | CA-2 (Permissions) | Permissions Model |
+| Odoo 18 source reference | Source attribution for evidence, source policy compliance | CA-3 (Evidence), CA-4 (Triage) | None (governed by S12) |
+
+**Environment category application:**
+
+| S13 Environment Category | Security posture |
+|---|---|
+| Development | Lowest privilege boundary; secrets must not leak to validation or authority reference categories. |
+| Validation | Isolated from development credentials; evidence captured here is candidate L3 until governed registration. |
+| Authority reference | Highest protection; artifacts here are L1 or L2 per S11 hierarchy; no credentials from lower categories. |
+
+##### 14.5 Non-Decisions (Explicit)
+
+The following are explicitly **not decided** in S14. They are spike dependencies or owner decisions deferred to S16 or later:
+
+1. **Concrete secrets storage mechanism:** environment variables, secrets manager, vault product, .env files, OS keyring — not chosen. Spike dependency.
+2. **Concrete permissions model:** Odoo roles, ACL definitions, database user roles, network-level isolation — not defined. Spike dependency.
+3. **Security validation tooling:** static analysis tools, security scanners, compliance frameworks — not chosen. Spike dependency.
+4. **Cross-environment isolation implementation:** Docker network isolation, process isolation, OS-level permissions — not defined. Depends on S13 environment form spike.
+5. **Compliance certification scope:** any external or regulatory compliance requirements — not evaluated. V1 internal only (BR-01); spike-dependent if obligations arise.
+6. **Security for post-V1 components:** no security model for post-V1 agents, multi-tenant, external integrations, or production deployment. Out of V1 scope.
+
+##### 14.6 Traceability
+
+| S14 component | Primary anchors |
+|---|---|
+| CA-1 Secrets Handling | AP-10, AP-11, RISK-021, RISK-061, DEC-ACCEPTED-045, TOM security section |
+| CA-2 Permissions | AP-10, AP-11, CRIT-02, CRIT-03, RISK-027, DEC-ACCEPTED-059, DEC-ACCEPTED-076, TOM owner-approval |
+| CA-3 Evidence Protection | S11 (L1-L4, 6-step), S12 (source policy, Curation Request), S13 (SCH-10, VAL-05, VAL-10), RISK-021, CRIT-04, DEC-ACCEPTED-163 |
+| CA-4 Security Triage in Gates | AP-10, CRIT-02, CRIT-03, CRIT-04, RISK-040, RISK-059, RISK-063, DEC-ACCEPTED-092, DEC-ACCEPTED-101, TOM risk/compliance |
+| Logical component map | S13 handoff (all 7 components), S11 L1-L4, S12 source policy |
+| Non-decisions / spike list | AP-11, BR-01, BR-02, RISK-021, RISK-027, RISK-040, RISK-059, RISK-061, RISK-063 |
+| V1 boundary enforcement | BR-01, BR-04, DEC-ACCEPTED-162 (pilot), DEC-ACCEPTED-064 |
+
+##### 14.7 Spike Dependencies for S16
+
+S14 identifies the following spike dependencies to be included in S16 final spike ordering:
+
+| Spike ID (candidate) | Description | Blocking dependency | Risk anchor |
+|---|---|---|---|
+| SPK-S14-01 | Secrets Handling Mechanism | Must resolve before any environment credentials are defined; depends on S13 environment form spike | RISK-021, RISK-061 |
+| SPK-S14-02 | Permissions Model | Must resolve before pilot module installation or test execution is authorized; depends on S13 environment form spike | RISK-027 |
+| SPK-S14-03 | Security Validation Approach | Must resolve before evidence from test execution can be registered as L2 governed; depends on SPK-S14-01 and SPK-S14-02 | RISK-063 |
+| SPK-S14-04 | Compliance Obligations Assessment | Must resolve if any regulatory or external obligation arises from Odoo 18 deployment context; currently V1 internal only | RISK-040 |
+
+**Ordering constraint:** SPK-S14-01 and S13's environment form spike must be resolved before SPK-S14-02 and SPK-S14-03. SPK-S14-04 is conditional on deployment context clarification.
+
+##### 14.8 Handoffs
+
+- **S14 → S15 (Pilot Module Blueprint):** S14 delivers the four conceptual control areas (secrets handling posture, permissions model, evidence protection, security triage in gates), the logical component security map, and the non-embedding and separation principles as security constraints that S15 must respect when defining the pilot module blueprint. S15 must not embed secrets, must not define executable permission rules, and must treat pilot module installation and test execution as spike-dependent on SPK-S14-01 and SPK-S14-02.
+
+- **S14 → S16 (Spikes and Technical Validations final order):** S14 delivers four candidate spikes (SPK-S14-01 through SPK-S14-04) with their ordering constraints and risk anchors. S16 must include these spikes in the final ordering, respecting that SPK-S14-01 blocks SPK-S14-02 and SPK-S14-03, and that both depend on S13's environment form spike.
+
+##### 14.9 Inputs Consumed
+
+- **S13 (approved):** Logical component descriptions (Odoo 18 instance, PostgreSQL, installed pilot module, test execution mechanism, evidence capture mechanism, conceptual execution trigger, Odoo 18 source reference), three environment categories (development, validation, authority reference), S13 spike dependencies (environment form, DB compatibility, test runner, evidence capture, code source traceability), S12 source policy constraints as applied in S13.
+- **S11 (via S13 context):** L1-L4 authority hierarchy, 6-step evidence lifecycle.
+- **S12 (via S13 context):** Minimal source policy (docs.odoo.com + github.com/odoo/odoo), Curation Request mechanism as governance pattern for source expansion.
+- **TOM:** Security, risk, compliance, data, and owner approval sections (conceptual anchors only; no full TOM read required per normal mode budget).
+- **Architecture Principles (S02):** AP-10 (cross-cutting), AP-11 (spike validation), AP-12 (greenfield, no framework/).
+- **Prior handoffs:** S08 → S14 (permissions, secrets, accesses are cross-cutting invariants and risks; SP-04 open; no permission rules, vault, or executable secrets policy); S09 → S14 (security elements are logical categories only; no permission rules or executable secrets policy); S10 → S14 (VAL-01 and VAL-09 as logical control categories; no executable permission rules or vault); S11 → S14 (logical storage categories for access controls and secrets policy at conceptual level); S12 → S14 (Curation Request and Knowledge Gap as governance patterns applicable to secrets source management).
+
+##### 14.10 Acceptance Criteria
+
+1. Section covers all four conceptual control areas: secrets handling posture, permissions model, evidence protection, and security/risk triage in gates.
+2. Security model is conceptual only: no real secrets, tokens, certificates, configurations, or executable policies exposed or generated anywhere in this section.
+3. Every security component traces to at least one required traceability anchor (AP-10, CRIT-02/03/04, accepted decisions, risks, TOM) as listed in Section 14.6.
+4. Section integrates with all seven S13 logical components and three environment categories via the logical component security map (Section 14.4).
+5. Section respects S11 L1-L4 authority hierarchy for security evidence (Section 14.3.3).
+6. Section respects S12 source policy: docs.odoo.com + github.com/odoo/odoo only; no auto-expansion; Curation Request for any expansion (Sections 14.2, 14.3.3).
+7. Section identifies four spike dependencies for S16 with ordering constraints and risk anchors (Section 14.7).
+8. Section delivers handoffs to S15 (security constraints for pilot module) and S16 (security spike ordering) (Section 14.8).
+9. No unbacked (non-traceable) security components present.
+10. V1 boundaries preserved: Odoo-only, Odoo 18, internal requests/simple approvals, minimal source policy, `framework/` excluded.
+11. No PRD, SDD, backlog, runtime, implementation, or executable artifacts present.
 
 #### 15. Pilot Module Blueprint
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved explicitly by owner.
 
-- Secciones 13 y 14 de la iteracion correspondiente.
-- Piloto V1 confirmado por DEC-ACCEPTED-162 y restricciones TOM del piloto.
+##### 1. Purpose
 
-Outputs esperados:
+S15 define conceptualmente el Blueprint del modulo piloto de CAFL V1 a nivel de componentes. Su objetivo es describir los artefactos logicos que el modulo piloto necesita — modelos de datos (Python classes), vistas, seguridad (ACL, record rules), flujo de estados y tests — para ejecutar el caso de uso de solicitudes internas / aprobaciones simples (DEC-ACCEPTED-162) sobre Odoo 18, sin crear un modulo ejecutable, sin instalar Odoo, sin generar PRD, SDD, backlog funcional ni implementacion real.
 
-- Blueprint del soporte del framework para el piloto a nivel de componentes.
+S15 recibe los handoffs de S13 (categorias de entorno conceptual, componentes logicos, restricciones de source policy, modelo de evidencia L1-L4) y S14 (cuatro areas de control de seguridad, mapa de seguridad de componentes logicos, principio de no-embedding, dependencias de spike SPK-S14-01/02) como restricciones heredadas. S15 no redefine ni el entorno ni los controles de seguridad; los asume y los aplica al diseño conceptual del modulo.
 
-Restricciones especificas:
+La razon de existencia de esta seccion en el Blueprint es que el piloto V1 requiere un Blueprint claro a nivel de componentes para que S16 pueda ordenar los spikes tecnicos relacionados con el modulo, S17 pueda incluirlo en la matriz de trazabilidad, y S19 pueda derivar criterios de aceptacion verificables. El diseño conceptual aqui definido establece que componentes necesita el modulo, como fluye el estado de las solicitudes, que evidencia debe registrarse y cuales decisiones tecnicas quedan abiertas para los spikes.
 
-- No crear PRD final del piloto.
-- No crear SDD final del piloto.
-- No crear backlog funcional del piloto.
-- No reabrir seleccion del piloto.
+##### 2. Inputs / Scope
 
-Acceptance criteria minimos:
+Inputs trazables usados:
 
-- La seccion explica soporte del framework al piloto sin convertirse en PRD, SDD o backlog.
+- S13 handoff a S15: categorias conceptuales de entorno (desarrollo, validacion, referencia de autoridad), siete componentes logicos del entorno (instancia Odoo 18, PostgreSQL, modulo piloto instalado, mecanismo de ejecucion de tests, captura de evidencia, trigger de ejecucion conceptual, referencia de codigo fuente Odoo 18), restricciones de source policy (docs.odoo.com + github.com/odoo/odoo), modelo de evidencia (L1-L4, SCH-10, VAL-05, VAL-10), restricciones del piloto (DEC-ACCEPTED-162). Trazable a DEC-ACCEPTED-135; DEC-ACCEPTED-153; DEC-ACCEPTED-162; DEC-ACCEPTED-163; BR-01.
+- S14 handoff a S15: cuatro areas de control (CA-1 secrets handling posture, CA-2 permissions/access model, CA-3 evidence protection, CA-4 security/risk triage in gates), mapa logico de seguridad de componentes, principios de no-embedding y separacion. Restricciones: no embeber secrets, no crear permission rules ejecutables, tratar instalacion y ejecucion de tests como spike-dependiente sobre SPK-S14-01 y SPK-S14-02. Trazable a AP-10; CRIT-02; CRIT-03; CRIT-04.
+- S09 SCH-10 Odoo Pilot Artifact Schema: modelo logico del artefacto del piloto Odoo 18 — modelos de datos, vistas, ACL, record rules, flujos de trabajo, tests y evidencia asociada. Trazable a CRIT-06; CRIT-07; TOM; BR-01; AP-08; DEC-ACCEPTED-162; DEC-ACCEPTED-163.
+- S10 VAL-10 Odoo Pilot Artifact Scope Validator: control conceptual que verifica que los artefactos del piloto estan dentro de solicitudes internas / aprobaciones simples, referencian fuentes Odoo pre-autorizadas y tienen evidencia y control asociados. Trazable a BR-01; DEC-ACCEPTED-162; DEC-ACCEPTED-163.
+- S10 VAL-05 Evidence Record Validator: verifica que la evidencia producida tiene origen trazable, tipo declarado, resumen verificable y estado candidato. Trazable a AP-09; CRIT-06.
+- S11 jerarquia L1-L4 y ciclo de vida de evidencia candidata: modelo logico para registrar evidencia del modulo piloto bajo los niveles de autoridad apropiados. L3 es el nivel inicial para outputs del modulo; requiere registro gobernado para ascender a L2. Trazable a AP-09; DEC-ACCEPTED-146.
+- S12 source policy minima operacionalizada (docs.odoo.com + github.com/odoo/odoo): restriccion de fuentes aplicable a todas las referencias tecnicas del modulo piloto. Trazable a DEC-ACCEPTED-163; AP-06; AP-12.
+- S08 handoff: agent reasoning, command repeatability, validator evidence criteria aplicables al diseño del piloto (trazabilidad de razonamiento del agente, repetibilidad de operaciones del modulo). Trazable a CRIT-07; AP-04.
+- DEC-ACCEPTED-162: piloto V1 = solicitudes internas / aprobaciones simples. Restriccion de scope no reabrble.
+- DEC-ACCEPTED-163: source policy minima — docs.odoo.com + github.com/odoo/odoo son las unicas fuentes pre-autorizadas para V1.
+- BR-01 (S03): V1 boundary — Odoo-only, Odoo 18, piloto internal requests / simple approvals. Sin RAG, SDK/server, dashboard/UI, CI/CD, multiusuario, plugins/MCP.
+- AP-08: V1 minimo suficiente y anti-scope-creep. CRIT-06 (evidence/IDs/logs); CRIT-07 (minimum validators).
+- AP-09: evidencia simple, auditable y Git-compatible.
+- RISK-059: falta de entorno Odoo 18 — critical. Impacta instalacion y ejecucion del modulo piloto.
+- RISK-010: verificacion no reproducible — high. Impacta tests y captura de evidencia del modulo.
+
+Alcance de S15:
+
+- Definir conceptualmente los artefactos del modulo piloto (modelos de datos, vistas, seguridad, flujo de estados, evidencia, tests) a nivel de componentes.
+- Describir como el modulo se integra con el modelo de evidencia L1-L4 de S11.
+- Describir restricciones de seguridad heredadas de S14 aplicadas al modulo piloto.
+- Describir restricciones de source policy heredadas de S12 y S13 aplicadas al modulo piloto.
+- Declarar dependencias de spike tecnicas del modulo para S16.
+- Entregar handoffs a S16 (spikes del modulo), S17 (trazabilidad), S19 (acceptance criteria).
+
+Fuera de alcance:
+
+- Crear el modulo Odoo 18 ejecutable ni ningun artefacto de implementacion.
+- Instalar el modulo, ejecutar tests ni capturar evidencia real.
+- Crear PRD final, SDD final ni backlog funcional del piloto.
+- Reabrir la seleccion del piloto (DEC-ACCEPTED-162 cerrado).
+- Ampliar source policy (docs.odoo.com + github.com/odoo/odoo solamente).
+- Redefinir el entorno Odoo 18 (S13) ni los controles de seguridad (S14).
+- Crear schemas fisicos, validators reales, scripts, commands, toolchain ejecutable ni runtime.
+- Usar o referenciar `framework/` como input.
+- Expandir V1 fuera de Odoo-only, Odoo 18, solicitudes internas / aprobaciones simples.
+- Embeber secrets ni crear permission rules ejecutables (restriccion directa de S14 CA-1 y CA-2).
+
+##### 3. Conceptual Pilot Module Blueprint Design
+
+El diseño que sigue es logico y conceptual. No crea el modulo Odoo 18, no instala artefactos, no genera codigo fuente ejecutable, no define paths ni toolchain. El modulo piloto exacto (estructura de archivos Python, XML, CSV) queda abierto para los spikes correspondientes, conforme DEC-ACCEPTED-162, S13 y S14.
+
+###### 3.1 Proposito y scope del modulo piloto
+
+El modulo piloto es el artefacto de software Odoo 18 que realiza el ciclo minimo real de CAFL V1. Su proposito conceptual es demostrar que el framework puede producir un modulo Odoo 18 funcional, dentro del scope de solicitudes internas / aprobaciones simples, con evidencia verificable y trazabilidad completa a las decisiones y schemas del Blueprint.
+
+| Atributo | Valor conceptual | Fundamento |
+| --- | --- | --- |
+| Plataforma objetivo | Odoo 18 unicamente | DEC-ACCEPTED-135; BR-01 |
+| Scope funcional | Solicitudes internas / aprobaciones simples | DEC-ACCEPTED-162 |
+| Nombre logico del modulo | cafl_pilot (nombre logico conceptual; nombre exacto queda para spike) | DEC-ACCEPTED-162; SCH-10 |
+| Dependencias Odoo | Solo modulos del core de Odoo 18 pre-autorizados | DEC-ACCEPTED-163; VAL-10 |
+| Fuentes tecnicas elegibles | docs.odoo.com + github.com/odoo/odoo unicamente | DEC-ACCEPTED-163; S12 |
+| Integraciones externas | Ninguna en V1 core | BR-01; AP-08 |
+| Evidencia minima requerida | Evidencia candidata (L3) de instalacion, tests y scope bajo VAL-05 y VAL-10 | S11; S13 3.3 |
+
+Trazabilidad: DEC-ACCEPTED-162; DEC-ACCEPTED-163; DEC-ACCEPTED-135; BR-01; SCH-10; VAL-10; AP-08.
+
+###### 3.2 Modelos de datos conceptuales (Python classes en Odoo ORM)
+
+El modulo piloto requiere dos modelos principales de datos que soporten el caso de uso de solicitudes internas / aprobaciones simples. Estos modelos son conceptuales; sus campos exactos, relaciones completas y metodos se definen en la implementacion real, guiada por docs.odoo.com y github.com/odoo/odoo.
+
+**Modelo conceptual 1 — Solicitud interna (InternalRequest):**
+
+| Elemento conceptual | Descripcion | Tipo conceptual Odoo | Restriccion |
+| --- | --- | --- | --- |
+| Nombre/descripcion de la solicitud | Identificacion legible de la solicitud | Char / Text | Requerido; origen en docs.odoo.com |
+| Solicitante | Usuario Odoo que crea la solicitud | Many2one → res.users | Requerido; ligado al modelo de acceso CA-2 S14 |
+| Estado de la solicitud | Estado actual en el flujo (draft, submitted, approved, rejected) | Selection / statusbar | Controlado por flujo de estados; ver 3.4 |
+| Fecha de solicitud | Timestamp de creacion | Datetime | Auto-generado conceptualmente |
+| Notas / justificacion | Texto libre de justificacion | Text | Opcional |
+| Aprobador asignado | Usuario Odoo responsable de aprobar | Many2one → res.users | Requerido si estado llega a submitted; ligado a CA-2 |
+
+**Modelo conceptual 2 — Registro de aprobacion (ApprovalRecord):**
+
+| Elemento conceptual | Descripcion | Tipo conceptual Odoo | Restriccion |
+| --- | --- | --- | --- |
+| Solicitud relacionada | Referencia a la solicitud interna | Many2one → InternalRequest | Requerido; integridad referencial |
+| Aprobador | Usuario Odoo que aprueba o rechaza | Many2one → res.users | Requerido; ligado a CA-2 S14 |
+| Decision | Aprobado o rechazado | Selection | Requerido; no extension de decisiones fuera de scope |
+| Fecha de decision | Timestamp de la decision | Datetime | Auto-generado conceptualmente |
+| Comentario del aprobador | Texto libre de decision | Text | Opcional |
+
+Ningun campo de estos modelos contiene secrets, tokens ni credenciales (CA-1 S14). La forma exacta de estos modelos (nombres de clase Python, nombres de campos, herencia Odoo, metodos ORM) se determina en la implementacion, respaldada por docs.odoo.com y github.com/odoo/odoo.
+
+Trazabilidad: DEC-ACCEPTED-162; SCH-10; VAL-10; S14 CA-1; S14 CA-2; DEC-ACCEPTED-163.
+
+###### 3.3 Vistas conceptuales (form, list, search)
+
+El modulo piloto requiere tres tipos de vistas conceptuales para cada modelo principal. Las vistas son conceptuales; sus definiciones XML exactas se determinan en la implementacion guiada por docs.odoo.com.
+
+| Tipo de vista | Modelo | Proposito conceptual | Restriction de scope |
+| --- | --- | --- | --- |
+| Vista de formulario (form) | InternalRequest | Permite crear y editar una solicitud interna con todos sus campos | Solo campos del modelo conceptual 3.2; sin integraciones externas |
+| Vista de lista (list/tree) | InternalRequest | Permite ver solicitudes con estado, solicitante y fecha en columnas | Solo piloto V1; sin columnas de datos externos |
+| Vista de busqueda (search) | InternalRequest | Permite filtrar por estado, solicitante, fecha | Filtros conceptuales dentro del scope del modelo |
+| Vista de formulario (form) | ApprovalRecord | Permite registrar la decision del aprobador con comentario | Solo campos del modelo conceptual 3.2; decision binaria (approved/rejected) |
+| Vista de lista (list/tree) | ApprovalRecord | Permite ver historial de decisiones por solicitud | Solo piloto V1 |
+
+Restricciones de vistas heredadas de S14: las vistas no exponen ni transmiten credenciales, tokens ni datos de configuracion de seguridad (CA-1). Los campos visibles deben estar alineados con el modelo de acceso ACL definido conceptualmente en 3.4.
+
+Trazabilidad: DEC-ACCEPTED-162; SCH-10; S14 CA-1; S14 CA-2; DEC-ACCEPTED-163.
+
+###### 3.4 Flujo de estados (workflow)
+
+El modulo piloto implementa un flujo de estados simple para las solicitudes internas. Este flujo es conceptual; la forma exacta (metodos Python, botones XML, transiciones de estado) se determina en la implementacion.
+
+**Estados conceptuales del flujo:**
+
+| Estado | Descripcion | Transicion entrante | Transicion saliente | Actor conceptual |
+| --- | --- | --- | --- | --- |
+| draft | Solicitud creada pero no enviada al aprobador | Estado inicial (creacion) | → submitted (accion del solicitante) | Solicitante |
+| submitted | Solicitud enviada; pendiente de decision del aprobador | draft → submitted | → approved o → rejected (accion del aprobador) | Sistema (automatico al enviar) |
+| approved | Solicitud aprobada por el aprobador | submitted → approved | Terminal (no hay transicion saliente en V1) | Aprobador |
+| rejected | Solicitud rechazada por el aprobador | submitted → rejected | Terminal (no hay transicion saliente en V1) | Aprobador |
+
+**Reglas conceptuales del flujo:**
+
+- Solo el solicitante puede mover de draft a submitted.
+- Solo el aprobador asignado puede mover de submitted a approved o rejected.
+- Los estados approved y rejected son terminales en V1; no hay reabrir ni ciclos multietapa (scope limitation per DEC-ACCEPTED-162).
+- El flujo no admite escalaciones, delegaciones ni roles multiples en V1 (BR-01 anti-scope-creep AP-08).
+
+Trazabilidad: DEC-ACCEPTED-162; BR-01; AP-08; SCH-10; VAL-10; S14 CA-2.
+
+###### 3.5 Seguridad conceptual (ACL y record rules)
+
+La seguridad del modulo piloto se diseña en el marco de los cuatro areas de control de S14. Este diseño es conceptual; no crea archivos CSV de ACL ejecutables, no crea record rules XML ejecutables ni define politicas de permisos implementadas.
+
+**Area CA-1 — Secrets handling posture aplicada al modulo:**
+
+El modulo piloto no debe contener secrets embebidos en ningun artefacto (modelos Python, vistas XML, datos CSV, tests). Credenciales de base de datos, tokens de API, claves de cifrado o cualquier otro secret deben ser manejados por el entorno de ejecucion (S13), no por el modulo. Esta restriccion es absoluta y no tiene excepcion en V1. La forma exacta de como el entorno inyecta configuracion al modulo sin embeber secrets queda para SPK-S14-01.
+
+**Area CA-2 — Permissions/access model aplicado al modulo (conceptual):**
+
+| Rol conceptual | Permisos conceptuales sobre InternalRequest | Permisos conceptuales sobre ApprovalRecord | Principio |
+| --- | --- | --- | --- |
+| Usuario solicitante | Crear, leer sus propias solicitudes, enviar (draft→submitted) | Solo leer los registros de sus solicitudes | Principio de minimo acceso; acceso a sus propios registros |
+| Usuario aprobador | Leer solicitudes submitted asignadas, aprobar/rechazar | Crear registro de decision, leer sus propias decisiones | Acceso restringido a solicitudes que le corresponden |
+| Administrador del modulo | Lectura completa, gestion de configuracion | Lectura completa | Solo para operacion del piloto; sin acceso a otros modulos por este rol |
+
+Ninguna de estas definiciones es una ACL CSV ejecutable ni un record rule XML. Son principios conceptuales que guian la implementacion. La forma exacta del modelo de permisos Odoo (grupos de seguridad, ir.rule, ir.model.access.csv) se determina en la implementacion guiada por docs.odoo.com y SPK-S14-02.
+
+**Area CA-3 — Evidence protection aplicada al modulo:**
+
+Los registros de evidencia producidos por el modulo (logs de instalacion, resultados de tests, snapshots de estado) son L3 candidatos conforme S11. No pueden ser modificados retroactivamente ni eliminados una vez registrados conceptualmente. La integridad de la evidencia es responsabilidad del ciclo de vida de S11, no del modulo en si.
+
+**Area CA-4 — Security/risk triage in gates aplicado al modulo:**
+
+Antes de que el modulo piloto pueda ser instalado en el entorno de validacion (S13), debe pasar revision de seguridad conceptual: confirmacion de que no hay secrets embebidos (CA-1), confirmacion de que el modelo de acceso es coherente con CA-2, confirmacion de que la evidencia de instalacion es candidata L3 elegible. Esta revision es un gate conceptual; su forma exacta (checklist, script, proceso manual) queda para spike y para la implementacion con autorizacion explicita.
+
+Trazabilidad: S14 CA-1; S14 CA-2; S14 CA-3; S14 CA-4; SPK-S14-01; SPK-S14-02; DEC-ACCEPTED-162; S11 L1-L4; AP-10; CRIT-02; CRIT-03; CRIT-04.
+
+###### 3.6 Registro de evidencia del modulo piloto (candidato L3)
+
+Conforme al modelo de evidencia de S11 y los eventos de entorno definidos en S13 3.3, el modulo piloto genera evidencia candidata (L3) en los siguientes puntos de ejecucion. Este mapa es conceptual; no crea mecanismos de captura reales.
+
+| Evento del modulo | Tipo de evidencia candidata | Nivel S11 inicial | Schema/Validator aplicable | Condicion de promocion |
+| --- | --- | --- | --- | --- |
+| Instalacion del modulo cafl_pilot | Log de instalacion: exito/error, dependencias resueltas, version Odoo 18 | L3 candidata | SCH-05 (Evidence Record); VAL-05 | Evaluacion gobernada; registro explicito con trazabilidad |
+| Ejecucion de test unitario de InternalRequest | Resultado de test runner: tests pasados/fallidos, nombre del test, timestamp | L3 candidata | SCH-05; SCH-06; SCH-10; VAL-05; VAL-10 | Evaluacion gobernada; puede apoyar gate si se promociona a L2 |
+| Ejecucion de test del flujo de estados | Resultado de test de transicion draft→submitted→approved/rejected | L3 candidata | SCH-05; SCH-06; SCH-10; VAL-05; VAL-10 | Evaluacion gobernada; trazabilidad al flujo 3.4 |
+| Verificacion de scope VAL-10 | Resultado de VAL-10: artefactos dentro de solicitudes internas/aprobaciones simples, fuentes pre-autorizadas | L3 candidata | SCH-10; VAL-10 | Evaluacion gobernada |
+| Verificacion de source policy | Confirmacion de que todas las referencias tecnicas del modulo son docs.odoo.com o github.com/odoo/odoo | L3 candidata | SCH-01; VAL-01 | Evaluacion gobernada; confirma DEC-ACCEPTED-163 |
+| Snapshot de estado del modulo instalado | Estado del modulo en instancia Odoo 18: version, modulos activos, resultado general de tests | L3 candidata | SCH-07; VAL-05 | Evaluacion gobernada; solo si cubre requisito de gate o handoff |
+
+Regla de autoridad: ningun output del modulo piloto puede actuar como evidencia formal de gate, handoff ni cierre de seccion sin haber pasado por el ciclo de vida de S11 (L3 → L2 mediante registro gobernado). `project-truth/` (L1) no es sustituida por outputs del modulo.
+
+Trazabilidad: S11 jerarquia L1-L4; S11 ciclo de vida 6 pasos; SCH-05; SCH-06; SCH-07; SCH-10; VAL-05; VAL-10; AP-09; DEC-ACCEPTED-146; CRIT-06; AP-09.
+
+###### 3.7 Enfoque de tests conceptual
+
+El modulo piloto requiere un enfoque de tests que permita verificar el comportamiento del caso de uso (solicitudes internas / aprobaciones simples) y producir evidencia candidata. El enfoque es conceptual; la herramienta exacta, el test runner y los archivos de test se determinan en la implementacion, guiada por docs.odoo.com y el spike de entorno.
+
+**Tipos de tests conceptuales requeridos:**
+
+| Tipo de test | Descripcion conceptual | Cobertura minima conceptual | Requisito de evidencia |
+| --- | --- | --- | --- |
+| Test unitario de modelos | Verifica que los modelos InternalRequest y ApprovalRecord pueden crearse, leerse y modificarse conforme a sus campos conceptuales | Creacion valida, campo requerido, tipo de campo | Resultado L3 bajo VAL-05; SCH-05 |
+| Test de flujo de estados | Verifica las cuatro transiciones del flujo (draft→submitted, submitted→approved, submitted→rejected) y que los estados terminales son terminales | Las cuatro transiciones declaradas en 3.4; rechazo de transicion invalida | Resultado L3 bajo VAL-05; SCH-06; SCH-10 |
+| Test de scope (VAL-10) | Verifica que el modulo no sale del scope de solicitudes internas / aprobaciones simples | Ninguna entidad, vista ni logica fuera del scope DEC-ACCEPTED-162 | Resultado L3 bajo VAL-10 |
+| Test de source policy | Verifica que todas las referencias tecnicas del modulo apuntan a fuentes pre-autorizadas | Ninguna referencia fuera de docs.odoo.com o github.com/odoo/odoo | Resultado L3 bajo VAL-01 |
+
+**Restricciones del enfoque de tests heredadas de S14:**
+
+- La ejecucion real de tests sobre el entorno de validacion (S13) esta bloqueada hasta que SPK-S14-02 (pilot module installation test as spike) sea ejecutado y resuelto.
+- Ningun archivo de test debe contener secrets, credenciales ni tokens (CA-1).
+- Los resultados de tests son evidencia candidata (L3); no son autoritativos hasta que pasen el ciclo de vida de S11.
+
+Trazabilidad: DEC-ACCEPTED-162; DEC-ACCEPTED-153; SCH-05; SCH-06; SCH-10; VAL-05; VAL-10; VAL-01; S14 CA-1; SPK-S14-02; S13 3.3; CRIT-07; AP-09.
+
+###### 3.8 Restricciones de source policy aplicadas al modulo piloto
+
+El modulo piloto opera dentro de la source policy minima definida por DEC-ACCEPTED-163 y operacionalizada en S12. Las restricciones son:
+
+- **Fuentes pre-autorizadas unicamente:** toda referencia tecnica usada para diseñar, construir o validar el modulo (API de Odoo ORM, estructura de modulos Odoo, definicion de vistas XML, sistema de seguridad Odoo) debe provenir de docs.odoo.com o github.com/odoo/odoo. Ninguna otra fuente es elegible sin Curation Request aprobada por owner.
+- **Version Odoo 18 obligatoria:** toda referencia tecnica debe corresponder a Odoo 18. Referencias a Odoo 16, 17 u otras versiones no son elegibles en V1.
+- **Gaps de source policy en el modulo:** si durante la implementacion del modulo se detecta que se necesita una fuente no pre-autorizada, debe activarse el flujo de Knowledge Gap definido en S12 (VAL-09 trigger → Curation Request → aprobacion owner). S15 no puede ampliar source policy por iniciativa propia.
+- **`framework/` excluido:** ningun artefacto ni referencia del directorio legado excluido puede usarse como input para el modulo piloto.
+
+Trazabilidad: DEC-ACCEPTED-163; S12 source policy minima; S10 VAL-01; S10 VAL-09; AP-06; AP-12; RULE-10.
+
+###### 3.9 Dependencias de spike tecnicas del modulo piloto
+
+S15 identifica las dependencias de validacion tecnica que los spikes correspondientes (a ordenar en S16) deben resolver para que el modulo piloto pueda ser instalado y ejecutado. Estas son preguntas tecnicas abiertas; no pueden ser resueltas conceptualmente.
+
+| Dependencia de spike | Descripcion | Spike relacionado de S14 | Riesgo relacionado | Requisito de evidencia |
+| --- | --- | --- | --- | --- |
+| Instalacion del modulo en el entorno decidido | Verificar que cafl_pilot (nombre logico) puede instalarse en la instancia Odoo 18 resultante del spike de entorno (S16) | SPK-S14-01 (environment setup without secrets embedding) | RISK-059 (critical); RISK-010 (high) | Spike debe producir evidencia L3 de instalacion exitosa sin secrets embebidos |
+| Ejecucion de tests del modulo | Verificar que el test runner Odoo 18 ejecuta los tests del modulo y produce resultados capturables | SPK-S14-02 (pilot module installation test as spike) | RISK-010 (high) | Spike debe producir log de tests con al menos un test del flujo de estados ejecutado y resultado L3 bajo VAL-05 |
+| Modelo de acceso ejecutable | Verificar que la ACL y record rules conceptuales de 3.5 pueden implementarse en Odoo 18 con los grupos de seguridad propios del modulo, sin conflictos con la instalacion base | SPK-S14-02 | RISK-010 | Spike debe confirmar que los grupos de seguridad del modulo funcionan conforme al modelo CA-2 sin exposicion de datos de otros modulos |
+| Trazabilidad de codigo fuente del modulo | Verificar que los patrones de implementacion del modulo (herencia de modelos Odoo, estructura de vistas XML, definicion de ACL) tienen respaldo en github.com/odoo/odoo version 18 | Spike de entorno (S16) | DEC-ACCEPTED-163; RISK-010 | Spike debe confirmar referencias a github.com/odoo/odoo v18 para cada patron del modulo |
+
+Ningun spike puede ser resuelto conceptualmente desde S15. S15 los declara para que S16 los incluya en el orden final de spikes con la prioridad correspondiente.
+
+Trazabilidad: SPK-S14-01; SPK-S14-02; RISK-059; RISK-010; DEC-ACCEPTED-162; DEC-ACCEPTED-163; DEC-ACCEPTED-153; S14 CA-1; S14 CA-2; AP-09; S11 L3.
+
+##### 4. Cross-Section Guidance / Handoff Rules
+
+- **Para S16 Spikes and Technical Validations:** S15 entrega a S16 cuatro dependencias de spike tecnicas del modulo piloto (instalacion del modulo, ejecucion de tests, modelo de acceso ejecutable, trazabilidad de codigo fuente) mas las dos dependencias de spike heredadas de S14 (SPK-S14-01, SPK-S14-02) como insumos para el orden final de spikes. RISK-059 (critical) posiciona el spike de entorno como precondicion de todos los spikes del modulo. El modulo cafl_pilot (nombre logico) no puede ser instalado ni ejecutado hasta que el spike de entorno este resuelto.
+- **Para S17 Bidirectional Traceability Matrix:** S15 entrega a S17 el mapa completo de componentes del modulo piloto (modelos, vistas, flujo de estados, seguridad, evidencia, tests) con su trazabilidad a DEC-ACCEPTED-162, DEC-ACCEPTED-163, DEC-ACCEPTED-135, BR-01, SCH-10, VAL-10, VAL-05, S14 CA-1..CA-4, S13 componentes logicos, S11 L1-L4. Este mapa es la base para la matriz bidireccional del modulo piloto.
+- **Para S19 Acceptance Criteria:** S15 entrega a S19 las dependencias de spike del modulo y los tipos de evidencia candidata (L3) declarados en 3.6 como criterios de aceptacion candidatos para el componente de piloto en V1. S19 no puede cerrar acceptance criteria del modulo sin evidencia gobernada del spike correspondiente (L2).
+- **Para S13 y S14 (no hay handoffs retroactivos):** S15 consume los handoffs de S13 y S14 como restricciones heredadas sin retroalimentacion ni modificacion de esas secciones.
+- **Restriccion general:** ningun handoff de S15 crea el modulo ejecutable, instala Odoo, ejecuta tests ni crea scripts. Todo handoff es conceptual y su materializacion depende de los spikes correspondientes y de los ciclos de implementacion con autorizacion explicita del owner.
+
+##### 5. Explicit Non-Decisions
+
+- Esta seccion no crea el modulo Odoo 18 ejecutable ni ningun archivo de implementacion (Python, XML, CSV, JSON).
+- Esta seccion no instala el modulo en ningun entorno ni ejecuta tests reales.
+- Esta seccion no decide el nombre final del modulo Python (cafl_pilot es un nombre logico conceptual; el nombre exacto queda para spike e implementacion).
+- Esta seccion no decide la estructura de archivos exacta del modulo (manifesto __manifest__.py, estructura de carpetas, herencia de clases Python especifica).
+- Esta seccion no crea ir.model.access.csv ni record rules XML ejecutables; el modelo de acceso de 3.5 es conceptual unicamente.
+- Esta seccion no crea PRD final, SDD final ni backlog funcional del piloto.
+- Esta seccion no reabre la seleccion del piloto; DEC-ACCEPTED-162 (solicitudes internas / aprobaciones simples) esta cerrado y es restriccion no negociable.
+- Esta seccion no amplia la source policy minima; docs.odoo.com + github.com/odoo/odoo son las unicas fuentes pre-autorizadas; cualquier ampliacion requiere Curation Request y aprobacion owner.
+- Esta seccion no ejecuta los spikes SPK-S14-01 ni SPK-S14-02 ni resuelve sus dependencias; las declara para S16.
+- Esta seccion no decide si el test runner de Odoo 18 usa odoo-bin test, unittest, pytest o cualquier otra forma; esa decision queda para spike y para la implementacion real.
+- Esta seccion no modifica el entorno Odoo 18 definido en S13 ni los controles de seguridad definidos en S14.
+- Esta seccion no crea RAG/base vectorial, SDK/server, dashboard/UI, CI/CD completo, base de datos avanzada, operacion multiusuario, plugins/MCP ni integraciones externas fuera de core V1.
+- Esta seccion no convierte outputs runtime en evidencia formal; el registro gobernado (L3 → L2) requiere decision explicita y actor humano o proceso aprobado.
+- Esta seccion no usa ni referencia `framework/` como input.
+- Esta seccion no genera el orden final de spikes, la matriz de trazabilidad final, los outputs de backlog ni los acceptance criteria finales; esos pertenecen a S16-S19.
+- Esta seccion no embebe secrets, tokens, credenciales ni claves en ningun componente conceptual descrito (restriccion absoluta de S14 CA-1).
+
+##### 6. Open Questions / Owner Decisions
+
+- none
+
+##### 7. Acceptance Criteria
+
+1. Framework support para el piloto explicado a nivel de componentes (modelos, vistas, flujo de estados, seguridad, evidencia, tests); no es PRD, SDD ni backlog.
+2. Todos los componentes del modulo piloto trazan a S13/S14 handoffs, DEC-ACCEPTED-162, DEC-ACCEPTED-163, BR-01, SCH-10, VAL-05, VAL-10 como se declara en 3.1-3.9.
+3. Source policy respetada; solo docs.odoo.com + github.com/odoo/odoo referenciadas como fuentes elegibles.
+4. No hay secrets embebidos ni permission rules ejecutables en ningun componente conceptual descrito (S14 CA-1 y CA-2).
+5. Instalacion y ejecucion de tests tratadas como spike-dependientes (SPK-S14-01 y SPK-S14-02 declarados en 3.9).
+6. Modelo de evidencia S11 L1-L4 aplicado; evidencia del modulo como candidata L3 declarada en 3.6 con schemas y validators.
+7. Boundaries V1 preservados: BR-01 (Odoo-only, Odoo 18, solicitudes internas / aprobaciones simples) y AP-08 (V1 minimo suficiente, anti-scope-creep).
+8. Ningun artefacto prohibido presente: no PRD, SDD, backlog, modulo ejecutable, runtime, scripts ni implementacion.
+9. `framework/` excluido como input en toda la seccion.
+10. Todos los componentes son trazables; no hay componentes sin respaldo en TOM, CRIT aprobado o decision aceptada (RULE-04).
+
+##### 8. Section Output / Handoff
+
+- S15 entrega a S16 cuatro dependencias de spike tecnicas del modulo piloto (instalacion, ejecucion de tests, modelo de acceso ejecutable, trazabilidad de codigo fuente) mas las dependencias heredadas SPK-S14-01/02 como insumos para el orden final de spikes; RISK-059 es la precondicion critica.
+- S15 entrega a S17 el mapa de componentes del modulo piloto (modelos, vistas, flujo de estados, seguridad conceptual, evidencia, tests) con trazabilidad completa a DEC-ACCEPTED-162, DEC-ACCEPTED-163, DEC-ACCEPTED-135, BR-01, SCH-10, VAL-10, VAL-05, S14 CA-1..CA-4, S13 componentes logicos, S11 L1-L4, como base para la matriz bidireccional.
+- S15 entrega a S19 los tipos de evidencia candidata (L3) del modulo y las dependencias de spike como criterios de aceptacion candidatos para el componente de piloto; S19 no puede cerrar estos criterios sin evidencia gobernada (L2) del spike.
+- S15 no cierra ninguna decision sobre implementacion del modulo, forma exacta de artefactos, test runner, ACL ejecutable, nombre final del modulo Python ni toolchain; esos pertenecen a los spikes y a fases de implementacion con autorizacion explicita del owner.
 
 ### Iteration 5 - Cierre del Blueprint
 
 #### 16. Spikes and Technical Validations final order
 
-Status: not-started
+Status: approved
 
-Inputs esperados:
+Owner approval: approved explicitly by owner.
 
-- Iteration 4 aprobada por owner.
-- Secciones 1 a 15 elaboradas y aprobadas.
-- Initial Spike Map y riesgos aplicables.
+##### 16.1 Status and Inputs
 
-Outputs esperados:
+**Status**: in-verification
 
-- Orden final de spikes y technical validations con dependencias justificadas.
+**Inputs**:
+- Iterations I1–I4 closed and owner-approved (I1: S01–S06, I2: S07–S08, I3: S09–S12, I4: S13–S15).
+- S06 Initial Spike Map: SP-01..SP-13 in four bands A→B→C→D.
+- S07 OpenCode Operating Design: SP-04/SP-05 preserved as open uncertainties.
+- S08 Mechanism Split: SP-04/SP-05 confirmed as open spike uncertainties.
+- S10 Validators: full VAL-01..VAL-10 set as spike ordering inputs.
+- S11 Storage: validator results/alerts as spike inputs.
+- S12 Source Policy: unresolved Knowledge Gaps and pending Curation Requests as spike inputs.
+- S13 Odoo 18 Environment: 5 spike dependencies with RISK-059 (critical).
+- S14 Security and Secrets: SPK-S14-01..SPK-S14-04 with ordering constraints.
+- S15 Pilot Module Blueprint: 4 technical spike dependencies + 2 inherited from S14.
+- Applicable risks: RISK-059, RISK-021, RISK-027, RISK-040, RISK-010, RISK-061, RISK-063.
+- Accepted decisions: DEC-ACCEPTED-135, DEC-ACCEPTED-149, DEC-ACCEPTED-153, DEC-ACCEPTED-158, DEC-ACCEPTED-162, DEC-ACCEPTED-163, DEC-ACCEPTED-164.
 
-Restricciones especificas:
+##### 16.2 Purpose
 
-- No ejecutar spikes ni cerrar resultados de validacion.
-- No dejar una lista plana sin dependencias.
+This section consolidates all spikes and technical validations required for CAFL V1 into a single final ordered list with justified dependencies. The consolidation integrates:
 
-Acceptance criteria minimos:
+1. SP-01..SP-13 from S06 (Initial Spike Map) with bands A→B→C preserved and band D (SP-11..SP-13) kept conditional/separated from core V1.
+2. Five environment spike dependencies from S13 (exact environment form, DB compatibility, Odoo 18 test runner, evidence capture, code source traceability).
+3. Four security spike dependencies from S14 (SPK-S14-01 secrets handling, SPK-S14-02 permissions model, SPK-S14-03 security validation, SPK-S14-04 compliance assessment) with their S14-defined ordering constraints.
+4. Six pilot module spike dependencies from S15 (four technical + two inherited from S14).
+5. Knowledge Gaps and Curation Requests from S12 as potential spike inputs, not as resolved items.
 
-- Cada spike queda ordenado, justificado y conectado a dependencias, riesgos o decisiones.
+No spike is executed in this section. No validation result is closed. No flat list is produced; every spike entry carries explicit dependencies. This section is the authoritative S16 handoff to S17 (Bidirectional Traceability Matrix), S18 (Blueprint Outputs to Backlog), and S19 (Acceptance Criteria).
+
+##### 16.3 Scope and Restrictions
+
+**In scope**:
+- Ordering and dependency justification for all V1 core spikes (bands A, B, C).
+- Integration of S13, S14, and S15 spike dependencies into the consolidated list.
+- Mapping of conditional/separated spikes (band D) with their conditional status preserved.
+- Knowledge Gaps and Curation Requests as input context (not resolved or closed).
+- SP-04/SP-05 as open uncertainties (not resolved).
+- Traceability of each spike to TOM, CRIT, accepted decisions, and risks.
+
+**Out of scope / restrictions**:
+- Do not execute spikes or close validation results.
+- Do not resolve SP-04 or SP-05 (remain open uncertainties per S07, S08).
+- Do not close Knowledge Gaps or approve Curation Requests (owner-gated per S12).
+- Do not create runtime, agents, commands, schemas, validators, scripts, RAG, backlog, PRD, SDD, or implementation artifacts.
+- Do not reference or use `framework/` as input.
+- Do not expand V1 scope, source policy, or pilot definition.
+- Band D spikes (SP-11..SP-13) must remain conditional and separated from core V1.
+- RULE-06: every spike must carry explicit justified dependencies; no flat list is permitted.
+
+##### 16.4 Consolidated Spike Catalogue
+
+The catalogue lists every spike with its unique identifier, origin section, description, dependencies, and traceability anchors. Identifiers from S06 (SP-nn) and from S13/S14/S15 (SPK-Snn-nn) are preserved to maintain traceability.
+
+**Identifier reconciliation note**: Some spikes surfaced in S13, S14, and S15 refine or expand spikes already described in S06. Where the S06 spike and the downstream section spike cover the same validation concern, this is noted explicitly in the catalogue entry. The S06 band position of the underlying spike is preserved.
+
+---
+
+**BAND A — Scope / Source / Security Guardrails**
+*(Precedence: must be initiated or unblocked before Band B proceeds)*
+
+| ID | Title | Origin | Description | Depends On | Traceability |
+|----|-------|--------|-------------|------------|-------------|
+| SP-01 | Source Policy Enforcement | S06 Band A | Validate that the minimal source policy (docs.odoo.com + github.com/odoo/odoo) is operationally enforceable: detect unauthorized sources, trigger Knowledge Gap mechanism, block non-policy source use. Integrates S12 Knowledge Gap and VAL-01/VAL-09 control points. | None | DEC-ACCEPTED-163; AP-06; AP-12; CRIT-03; VAL-01; VAL-09; S12 |
+| SP-02 | Secrets Posture | S06 Band A | Validate baseline secrets handling posture: no secrets embedded in source, OpenCode runtime, or evidence artifacts. Integrates S14 CA-1 conceptual constraints. Refined by SPK-S14-01 (see Band B). | None (SPK-S14-01 extends this) | AP-10; AP-11; CRIT-02; RISK-021; RISK-027; S14 CA-1; DEC-ACCEPTED-045 |
+| SP-03 | V1 / Post-V1 Boundary Enforcement | S06 Band A | Validate that anti-scope-creep controls are enforceable: mechanisms correctly classify V1-in vs deferred, and boundary changes require owner decision. | SP-01 | BR-01; BR-02; S03; DEC-ACCEPTED-164; CRIT-01 |
+
+---
+
+**BAND B — OpenCode / Odoo 18 Base Capabilities**
+*(Precedence: requires Band A unblocked; environment form spike must be initiated within this band)*
+
+| ID | Title | Origin | Description | Depends On | Traceability |
+|----|-------|--------|-------------|------------|-------------|
+| SP-04 | OpenCode Permissions / Capabilities | S06 Band B | **[OPEN UNCERTAINTY — not resolved]** Validate actual OpenCode permission model and agent capability constraints relevant to CAFL V1 coordination patterns. Resolution requires live OpenCode environment access. Preserved as open uncertainty per S07 and S08. | SP-01, SP-02, SP-03 | AP-02; AP-04; S07; S08; DEC-ACCEPTED-136; DEC-ACCEPTED-137 |
+| SP-05 | Commands / Skills Design | S06 Band B | **[OPEN UNCERTAINTY — not resolved]** Validate command candidate and skills/playbook design patterns that are feasible within OpenCode constraints discovered in SP-04. Preserved as open uncertainty per S07 and S08. Depends on SP-04 resolution. | SP-04 (open uncertainty) | AP-02; S07; S08; DEC-ACCEPTED-138; DEC-ACCEPTED-140 |
+| SP-06 / SPK-S13-ENV | Odoo 18 Minimal Environment Form | S06 Band B + S13 | Validate exact form of the Odoo 18 execution environment: Docker, virtualenv, or local install. This is the S13 "exact environment form" spike dependency and expands SP-06 from S06. Result determines the concrete environment category used by all subsequent pilot module spikes. **RISK-059 (critical): environment spike is blocking precondition for all pilot module spikes.** | SP-01, SP-02, SP-03 | RISK-059; DEC-ACCEPTED-135; DEC-ACCEPTED-153; AP-08; S13 ENV-CAT-1/2/3; SCH-10; VAL-05; VAL-10; CRIT-06; CRIT-07 |
+| SPK-S13-DB | DB Compatibility | S13 | Validate PostgreSQL version compatibility and connection patterns for the selected Odoo 18 environment form. Depends on SP-06/SPK-S13-ENV resolving the environment form. | SP-06/SPK-S13-ENV | RISK-059; DEC-ACCEPTED-135; S13 logical component: PostgreSQL; SCH-10; CRIT-06 |
+| SPK-S14-01 | Secrets Handling in Environment | S14 CA-1 | Validate that no secrets are embedded in source, environment config files, or evidence artifacts within the selected Odoo 18 environment. Expands SP-02 for the confirmed environment form. **SPK-S14-01 blocks SPK-S14-02 and SPK-S14-03 (S14 ordering constraint).** Depends on environment form being established (SP-06/SPK-S13-ENV). | SP-06/SPK-S13-ENV, SP-02 | AP-10; AP-11; RISK-021; RISK-027; RISK-040; S14 CA-1; DEC-ACCEPTED-045; DEC-ACCEPTED-059 |
+
+---
+
+**BAND C — Control / Evidence Toolchain and Pilot Module Validations**
+*(Precedence: requires Band A and core Band B unblocked; security ordering constraints apply within this band)*
+
+| ID | Title | Origin | Description | Depends On | Traceability |
+|----|-------|--------|-------------|------------|-------------|
+| SP-07 | Language / Toolchain Scripts | S06 Band C | Validate that the deterministic control toolchain (language selection, script runner, CLI candidates) is compatible with the Odoo 18 environment. | SP-06/SPK-S13-ENV, SP-01 | AP-04; S08; SCH-06; VAL-06; DEC-ACCEPTED-140; CRIT-07 |
+| SP-08 | Schemas / Validators Toolchain | S06 Band C | Validate that schema validation and validator execution are feasible within the confirmed environment and toolchain. SP-05 uncertainty noted: if SP-05 is unresolved, command-based validator invocation remains an open design point. | SP-07, SP-05 (open uncertainty noted) | SCH-01..SCH-10; VAL-01..VAL-10; AP-04; S09; S10; DEC-ACCEPTED-145 |
+| SP-09 | Storage / Logs Convention | S06 Band C | Validate that the conceptual L1–L4 authority hierarchy and JSONL/YAML/Markdown storage conventions are operationally feasible in the confirmed environment and Git-compatible. | SP-06/SPK-S13-ENV, SP-07 | S11 L1-L4; AP-09; DEC-ACCEPTED-146; SCH-03; SCH-05; VAL-03; VAL-04 |
+| SPK-S13-RUNNER | Odoo 18 Test Runner | S13 | Validate that the Odoo 18 test runner mechanism can be invoked within the confirmed environment form to produce evidence-eligible outputs. | SP-06/SPK-S13-ENV, SPK-S13-DB | RISK-059; S13 logical component: test execution mechanism; VAL-05; VAL-10; SCH-10; CRIT-06; DEC-ACCEPTED-135 |
+| SP-10 / SPK-S13-EVIDENCE | Evidence Capture for Minimum Cycle | S06 Band C + S13 | Validate that the complete minimum evidence capture cycle is operational: environment event → capture → S11 lifecycle steps → L2 registration. Integrates S13 "evidence capture for minimum cycle" spike dependency. | SP-09, SPK-S13-RUNNER | S11 6-step lifecycle; SCH-05; SCH-10; VAL-05; VAL-06; VAL-10; AP-05; AP-09; RISK-059; CRIT-07 |
+| SPK-S13-TRACE | Code Source Traceability | S13 + S15 | Validate that Odoo 18 pilot module source code is traceable to docs.odoo.com and github.com/odoo/odoo per S12 source policy. Applies to both the environment-level traceability (S13) and the pilot module code (S15). | SP-01, SP-06/SPK-S13-ENV, SPK-S14-01 | DEC-ACCEPTED-163; AP-06; AP-12; S12 source policy; S13; S15; VAL-01; VAL-09; SCH-09 |
+| SPK-S14-02 | Permissions Model Validation | S14 CA-2 | Validate that the conceptual minimum-access permission model (CA-2) is enforceable within the Odoo 18 environment and the pilot module access model. **Blocked by SPK-S14-01.** Depends on environment form. | SPK-S14-01, SP-06/SPK-S13-ENV | RISK-040; RISK-061; S14 CA-2; AP-10; AP-11; DEC-ACCEPTED-064; DEC-ACCEPTED-076; CRIT-02; CRIT-04 |
+| SPK-S14-03 | Security Validation Approach | S14 CA-3/CA-4 | Validate that security validation approach (evidence protection CA-3, security/risk triage CA-4) integrates with the S11 evidence lifecycle and S09/S10 schema-validator controls. **Blocked by SPK-S14-01.** | SPK-S14-01, SP-08, SP-10/SPK-S13-EVIDENCE | RISK-063; S14 CA-3; S14 CA-4; S11 L1-L4; SCH-05; VAL-04; AP-10; DEC-ACCEPTED-092; DEC-ACCEPTED-101 |
+| SPK-S15-INSTALL | Pilot Module Installation | S15 | Validate that the conceptual pilot module (InternalRequest, ApprovalRecord, 4-state workflow) can be installed in the confirmed Odoo 18 environment. **Depends on environment form spike (RISK-059 critical precondition) and SPK-S14-01 (no embedded secrets).** | SP-06/SPK-S13-ENV, SPK-S14-01, SPK-S13-DB | RISK-059; S15; S13 logical component: installed pilot module; SCH-10; VAL-10; DEC-ACCEPTED-162; DEC-ACCEPTED-135 |
+| SPK-S15-TEST | Test Execution | S15 | Validate that unit, workflow, scope, and source policy tests for the pilot module can be executed via the Odoo 18 test runner and produce evidence-eligible outputs. **Depends on SPK-S14-02 (minimum-access permission model enforced during test execution).** | SPK-S15-INSTALL, SPK-S13-RUNNER, SPK-S14-02 | RISK-059; S15 conceptual test approach; VAL-05; VAL-10; SCH-10; DEC-ACCEPTED-162; CRIT-06; CRIT-07 |
+| SPK-S15-ACCESS | Access Model Executable | S15 | Validate that the CA-2 minimum-access permission model is enforceable for the pilot module (InternalRequest, ApprovalRecord) within the Odoo 18 access control mechanisms. **Depends on SPK-S14-02.** | SPK-S14-02, SPK-S15-INSTALL | S15 security model; S14 CA-2; RISK-040; RISK-061; DEC-ACCEPTED-064; SCH-10; VAL-10; CRIT-04 |
+| SPK-S14-04 | Compliance Assessment | S14 CA-4 | Validate that the security/risk triage-in-gates posture (CA-4) is sufficient for the V1 pilot scope and that no deferred compliance risk blocks pilot operation. | SPK-S14-02, SPK-S14-03, SPK-S15-ACCESS | RISK-021; RISK-027; RISK-040; RISK-063; S14 CA-4; DEC-ACCEPTED-101; AP-11; CRIT-02; CRIT-03; CRIT-04 |
+
+---
+
+**BAND D — Conditional / Anti-Scope-Creep (Separated from Core V1)**
+*(Band D spikes are explicitly separated from core V1 and only activated by an explicit owner decision expanding V1 scope. They must not be treated as V1 core work.)*
+
+| ID | Title | Origin | Condition for Activation | Traceability |
+|----|-------|--------|--------------------------|-------------|
+| SP-11 | SDK / Server Core | S06 Band D | Activated only if owner decision re-includes SDK/server in V1 scope (currently excluded by DEC-ACCEPTED-164). | DEC-ACCEPTED-164; BR-02; S03; AP-08 |
+| SP-12 | OpenAPI / PDF Integration | S06 Band D | Activated only if owner decision authorizes external integrations in V1 scope (currently deferred). | BR-02; S03; DEC-ACCEPTED-164 |
+| SP-13 | Frontend / OWL / Playwright | S06 Band D | Activated only if pilot explicitly justifies UI/OWL/Playwright scope and owner grants approval. | BR-02; S03; S15 (UI deferred) |
+
+---
+
+##### 16.5 Execution Order with Justified Dependencies
+
+The following is the authoritative final execution order for V1 core spikes (bands A, B, C). Band D remains conditional and is excluded from this sequencing. The order satisfies RULE-06 (no flat list) with explicit dependency justification.
+
+**Tier 1a — No external dependencies (can be initiated concurrently)**
+
+1. **SP-01** (Source Policy Enforcement) — No predecessor; foundational source policy constraint required by all downstream spikes that touch source artifacts.
+2. **SP-02** (Secrets Posture) — No predecessor; foundational security constraint required before any environment or permission model work.
+
+*Justification*: SP-01 and SP-02 have no structural predecessors and establish the source policy and secrets invariants (AP-06, AP-10, AP-11, CRIT-02, CRIT-03) required by all downstream bands. They can be initiated concurrently.
+
+---
+
+**Tier 1b — Depends on SP-01 result (Band A, sequential within Band A)**
+
+3. **SP-03** (V1/Post-V1 Boundary Enforcement) — Depends on SP-01: source policy must be enforceable before boundary enforcement is tested, because SP-03 validates that anti-scope-creep controls correctly classify V1-in vs. deferred content using the same source policy invariants SP-01 establishes.
+
+*Justification*: SP-03 is a Band A guardrail but cannot be initiated concurrently with SP-01 because its validation requires SP-01's result to be available. CRIT-01, AP-06 mandate boundary enforcement as dependent on source policy operationalization. SP-02 may proceed concurrently with or after SP-01 as it has no dependency on SP-01 result.
+
+---
+
+**Tier 2 — Environment form established (requires Tier 1a and Tier 1b complete)**
+
+4. **SP-06 / SPK-S13-ENV** (Odoo 18 Minimal Environment Form) — Depends on SP-01, SP-02, SP-03. **RISK-059 critical**: this spike blocks all pilot module spikes. Environment form (Docker/venv/local) must be confirmed before DB compatibility, test runner, module installation, or evidence capture can be validated.
+5. **SPK-S14-01** (Secrets Handling in Environment) — Depends on SP-06/SPK-S13-ENV (environment form known) and SP-02 (baseline posture established). **S14 ordering constraint**: SPK-S14-01 must complete before SPK-S14-02 and SPK-S14-03 are initiated.
+
+*Justification*: SP-06/SPK-S13-ENV is the structural gate for the entire pilot track. SPK-S14-01 must immediately follow because all environment-level and module-level security work is blocked on secrets handling confirmation.
+
+---
+
+**Tier 3 — DB, runner, toolchain (requires SP-06/SPK-S13-ENV complete)**
+
+6. **SPK-S13-DB** (DB Compatibility) — Depends on SP-06/SPK-S13-ENV. Can be concurrent with SP-07 and SPK-S14-01.
+7. **SP-07** (Language / Toolchain Scripts) — Depends on SP-06/SPK-S13-ENV and SP-01.
+8. **SPK-S13-TRACE** (Code Source Traceability) — Depends on SP-01, SP-06/SPK-S13-ENV, SPK-S14-01.
+
+*Justification*: Once the environment form is confirmed, DB compatibility and toolchain language validation can proceed in parallel. Source traceability requires both the environment form and the secrets posture to be validated.
+
+---
+
+**Tier 4 — Test runner, schemas/validators, storage, permissions (requires Tier 3 complete)**
+
+9. **SPK-S13-RUNNER** (Odoo 18 Test Runner) — Depends on SP-06/SPK-S13-ENV and SPK-S13-DB.
+10. **SP-08** (Schemas / Validators Toolchain) — Depends on SP-07. SP-05 open uncertainty noted for command-based invocation.
+11. **SP-09** (Storage / Logs Convention) — Depends on SP-06/SPK-S13-ENV and SP-07.
+12. **SPK-S14-02** (Permissions Model Validation) — Depends on SPK-S14-01 and SP-06/SPK-S13-ENV. **SPK-S14-01 must be complete (S14 ordering constraint).**
+
+*Justification*: Test runner validation requires DB compatibility confirmed. Schema/validator toolchain requires language choice. Storage convention requires environment and toolchain. SPK-S14-02 is unblocked only after SPK-S14-01 is complete per S14 ordering constraint.
+
+---
+
+**Tier 5 — Evidence capture, security validation, SP-04 (requires Tier 4 complete)**
+
+13. **SP-10 / SPK-S13-EVIDENCE** (Evidence Capture for Minimum Cycle) — Depends on SP-09 and SPK-S13-RUNNER.
+14. **SPK-S14-03** (Security Validation Approach) — Depends on SPK-S14-01, SP-08, SP-10/SPK-S13-EVIDENCE. **SPK-S14-01 must be complete (S14 ordering constraint).**
+15. **SP-04** (OpenCode Permissions / Capabilities) — **[OPEN UNCERTAINTY]** Depends on SP-01, SP-02, SP-03 at minimum. Requires live OpenCode environment. Resolution unblocks SP-05 and any command-based invocation patterns in SP-08.
+
+*Justification*: Evidence capture requires both storage convention and test runner to be operational. Security validation approach requires evidence capture to be testable. SP-04 is placed at this tier because it requires the Band A guardrails but its resolution path is external (OpenCode live environment); it does not block pilot module installation work on the Odoo track.
+
+---
+
+**Tier 6 — Pilot module installation and access model (requires Tier 5 complete on relevant paths)**
+
+16. **SPK-S15-INSTALL** (Pilot Module Installation) — Depends on SP-06/SPK-S13-ENV, SPK-S14-01, SPK-S13-DB.
+17. **SPK-S15-ACCESS** (Access Model Executable) — Depends on SPK-S14-02 and SPK-S15-INSTALL.
+
+*Justification*: Module installation is unblocked once the environment is confirmed, DB is compatible, and the secrets posture is validated (no embedded secrets in module). Access model validation requires both the permissions model (SPK-S14-02) and the installed module.
+
+---
+
+**Tier 7 — Test execution and SP-05 (requires Tier 6 complete on relevant paths)**
+
+18. **SPK-S15-TEST** (Test Execution) — Depends on SPK-S15-INSTALL, SPK-S13-RUNNER, SPK-S14-02.
+19. **SP-05** (Commands / Skills Design) — **[OPEN UNCERTAINTY]** Depends on SP-04 resolution (open uncertainty). Cannot be scheduled until SP-04 produces a result.
+
+*Justification*: Test execution requires module installed, runner validated, and permission model enforced. SP-05 is unschedulable until SP-04 resolves.
+
+---
+
+**Tier 8 — Compliance and full security gate (requires Tier 7 complete)**
+
+20. **SPK-S14-04** (Compliance Assessment) — Depends on SPK-S14-02, SPK-S14-03, SPK-S15-ACCESS.
+
+*Justification*: Compliance assessment is the final security gate; it can only be completed once permissions, security validation approach, and access model are all validated.
+
+---
+
+**Band D Conditional Spikes (not sequenced in V1 core)**
+
+SP-11, SP-12, SP-13 remain conditional and separated. They are activated only by an explicit owner decision per S03 BR-02 and DEC-ACCEPTED-164.
+
+---
+
+##### 16.6 S12 Knowledge Gaps and Curation Requests as Spike Inputs
+
+Per S12 handoff, unresolved Knowledge Gaps and pending Curation Requests are potential spike inputs to the S16 consolidated list. This section does not close Knowledge Gaps or approve Curation Requests (those are owner-gated per S12 governance). The following integration rules apply:
+
+- **Knowledge Gap triggers (VAL-01, VAL-09)**: Any spike that touches source policy enforcement (SP-01, SPK-S13-TRACE) must respect the Knowledge Gap mechanism defined in S12. If a source reference needed during spike execution is not covered by the minimal source policy, a Knowledge Gap must be opened and registered before the spike can use that source.
+- **Curation Request flow**: Any spike result that implies an expansion of the minimal source policy must produce a Curation Request for owner review; it cannot self-approve source expansion.
+- **S11 evidence lifecycle applies**: Spike execution outputs that enter the evidence chain must follow the S11 6-step lifecycle (origin, capture, validation, eligibility evaluation, governed registration, authoritative reference).
+
+##### 16.7 SP-04 and SP-05 Open Uncertainty Treatment
+
+SP-04 and SP-05 are preserved as open uncertainties per S07 (OpenCode Operating Design) and S08 (Mechanism Split). They appear in this section's spike catalogue and execution order but carry the explicit **[OPEN UNCERTAINTY]** marker. The following constraints apply:
+
+- SP-04 and SP-05 must not be resolved by this section or by any downstream Blueprint section without an explicit owner decision.
+- Any design element in later Blueprint sections (S17, S18, S19) that depends on SP-04/SP-05 resolution must be marked as conditional on SP-04/SP-05 outcome.
+- SP-05 is blocked by SP-04; both are placed in the execution order at their earliest feasible tier but their actual resolution remains external.
+
+##### 16.8 Cross-Section Guidance and Handoff Rules
+
+**Handoffs from S16 to downstream sections**:
+
+| Receiving Section | Handoff Content |
+|-------------------|-----------------|
+| S17 — Bidirectional Traceability Matrix | Full consolidated spike catalogue (SP-01..SP-13 + SPK-Snn) with traceability anchors to TOM, CRIT-01..07, accepted decisions, and risks. Execution order provides the dependency chain for traceability links. |
+| S18 — Blueprint Outputs to Backlog | Spike catalogue by band (A, B, C, D conditional) as candidate backlog categories. Each spike entry identifies the type of technical work and the blocked dependencies, informing backlog category structure. |
+| S19 — Acceptance Criteria | Spike completion conditions are candidate acceptance criteria inputs. Band A/B/C spikes with RISK-059, RISK-021, RISK-027 must appear in acceptance criteria. Open uncertainties SP-04/SP-05 must be flagged as conditional acceptance criteria. |
+
+**Coordination constraints**:
+- S17 must use the S16 consolidated catalogue as the spike-side input to the traceability matrix; it must not reconstruct spike identifiers independently.
+- S18 must not create a detailed implementation backlog; it uses spike bands as category inputs only.
+- S19 must not close spike validation results; it references spike completion conditions as acceptance criteria.
+
+##### 16.9 Explicit Non-Decisions
+
+The following are explicitly not decided by this section:
+
+- **Execution form of any spike**: how a spike will be run (toolchain, environment, agent, command, manual) is not decided here. Blueprint sections do not create runtime artifacts.
+- **Resolution of SP-04 or SP-05**: open uncertainties per S07, S08; not resolved by S16.
+- **Closure of Knowledge Gaps or approval of Curation Requests**: owner-gated per S12.
+- **Physical environment**: whether Docker, venv, or local is selected (that is what SP-06/SPK-S13-ENV validates).
+- **Physical schemas, validators, scripts, commands, agents, or toolchain implementations**: RULE-09 and S01 non-goals apply.
+- **Band D activation**: SP-11, SP-12, SP-13 are not activated without explicit owner scope decision.
+- **Pilot broadening or source policy expansion**: V1 pilot remains internal requests/simple approvals per DEC-ACCEPTED-162; source policy remains docs.odoo.com + github.com/odoo/odoo per DEC-ACCEPTED-163.
+- **CRIT-01..07 re-opening or TOM revision**: fixed per S01 and DEC-ACCEPTED-161.
+
+##### 16.10 Open Questions and Owner Decisions Required
+
+| ID | Question | Status | Impact if Unresolved |
+|----|----------|--------|----------------------|
+| OQ-S16-01 | SP-04 (OpenCode permissions/capabilities): when will live OpenCode environment access be available for spike resolution? | Open uncertainty per S07, S08 | SP-05 and command-based invocation patterns in SP-08 remain unschedulable |
+| OQ-S16-02 | SP-05 (Commands/skills design): blocked on SP-04 resolution. | Open uncertainty per S08 | Command-based mechanism candidates remain conceptual |
+| OQ-S16-03 | Band D activation (SP-11..SP-13): owner must make an explicit scope decision to activate any Band D spike. | Owner decision required | Band D spikes remain inactive; SDK/server, external integrations, OWL/Playwright out of V1 core |
+| OQ-S16-04 | Should any Knowledge Gap or Curation Request open at the time of spike execution be registered before the affected spike proceeds? | Owner decision required for policy | Spike execution touching non-policy sources would be non-compliant per DEC-ACCEPTED-163 |
+
+##### 16.11 Acceptance Criteria
+
+| Criterion | Verification Method |
+|-----------|---------------------|
+| AC-S16-01: Every V1 core spike (bands A, B, C) is present in the consolidated catalogue with a unique identifier, origin, description, dependencies, and traceability anchors. | Verifier reviews catalogue completeness against S06 SP-01..SP-13 and S13/S14/S15 spike inputs. |
+| AC-S16-02: SP-01..SP-13 from S06 are incorporated with bands A→B→C structure preserved and band D kept conditional/separated. | Verifier confirms band labels match S06 band structure and D is not sequenced in core V1 order. |
+| AC-S16-03: S13 five environment spike dependencies are integrated with RISK-059 priority noted. | Verifier confirms SPK-S13-ENV, SPK-S13-DB, SPK-S13-RUNNER, SPK-S13-EVIDENCE, SPK-S13-TRACE are present with RISK-059 traceability. |
+| AC-S16-04: S14 four security spikes (SPK-S14-01..04) are integrated with S14 ordering constraint (SPK-S14-01 blocks SPK-S14-02 and SPK-S14-03). | Verifier confirms SPK-S14-01 appears before SPK-S14-02 and SPK-S14-03 in the execution order. |
+| AC-S16-05: S15 4+2 technical spike dependencies (SPK-S15-INSTALL, SPK-S15-TEST, SPK-S15-ACCESS + SPK-S13-TRACE, SPK-S14-01, SPK-S14-02 inherited) are integrated. | Verifier confirms all six S15 spike dependencies are present with correct predecessors. |
+| AC-S16-06: SP-04 and SP-05 are preserved as open uncertainties with **[OPEN UNCERTAINTY]** markers; they are not resolved. | Verifier confirms no resolution claim for SP-04 or SP-05. |
+| AC-S16-07: No flat list; RULE-06 satisfied. Every spike in the execution order carries justified dependency justification. | Verifier confirms execution order section contains no entry without a "Depends On" or justification clause. |
+| AC-S16-08: Knowledge Gaps and Curation Requests from S12 are referenced as spike inputs without closing gaps or approving requests. | Verifier confirms §16.6 references S12 mechanism without claiming gap closure or request approval. |
+| AC-S16-09: No forbidden artifacts created (no runtime, agents, commands, schemas, validators, scripts, RAG, backlog, PRD, SDD, implementation). | Verifier confirms no forbidden content in section. |
+| AC-S16-10: All spikes trace to at least one of: TOM, CRIT-01..07, accepted decision, or applicable risk. | Verifier spot-checks traceability column in spike catalogue. |
+| AC-S16-11: V1 boundaries preserved: Odoo-only, Odoo 18, internal requests/simple approvals pilot, minimal source policy, framework/ excluded. | Verifier confirms no V1 scope expansion in section content. |
+
+##### 16.12 Section Output and Handoff
+
+**Primary output of S16**: The consolidated, ordered spike and technical validation catalogue for CAFL V1, with justified execution order, dependency chain, traceability anchors, and integration of all upstream spike inputs from S06, S13, S14, and S15.
+
+**Handoff package to S17 (Bidirectional Traceability Matrix)**:
+- Complete spike catalogue with identifiers SP-01..SP-13 and SPK-Snn entries.
+- Dependency chain (Tiers 1–8) for traceability link generation.
+- Traceability anchors per spike (TOM, CRIT, decisions, risks).
+- Open uncertainties SP-04/SP-05 flagged for conditional traceability handling.
+
+**Handoff package to S18 (Blueprint Outputs to Backlog)**:
+- Spike bands A, B, C as candidate backlog category structure.
+- Band D conditional spikes as a separate post-V1 or owner-decision-gated category.
+- Open uncertainty spikes (SP-04/SP-05) as a conditional category.
+
+**Handoff package to S19 (Acceptance Criteria)**:
+- AC-S16-01..AC-S16-11 as candidate acceptance criteria for this section's verification.
+- Spike completion conditions as candidate V1 milestone acceptance criteria.
+- RISK-059 critical path (SP-06/SPK-S13-ENV → SPK-S13-DB → SPK-S15-INSTALL → SPK-S15-TEST) as critical acceptance criterion candidate.
+- SP-04/SP-05 open uncertainties as conditional acceptance criteria candidates.
 
 #### 17. Bidirectional Traceability Matrix
 
@@ -1710,10 +2620,10 @@ Acceptance criteria minimos:
 | Iteration 3 | 10 | Validators V1 Minimum Set | closed | approved | none |
 | Iteration 3 | 11 | State / Logs / Evidence Storage | closed | approved | none |
 | Iteration 3 | 12 | Knowledge Base and Source Policy Implementation | closed | approved | none |
-| Iteration 4 | 13 | Odoo 18 Execution Environment | not-started | not-requested | none |
-| Iteration 4 | 14 | Security and Secrets | not-started | not-requested | none |
-| Iteration 4 | 15 | Pilot Module Blueprint | not-started | not-requested | none |
-| Iteration 5 | 16 | Spikes and Technical Validations final order | not-started | not-requested | none |
+| Iteration 4 | 13 | Odoo 18 Execution Environment | closed | approved | none |
+| Iteration 4 | 14 | Security and Secrets | closed | approved | none |
+| Iteration 4 | 15 | Pilot Module Blueprint | closed | approved | none |
+| Iteration 5 | 16 | Spikes and Technical Validations final order | approved | approved | none |
 | Iteration 5 | 17 | Bidirectional Traceability Matrix | not-started | not-requested | none |
 | Iteration 5 | 18 | Blueprint Outputs to Backlog | not-started | not-requested | none |
 | Iteration 5 | 19 | Acceptance Criteria | not-started | not-requested | none |
