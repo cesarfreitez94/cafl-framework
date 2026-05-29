@@ -1,6 +1,6 @@
 # CAFL V1 Implementation Blueprint Working Contract
 
-Status: iteration-04-closed
+Status: blueprint-closed
 
 Metodologia: Contract-Driven + ADRs ligeros + Ordered Spike-Driven Validation + Walking Skeleton + Risk-Based V1 Scoping + Bidirectional Traceability Matrix
 
@@ -2240,7 +2240,7 @@ Trazabilidad: SPK-S14-01; SPK-S14-02; RISK-059; RISK-010; DEC-ACCEPTED-162; DEC-
 
 #### 16. Spikes and Technical Validations final order
 
-Status: approved
+Status: closed
 
 Owner approval: approved explicitly by owner.
 
@@ -2542,67 +2542,394 @@ The following are explicitly not decided by this section:
 
 #### 17. Bidirectional Traceability Matrix
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved
 
-- Secciones 1 a 16 elaboradas y aprobadas.
-- TOM aprobado y decisiones aceptadas aplicables.
+##### 17.1 Status and Inputs
 
-Outputs esperados:
+**Status**: in-verification.
 
-- Matriz bidireccional TOM requirement -> Blueprint component y Blueprint component -> TOM requirement.
+**Inputs**:
+- S01-S16 elaboradas; S16 aprobado como fuente autoritativa del catalogo consolidado de spikes.
+- TOM aprobado por DEC-ACCEPTED-161.
+- CRIT-01..CRIT-07 approved.
+- Decisiones aceptadas aplicables, especialmente DEC-ACCEPTED-135, 136, 137, 138, 140, 144, 145, 146, 149, 153, 158, 161, 162, 163 y 164.
+- Riesgos relevantes: RISK-006, 010, 021, 027, 040, 043, 044, 051, 052, 054, 055, 057, 059, 061, 063, 064, 065, 066 y 067.
 
-Restricciones especificas:
+##### 17.2 Purpose
 
-- No aprobar componentes sin respaldo trazable.
+Esta seccion define la matriz conceptual de trazabilidad bidireccional del Blueprint CAFL V1. La matriz responde a RULE-04 y RULE-05:
 
-Acceptance criteria minimos:
+- **TOM -> Blueprint**: cada requerimiento operativo relevante del TOM queda enlazado a uno o mas componentes del Blueprint.
+- **Blueprint -> TOM/CRIT/Decision**: cada componente del Blueprint queda enlazado a al menos un requerimiento TOM, CRIT aprobado o decision aceptada.
 
-- La matriz queda completa, bidireccional y sin gaps.
+La matriz no aprueba el Blueprint, no cierra acceptance criteria finales, no ejecuta spikes y no sustituye la aprobacion owner. La aprobacion explicita del owner sigue siendo obligatoria.
+
+##### 17.3 Specific Restrictions
+
+- Usar el catalogo consolidado S16 como fuente autoritativa de spikes; no reconstruir identifiers fuera de SP-01..SP-13 y SPK-Snn ya consolidados.
+- Preservar SP-04 y SP-05 como **conditional / open uncertainty**; no resolverlos.
+- Preservar SP-11, SP-12 y SP-13 como **conditional / post-V1 / owner-decision-gated**; no activarlos como core V1.
+- Seguir la estructura logica de SCH-02: identifier, origin, destination, relationship type, mandatory, state, evidence, gaps/conflicts, consuming section.
+- No crear schemas fisicos, validators reales, scripts, commands, agents ejecutables, runtime, RAG/base vectorial, backlog, PRD, SDD ni implementacion.
+- Preservar limites V1: Odoo-only, Odoo 18, piloto solicitudes internas / aprobaciones simples, source policy minima docs.odoo.com + github.com/odoo/odoo, SDK/server fuera de core V1 y `framework/` excluido como input.
+
+##### 17.4 Traceability Anchor Index
+
+Los siguientes aliases son identificadores internos de esta matriz para referenciar requerimientos ya aceptados; no crean requisitos nuevos.
+
+| TOM anchor | Requerimiento operativo TOM | Authority anchors |
+| --- | --- | --- |
+| TOM-01 | `project-truth/` como fuente de verdad; narrativa LLM no es estado autoritativo. | DEC-ACCEPTED-001, 107; CRIT-06; AP-01 |
+| TOM-02 | V1 Odoo-only sobre Odoo 18. | DEC-ACCEPTED-016, 135; CRIT-01, CRIT-07; BR-01 |
+| TOM-03 | Flujo end-to-end verificable desde idea owner hasta modulo Odoo tecnicamente listo. | DEC-ACCEPTED-021, 153, 156; CRIT-01, CRIT-02 |
+| TOM-04 | Modelo hibrido progresivo: OpenCode + agents/commands/control deterministico/rules/skills, no agents-only. | DEC-ACCEPTED-056, 136, 137, 138; CRIT-03, CRIT-07; AP-02..AP-05 |
+| TOM-05 | PRD ligero, SDD ligero, task/context packet, DoR y contratos/gates obligatorios antes de ejecucion. | DEC-ACCEPTED-039, 041, 074, 077, 078, 079, 091; CRIT-02, CRIT-04, CRIT-05 |
+| TOM-06 | Evidencia reproducible, logs, storage auditable y trazabilidad contract -> gate -> evidence. | DEC-ACCEPTED-100, 111, 114, 115, 146; CRIT-06, CRIT-07; AP-04, AP-05, AP-09 |
+| TOM-07 | Separacion de recommendation, verification, decision; no autocierre ni self-approval. | DEC-ACCEPTED-063, 094; CRIT-05; AP-04, AP-05 |
+| TOM-08 | Source policy minima, Knowledge Gap y Curation Request sin busqueda web libre. | DEC-ACCEPTED-126, 127, 128, 150, 163; CRIT-06, CRIT-07; AP-06, AP-12 |
+| TOM-09 | Seguridad/riesgo/compliance transversal y secrets/access control. | DEC-ACCEPTED-045, 064, 076, 092, 101; CRIT-02..CRIT-05; AP-10, AP-11, AP-12 |
+| TOM-10 | Rework acotado, blockers, owner escalation y approval log para decisiones criticas. | DEC-ACCEPTED-059, 067, 096, 104, 118; CRIT-03, CRIT-05, CRIT-06 |
+| TOM-11 | Piloto V1 confirmado: solicitudes internas / aprobaciones simples, sin PRD/SDD/backlog final en Blueprint. | DEC-ACCEPTED-162; BR-01; S15 |
+| TOM-12 | Automatizacion minima suficiente: validators, trazabilidad, evidencia, Odoo install/update/test y source policy basics. | DEC-ACCEPTED-139, 140, 145, 153; CRIT-07 |
+| TOM-13 | V1 / post-V1 boundary: SDK/server, RAG/vector, dashboard/UI amplio, CI/CD completo, integraciones y capacidades amplias diferidas. | DEC-ACCEPTED-148, 149, 157, 164; BR-02 |
+| TOM-14 | Technical validations/spikes formalmente planificados antes de materializar decisiones fisicas o incertidumbres. | DEC-ACCEPTED-142, 158; RISK-059, RISK-061, RISK-063; S16 |
+
+##### 17.5 Link Type Legend (SCH-02 aligned)
+
+| Field | Meaning in this matrix |
+| --- | --- |
+| Identifier | Stable link ID `TM-S17-nnn`. |
+| Origin | TOM requirement, Blueprint component, CRIT, decision, risk, spike, schema, validator or section component. |
+| Destination | The traced target component/anchor. |
+| Relationship type | `satisfies`, `constrains`, `derives-from`, `validates`, `blocks-if-unresolved`, `conditional-post-v1`, `evidence-for` or `handoff-to`. |
+| Mandatory | `yes`, `conditional`, or `post-V1-owner-gated`. |
+| State | `active`, `conditional-open-uncertainty`, `conditional-post-V1`, or `owner-approval-pending`. |
+| Evidence | Source section or authority anchor supporting the link. |
+| Gaps/conflicts | `none` unless open uncertainty or owner gate is explicitly required. |
+| Consuming section | Blueprint section(s) expected to consume the link. |
+
+##### 17.6 TOM -> Blueprint Matrix
+
+| Link ID | Origin | Destination Blueprint components | Relationship type | Mandatory | State | Evidence | Gaps/conflicts | Consuming section |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TM-S17-001 | TOM-01 | S01, S02 AP-01, S05, S09 SCH-01/SCH-02, S10 VAL-01/VAL-02, S11 L1-L4, S17 | satisfies/constrains | yes | active | S01, S02, S05, S09-S11; CRIT-06 | none | S17-S19 |
+| TM-S17-002 | TOM-02 | S01, S03 BR-01, S04, S13, S15, S16 SP-06/SPK-S13-ENV, SPK-S15-INSTALL/TEST | satisfies | yes | active | DEC-ACCEPTED-135; S13-S16 | none | S17-S19 |
+| TM-S17-003 | TOM-03 | S03, S04, S06, S09-S11, S13-S16, SCH-03/04/05/10, VAL-03/04/05/10 | satisfies/evidence-for | yes | active | DEC-ACCEPTED-153, 156; S09-S16 | none | S18-S19 |
+| TM-S17-004 | TOM-04 | S02 AP-02..AP-05, S04, S05, S07, S08, S10, S16 SP-04/SP-05/SP-07/SP-08 | satisfies/constrains | yes | active with open uncertainty for SP-04/SP-05 | DEC-ACCEPTED-136, 137, 138, 140; S07-S08/S16 | SP-04/SP-05 remain unresolved | S17-S19 |
+| TM-S17-005 | TOM-05 | S08 mechanism split, S09 SCH-03/SCH-04/SCH-08, S10 VAL-03/VAL-04/VAL-08, S11, S12 | satisfies | yes | active | CRIT-04/05; DEC-ACCEPTED-074, 077, 078, 079 | none | S18-S19 |
+| TM-S17-006 | TOM-06 | S09 SCH-02/SCH-05/SCH-06/SCH-07, S10 VAL-02/05/06/07, S11, S13 evidence events, S15 evidence, S16 SP-09/SP-10 | satisfies/evidence-for | yes | active | CRIT-06; DEC-ACCEPTED-100, 111, 114, 115, 146 | none | S17-S19 |
+| TM-S17-007 | TOM-07 | S02 AP-04/AP-05, S07, S08, S10 validators as controls, S11 evidence lifecycle, S17 non-approval boundary | constrains | yes | active | DEC-ACCEPTED-063, 094; CRIT-05 | none | S17-S19 |
+| TM-S17-008 | TOM-08 | S02 AP-06/AP-12, S05, S09 SCH-09, S10 VAL-01/VAL-09, S12, S16 SP-01/SPK-S13-TRACE | satisfies/constrains | yes | active | DEC-ACCEPTED-126, 127, 128, 150, 163 | none | S17-S19 |
+| TM-S17-009 | TOM-09 | S02 AP-10/AP-11/AP-12, S09 SCH-04/SCH-05/SCH-10, S10 VAL-04/VAL-10, S14 CA-1..CA-4, S15 security, S16 SP-02/SPK-S14-01..04/SPK-S15-ACCESS | satisfies/constrains | yes | active | DEC-ACCEPTED-045, 064, 076, 092, 101; RISK-021/027/040/063 | none | S17-S19 |
+| TM-S17-010 | TOM-10 | S02 AP-05/AP-12, S09 SCH-03/SCH-04, S10 VAL-03/VAL-04, S11 logs, S12 owner-gated curation, S16 open questions | satisfies/constrains | yes | active | DEC-ACCEPTED-059, 067, 096, 104, 118 | owner approval remains external | S18-S19 |
+| TM-S17-011 | TOM-11 | S01, S03 BR-01, S13, S14, S15 all pilot module components, S16 SPK-S15-INSTALL/TEST/ACCESS | satisfies | yes | active | DEC-ACCEPTED-162; S15 | none | S18-S19 |
+| TM-S17-012 | TOM-12 | S09 SCH-01..SCH-10, S10 VAL-01..VAL-10, S11, S13, S16 SP-07/SP-08/SP-09/SP-10/SPK-S15-TEST | satisfies/validates | yes | active | DEC-ACCEPTED-139, 140, 145, 153 | none | S18-S19 |
+| TM-S17-013 | TOM-13 | S03 BR-02/BR-03/BR-04, S04/S05 non-goals, S12 no RAG, S15 no broad pilot, S16 SP-11/SP-12/SP-13 | constrains/conditional-post-v1 | conditional | conditional-post-V1 | DEC-ACCEPTED-148, 149, 157, 164 | owner decision required to activate | S18-S19 |
+| TM-S17-014 | TOM-14 | S06 initial spikes, S13 env spikes, S14 security spikes, S15 pilot spikes, S16 consolidated order | validates/handoff-to | yes | active except conditional entries | DEC-ACCEPTED-142, 158; RISK-059/061/063 | SP-04/SP-05 open; Band D post-V1 | S17-S19 |
+
+##### 17.7 Blueprint Sections -> Authority Matrix
+
+| Link ID | Origin Blueprint component | Destination authority anchors | Relationship type | Mandatory | State | Evidence | Gaps/conflicts | Consuming section |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TM-S17-015 | S01 Blueprint Scope and Non-Goals | TOM-01..TOM-14; CRIT-01..07; DEC-ACCEPTED-161..164 | derives-from/constrains | yes | active | S01 context summary | none | S17-S19 |
+| TM-S17-016 | S02 Architecture Principles AP-01..AP-12 | TOM-01..TOM-14; CRIT-01..07; DEC-ACCEPTED-136/138/140/145/146/162/163/164 | derives-from/constrains | yes | active | S02 context summary | none | S17-S19 |
+| TM-S17-017 | S03 V1/Post-V1 Boundary BR-01..BR-04 | TOM-02, TOM-11, TOM-13; DEC-ACCEPTED-148/149/157/162/164; CRIT-01/07 | constrains | yes | active | S03 context summary | none | S17-S19 |
+| TM-S17-018 | S04 Runtime Layout Candidate | TOM-01, TOM-04, TOM-06, TOM-08, TOM-09, TOM-13; DEC-ACCEPTED-138/146/163/164 | derives-from | yes | active | S04 context summary | none | S17-S19 |
+| TM-S17-019 | S05 Source-vs-Runtime Structure | TOM-01, TOM-04, TOM-06, TOM-08, TOM-13; DEC-ACCEPTED-107/138/146/163 | constrains | yes | active | S05 context summary | none | S17-S19 |
+| TM-S17-020 | S06 Initial Spike Map SP-01..SP-13 | TOM-08, TOM-09, TOM-13, TOM-14; DEC-ACCEPTED-158/163/164; RISK-059/061/063 | validates/handoff-to | yes/conditional | active + conditional Band D | S06/S16 | SP-04/SP-05 open; SP-11..13 post-V1 | S16-S19 |
+| TM-S17-021 | S07 OpenCode Operating Design | TOM-04, TOM-07; AP-02..AP-05; DEC-ACCEPTED-136/137/138; SP-04/SP-05 | derives-from/constrains | yes | active with open uncertainty | S07/S16 | SP-04/SP-05 unresolved | S17-S19 |
+| TM-S17-022 | S08 Mechanism Split | TOM-04, TOM-05, TOM-06; AP-02..AP-05/AP-07/AP-10/AP-12; DEC-ACCEPTED-056/068/069/136/137/138/140 | derives-from | yes | active | S08 context summary | none | S17-S19 |
+| TM-S17-023 | S09 Schemas SCH-01..SCH-10 | TOM-01, TOM-05, TOM-06, TOM-08, TOM-12; CRIT-06/07; DEC-ACCEPTED-144; AP-01/AP-04/AP-06/AP-09 | satisfies | yes | active | S09 context summary | none | S17-S19 |
+| TM-S17-024 | S10 Validators VAL-01..VAL-10 | TOM-05, TOM-06, TOM-08, TOM-12; CRIT-06/07; DEC-ACCEPTED-145; AP-04/AP-05/AP-09 | satisfies/validates | yes | active | S10 context summary | none | S17-S19 |
+| TM-S17-025 | S11 State/Logs/Evidence Storage | TOM-01, TOM-06, TOM-07, TOM-10; CRIT-06; DEC-ACCEPTED-107/111/114/115/146 | satisfies/evidence-for | yes | active | S11 context summary | none | S17-S19 |
+| TM-S17-026 | S12 Knowledge Base and Source Policy | TOM-08, TOM-10, TOM-13; CRIT-06/07; DEC-ACCEPTED-126/127/128/150/163; RISK-043/044/051/052/054/062 | satisfies/constrains | yes | active | S12 context summary | Curation remains owner-gated | S17-S19 |
+| TM-S17-027 | S13 Odoo 18 Execution Environment | TOM-02, TOM-03, TOM-06, TOM-11, TOM-12, TOM-14; DEC-ACCEPTED-135/153/162/163; RISK-059/010 | satisfies/validates | yes | active | S13 context summary | exact physical environment remains spike-dependent | S17-S19 |
+| TM-S17-028 | S14 Security and Secrets CA-1..CA-4 | TOM-09, TOM-10, TOM-14; AP-10/AP-11/AP-12; DEC-ACCEPTED-045/059/064/076/092/101/162/163; RISK-021/027/040/059/061/063 | satisfies/constrains | yes | active | S14 context summary | none | S17-S19 |
+| TM-S17-029 | S15 Pilot Module Blueprint | TOM-02, TOM-03, TOM-09, TOM-11, TOM-12; DEC-ACCEPTED-135/153/162/163; BR-01; SCH-10; VAL-05/VAL-10; RISK-059/010 | satisfies | yes | active | S15 context summary | implementation/test execution remain spike-dependent | S17-S19 |
+| TM-S17-030 | S16 Spikes and Technical Validations final order | TOM-08, TOM-09, TOM-13, TOM-14; DEC-ACCEPTED-158/163/164; RISK-059/061/063; S06/S13/S14/S15 | validates/handoff-to | yes/conditional | active + conditional entries | S16 approved catalogue | SP-04/SP-05 open; Band D post-V1 | S17-S19 |
+
+##### 17.8 Detailed Component Coverage Matrix
+
+| Link ID | Origin | Destination | Relationship type | Mandatory | State | Evidence | Gaps/conflicts | Consuming section |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TM-S17-031 | AP-01..AP-12 | S02, S04-S16 applicable constraints | constrains | yes | active | S02; TOM anchors | none | S17-S19 |
+| TM-S17-032 | BR-01 | S03, S13, S15, S16 core V1 spikes | constrains | yes | active | S03; DEC-ACCEPTED-135/162 | none | S17-S19 |
+| TM-S17-033 | BR-02 | S03, S16 SP-11/SP-12/SP-13 | conditional-post-v1 | conditional | conditional-post-V1 | S03; DEC-ACCEPTED-164 | owner decision required to activate | S18-S19 |
+| TM-S17-034 | BR-03/BR-04 | S03, S14 CA-1..CA-4, S15 security/evidence | constrains | yes | active | S03/S14/S15 | none | S17-S19 |
+| TM-S17-035 | SCH-01 Authority Source | TOM-01; S05; VAL-01; S12 source policy | satisfies | yes | active | S09/S10/S12 | none | S17-S19 |
+| TM-S17-036 | SCH-02 Traceability Link | TOM-01/TOM-06; S17 matrix; VAL-02 | satisfies | yes | active | S09/S10/S17 | none | S17-S19 |
+| TM-S17-037 | SCH-03 Work State | TOM-05/TOM-10; S11; VAL-03 | satisfies | yes | active | S09-S11 | none | S18-S19 |
+| TM-S17-038 | SCH-04 Gate and Approval | TOM-05/TOM-07/TOM-10; S11; VAL-04 | satisfies | yes | active | S09-S11 | owner approval remains external | S18-S19 |
+| TM-S17-039 | SCH-05 Evidence Record | TOM-06; S11/S13/S15; VAL-05 | satisfies/evidence-for | yes | active | S09-S11/S13/S15 | none | S17-S19 |
+| TM-S17-040 | SCH-06 Deterministic Control | TOM-04/TOM-12; S08/S10; VAL-06 | satisfies | yes | active | S09/S10 | none | S17-S19 |
+| TM-S17-041 | SCH-07 Runtime Output / Candidate Evidence | TOM-01/TOM-06/TOM-07; S11; VAL-07 | constrains | yes | active | S09-S11 | runtime output not authority by itself | S17-S19 |
+| TM-S17-042 | SCH-08 Context Packet | TOM-05; S08/S12; VAL-08 | satisfies | yes | active | S09/S10/S12 | none | S18-S19 |
+| TM-S17-043 | SCH-09 Source Policy / Knowledge Gap | TOM-08; S12; VAL-01/VAL-09; SP-01/SPK-S13-TRACE | satisfies/constrains | yes | active | S09/S10/S12/S16 | source expansion owner-gated | S17-S19 |
+| TM-S17-044 | SCH-10 Odoo Pilot Artifact | TOM-02/TOM-11/TOM-12; S13/S15; VAL-10 | satisfies | yes | active | S09/S10/S13/S15 | physical Odoo artifacts not created | S17-S19 |
+| TM-S17-045 | VAL-01..VAL-10 | SCH-01..SCH-10; TOM-06/TOM-08/TOM-12; S10 | validates | yes | active | S10 | conceptual validators only | S17-S19 |
+| TM-S17-046 | CRIT-01..CRIT-07 | S01-S16 all components | derives-from | yes | active | critical-map.md; S01-S16 summaries | none | S17-S19 |
+| TM-S17-047 | Accepted decisions referenced by S01-S16 | S01-S16, AP, BR, SCH, VAL, spikes and pilot components | constrains/derives-from | yes | active | accepted.md; section summaries | none | S17-S19 |
+| TM-S17-048 | Relevant risks | S06/S13/S14/S15/S16 and controls in S09-S12 | constrains/validates | yes | active | risks.md; S16 catalogue | none | S17-S19 |
+| TM-S17-049 | S13 logical components: Odoo 18 instance, PostgreSQL, installed pilot module, test execution mechanism, evidence capture mechanism, conceptual execution trigger, Odoo 18 source reference | TOM-02/TOM-03/TOM-06/TOM-08/TOM-11/TOM-12; SCH-05/SCH-06/SCH-10; VAL-05/VAL-10; SPK-S13-* | satisfies/validates | yes | active | S13/S16 | physical environment spike-dependent | S17-S19 |
+| TM-S17-050 | S14 CA-1..CA-4 | TOM-09/TOM-10; AP-10/AP-11/AP-12; SPK-S14-01..04; S15 security | constrains/validates | yes | active | S14/S16 | none | S17-S19 |
+| TM-S17-051 | S15 pilot components: InternalRequest, ApprovalRecord, form/list/search views, four-state workflow, conceptual security, candidate evidence events, test approach | TOM-02/TOM-03/TOM-09/TOM-11/TOM-12; DEC-ACCEPTED-162/163; SCH-10; VAL-05/VAL-10; SPK-S15-* | satisfies | yes | active | S15/S16 | executable module not created; tests spike-dependent | S17-S19 |
+
+##### 17.9 Spike Traceability Matrix (S16 Authoritative Catalogue)
+
+| Link ID | Origin spike | Destination authority anchors | Relationship type | Mandatory | State | Evidence | Gaps/conflicts | Consuming section |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TM-S17-052 | SP-01 Source Policy Enforcement | TOM-08; DEC-ACCEPTED-163; AP-06/AP-12; CRIT-03; VAL-01/VAL-09; S12 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-053 | SP-02 Secrets Posture | TOM-09; AP-10/AP-11; CRIT-02; RISK-021/027; S14 CA-1; DEC-ACCEPTED-045 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-054 | SP-03 V1/Post-V1 Boundary Enforcement | TOM-13; BR-01/BR-02; S03; DEC-ACCEPTED-164; CRIT-01 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-055 | SP-04 OpenCode Permissions / Capabilities | TOM-04; AP-02/AP-04; S07/S08; DEC-ACCEPTED-136/137; RISK-061 | validates/blocks-if-unresolved | conditional | conditional-open-uncertainty | S16 | open uncertainty; not resolved | S18-S19 |
+| TM-S17-056 | SP-05 Commands / Skills Design | TOM-04; AP-02; S07/S08; DEC-ACCEPTED-138/140 | validates/blocks-if-unresolved | conditional | conditional-open-uncertainty | S16 | blocked by SP-04; not resolved | S18-S19 |
+| TM-S17-057 | SP-06 / SPK-S13-ENV Odoo 18 Minimal Environment Form | TOM-02/TOM-03/TOM-12/TOM-14; RISK-059; DEC-ACCEPTED-135/153; S13; SCH-10; VAL-05/VAL-10; CRIT-06/07 | validates | yes | active | S16 | environment physical form remains spike result | S18-S19 |
+| TM-S17-058 | SPK-S13-DB | TOM-02/TOM-12; RISK-059; DEC-ACCEPTED-135; S13 PostgreSQL; SCH-10; CRIT-06 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-059 | SPK-S14-01 | TOM-09; AP-10/AP-11; RISK-021/027/040; S14 CA-1; DEC-ACCEPTED-045/059 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-060 | SP-07 | TOM-04/TOM-12; AP-04; S08; SCH-06; VAL-06; DEC-ACCEPTED-140; CRIT-07 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-061 | SP-08 | TOM-06/TOM-12; SCH-01..SCH-10; VAL-01..VAL-10; AP-04; S09/S10; DEC-ACCEPTED-145 | validates | yes | active with note | S16 | command invocation conditional on SP-05 | S18-S19 |
+| TM-S17-062 | SP-09 | TOM-06; S11 L1-L4; AP-09; DEC-ACCEPTED-146; SCH-03/SCH-05; VAL-03/VAL-04 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-063 | SPK-S13-RUNNER | TOM-03/TOM-12; RISK-059; S13 test execution mechanism; VAL-05/VAL-10; SCH-10; CRIT-06; DEC-ACCEPTED-135 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-064 | SP-10 / SPK-S13-EVIDENCE | TOM-06/TOM-12; S11 lifecycle; SCH-05/SCH-10; VAL-05/VAL-06/VAL-10; AP-05/AP-09; RISK-059; CRIT-07 | validates/evidence-for | yes | active | S16 | none | S18-S19 |
+| TM-S17-065 | SPK-S13-TRACE | TOM-08; DEC-ACCEPTED-163; AP-06/AP-12; S12/S13/S15; VAL-01/VAL-09; SCH-09 | validates | yes | active | S16 | none | S18-S19 |
+| TM-S17-066 | SPK-S14-02 | TOM-09; RISK-040/061; S14 CA-2; AP-10/AP-11; DEC-ACCEPTED-064/076; CRIT-02/04 | validates | yes | active | S16 | blocked by SPK-S14-01 until validated | S18-S19 |
+| TM-S17-067 | SPK-S14-03 | TOM-09; RISK-063; S14 CA-3/CA-4; S11 L1-L4; SCH-05; VAL-04; AP-10; DEC-ACCEPTED-092/101 | validates | yes | active | S16 | blocked by SPK-S14-01 until validated | S18-S19 |
+| TM-S17-068 | SPK-S15-INSTALL | TOM-02/TOM-11/TOM-12; RISK-059; S15; S13 installed pilot module; SCH-10; VAL-10; DEC-ACCEPTED-162/135 | validates | yes | active | S16 | depends on environment form and secrets posture | S18-S19 |
+| TM-S17-069 | SPK-S15-TEST | TOM-03/TOM-11/TOM-12; RISK-059; S15 test approach; VAL-05/VAL-10; SCH-10; DEC-ACCEPTED-162; CRIT-06/07 | validates/evidence-for | yes | active | S16 | depends on install, runner and permissions | S18-S19 |
+| TM-S17-070 | SPK-S15-ACCESS | TOM-09/TOM-11; S15 security model; S14 CA-2; RISK-040/061; DEC-ACCEPTED-064; SCH-10; VAL-10; CRIT-04 | validates | yes | active | S16 | depends on permissions model and install | S18-S19 |
+| TM-S17-071 | SPK-S14-04 | TOM-09/TOM-10; RISK-021/027/040/063; S14 CA-4; DEC-ACCEPTED-101; AP-11; CRIT-02/03/04 | validates | yes | active | S16 | final security gate after prerequisites | S18-S19 |
+| TM-S17-072 | SP-11 SDK / Server Core | TOM-13; DEC-ACCEPTED-149/164; BR-02; AP-08 | conditional-post-v1 | post-V1-owner-gated | conditional-post-V1 | S16 | owner decision required; not core V1 | S18-S19 |
+| TM-S17-073 | SP-12 OpenAPI / PDF Integration | TOM-13; BR-02; S03; DEC-ACCEPTED-164 | conditional-post-v1 | post-V1-owner-gated | conditional-post-V1 | S16 | owner decision required; not core V1 | S18-S19 |
+| TM-S17-074 | SP-13 Frontend / OWL / Playwright | TOM-13; BR-02; S03; S15 UI deferred | conditional-post-v1 | post-V1-owner-gated | conditional-post-V1 | S16 | owner decision required or pilot justification; not core by default | S18-S19 |
+
+##### 17.10 Gap-Free Coverage Statement
+
+- **TOM coverage**: TOM-01..TOM-14 all map to Blueprint components in §17.6.
+- **Section coverage**: S01..S16 all map back to TOM/CRIT/decision anchors in §17.7.
+- **Principle/boundary coverage**: AP-01..AP-12 and BR-01..BR-04 are covered in §17.8.
+- **Schema/validator coverage**: SCH-01..SCH-10 and VAL-01..VAL-10 are covered in §17.8.
+- **Spike coverage**: SP-01..SP-13 and S16 SPK-Snn entries are covered in §17.9 using S16 identifiers only.
+- **CRIT coverage**: CRIT-01..CRIT-07 are covered by TM-S17-046 and by section-specific links.
+- **Decision coverage**: accepted decisions referenced by S01-S16 are covered by TM-S17-047 and explicit link evidence.
+- **Risk coverage**: relevant RISK items are covered by TM-S17-048 and spike/security/environment rows.
+- **S13/S14/S15 coverage**: S13 seven logical components, S14 CA-1..CA-4 and S15 pilot module components are covered by TM-S17-049..051 and spike rows.
+
+No unbacked Blueprint component is intentionally retained. Conditional items are not gaps: SP-04/SP-05 are marked open uncertainty, and SP-11..SP-13 are marked post-V1 owner-gated.
+
+##### 17.11 Explicit Non-Decisions
+
+- Esta seccion no aprueba ni cierra el Blueprint completo.
+- Esta seccion no concede owner approval ni cambia owner approval de ninguna seccion.
+- Esta seccion no ejecuta, reordena ni resuelve spikes; usa S16 como fuente autoritativa.
+- Esta seccion no resuelve SP-04/SP-05.
+- Esta seccion no activa SP-11, SP-12 ni SP-13.
+- Esta seccion no crea runtime, agents ejecutables, commands reales, schemas fisicos, validators reales, scripts, RAG/base vectorial, backlog, PRD, SDD ni implementacion.
+- Esta seccion no expande source policy minima ni autoriza fuentes externas sin Curation Request y aprobacion owner.
+- Esta seccion no reabre CRIT-01..CRIT-07, TOM aprobado ni decisiones aceptadas.
+
+##### 17.12 Open Questions / Owner Decisions Required
+
+| ID | Question | Status | Impact if unresolved |
+| --- | --- | --- | --- |
+| OQ-S17-01 | Owner approval of the full Blueprint traceability matrix. | owner-approval-pending | S17 can be verified but cannot approve or close the Blueprint. |
+| OQ-S17-02 | SP-04/SP-05 resolution timing. | conditional-open-uncertainty | OpenCode permissions and commands/skills feasibility remain conditional. |
+| OQ-S17-03 | Band D activation (SP-11..SP-13). | post-V1-owner-gated | SDK/server, external integrations and advanced frontend/test scope remain outside V1 core. |
+
+##### 17.13 Acceptance Criteria
+
+| Criterion | Verification Method |
+| --- | --- |
+| AC-S17-01: TOM -> Blueprint links cover all TOM anchors TOM-01..TOM-14. | Verifier reviews §17.6. |
+| AC-S17-02: Blueprint -> TOM/CRIT/decision links cover S01..S16. | Verifier reviews §17.7. |
+| AC-S17-03: AP-01..AP-12 and BR-01..BR-04 are represented. | Verifier reviews §17.8. |
+| AC-S17-04: SCH-01..SCH-10 and VAL-01..VAL-10 are represented. | Verifier reviews §17.8. |
+| AC-S17-05: SP-01..SP-13 and SPK-Snn entries are represented using S16 identifiers. | Verifier reviews §17.9 against S16. |
+| AC-S17-06: SP-04/SP-05 are marked conditional/open uncertainty and not resolved. | Verifier checks TM-S17-055/056 and §17.11. |
+| AC-S17-07: SP-11..SP-13 are marked conditional/post-V1/owner-gated and not activated. | Verifier checks TM-S17-072..074 and §17.11. |
+| AC-S17-08: CRIT-01..CRIT-07, accepted decisions and relevant risks are covered. | Verifier checks §17.8 and link evidence. |
+| AC-S17-09: S13 logical components, S14 CA-1..CA-4 and S15 pilot components are covered. | Verifier checks TM-S17-049..051. |
+| AC-S17-10: Link rows follow SCH-02 fields. | Verifier checks table columns in §17.6..§17.9. |
+| AC-S17-11: Matrix is gap-free or explicitly marks conditional/non-core items without resolving them. | Verifier checks §17.10 and open questions. |
+| AC-S17-12: No forbidden artifacts or scope expansion are introduced. | Verifier checks §17.3, §17.11 and content. |
+
+##### 17.14 Section Output and Handoff
+
+**Primary output of S17**: bidirectional traceability matrix linking TOM requirements to Blueprint components and Blueprint components back to TOM/CRIT/accepted-decision anchors, with conditional items explicitly marked.
+
+**Handoff to S18 (Blueprint Outputs to Backlog)**:
+- Use §17.6..§17.9 to derive only backlog **categories**, not detailed tasks.
+- Preserve open uncertainty category for SP-04/SP-05.
+- Preserve post-V1 owner-gated category for SP-11..SP-13.
+- Do not convert traceability links into implementation work without S18 boundaries and later owner authorization.
+
+**Handoff to S19 (Acceptance Criteria)**:
+- Use AC-S17-01..AC-S17-12 as candidate acceptance criteria for traceability closure.
+- Include owner approval as a required closure condition; S17 itself does not grant approval.
+- Ensure final acceptance criteria preserve RULE-04/RULE-05, V1 boundaries, source policy and forbidden-artifact restrictions.
 
 #### 18. Blueprint Outputs to Backlog
 
-Status: not-started
+##### 1. Status
 
-Inputs esperados:
+Status: closed
 
-- Secciones 1 a 17 elaboradas y aprobadas.
-- Traceability Matrix completa.
+Owner approval: approved
 
-Outputs esperados:
+##### 2. Purpose
 
-- Categorias de trabajo para backlog posterior.
+This section translates the approved Blueprint outputs from S01-S17 into conceptual categories of work that may feed a post-Blueprint backlog process. It does not create the backlog itself, does not prioritize or sequence work, and does not authorize implementation.
 
-Restricciones especificas:
+The purpose is limited to preserving a traceable bridge from the Blueprint to later planning so that future backlog elaboration can remain aligned with the CAFL V1 scope, TOM traceability, accepted decisions, spike dependencies, and global non-goals. The categories below are intentionally domain-level groupings only, in compliance with RULE-08 and RULE-09.
 
-- No crear backlog tecnico detallado.
-- No listar tareas detalladas ni secuencia de implementacion.
+##### 3. Inputs / Scope
 
-Acceptance criteria minimos:
+Inputs used for this section:
 
-- La seccion lista solo categorias y preserva el limite no-backlog.
+- S01-S17 Blueprint outputs as represented by their approved context summaries and upstream handoffs.
+- S17 Bidirectional Traceability Matrix, including TOM-to-Blueprint and Blueprint-to-authority trace anchors.
+- S16 consolidated spike catalogue and technical validation dependencies, including conditional and post-V1-gated spike groupings.
+- Upstream handoffs from S07-S15 covering OpenCode operating design, mechanism split, schema and validator categories, evidence and storage posture, Knowledge Governance and source policy boundaries, Odoo 18 environment constraints, security and secrets posture, and pilot module component boundaries.
+- Global Blueprint non-goals and acceptance criteria, especially the prohibitions on runtime creation, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, final PRD/SDD, and implementation.
+
+Scope limits:
+
+- This section lists only categories of work for a later backlog process.
+- This section does not define tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, or deliverable artifacts.
+- This section does not reopen CRIT-01..CRIT-07, TOM, V1 pilot scope, source policy minima, SDK/server exclusion, or any approved V1/post-V1 boundary.
+- Any category touching conditional or post-V1-gated capability remains conditional and requires explicit future owner decision before it can be moved into V1 execution planning.
+
+##### 4. Backlog Categories
+
+The following categories are conceptual planning domains only. They are not a technical backlog and must not be read as implementation order.
+
+| Category | Conceptual scope | Traceability / upstream source | Boundary preserved |
+| --- | --- | --- | --- |
+| Runtime / OpenCode coordination setup | Work domain for representing the CAFL V1 operating arrangement around OpenCode coordination, contract-driven progression, gate discipline, and non-authoritative runtime support. | S01 scope guardrails; S02 architecture principles; S04 runtime layout candidate; S05 source-vs-runtime structure; S07 OpenCode operating design; S17 traceability matrix. | OpenCode remains coordination/runtime support, not authoritative state, gate owner, or sufficient evidence by itself. No runtime is created by this category. |
+| Mechanism implementation boundaries | Work domain for later elaboration of the conceptual split between agents, commands, scripts/CLI, validators, deterministic controls, and LLM reasoning boundaries. | S07 operating design; S08 agents / commands / scripts / validators split; S10 validator categories; S16 spike catalogue; S17 trace anchors. | Category remains conceptual; it does not define executable agents, real commands, scripts, validators, or final permissions. |
+| Control and evidence infrastructure | Work domain for later planning around state, logs, evidence capture, evidence lifecycle, storage posture, gate evidence, and auditability. | S02 evidence/control principles; S09 schema categories; S10 validator categories; S11 state/logs/evidence storage; S17 SCH/VAL traceability. | No physical schemas, storage implementation, real validators, or evidence tooling are created here. |
+| Source policy and Knowledge Governance | Work domain for preserving source policy minima, Knowledge Gap handling, Curation Request handling, routing of source evidence, and governance of accepted knowledge boundaries. | S01 source-of-truth guardrails; S02 context/source principles; S03 V1/post-V1 boundary; S12 Knowledge Base and Source Policy Implementation; S16 spike inputs; S17 traceability matrix. | Source policy is not expanded; RAG/vector base, broad ingestion, and advanced curation remain deferred unless explicitly approved later. |
+| Odoo 18 pilot environment and module | Work domain for later planning around the Odoo-only, Odoo 18 pilot environment and internal requests / simple approvals pilot module boundary. | S03 V1 boundary; S13 Odoo 18 execution environment; S15 pilot module blueprint; S16 environment and pilot-module spike dependencies; S17 trace anchors. | Does not create final PRD, final SDD, functional backlog, implementation plan, or broadened pilot scope. |
+| Security and secrets | Work domain for later planning around security posture, secrets handling, permissions boundaries, credential exposure risks, and security-related validation needs. | S02 security principles; S08 mechanism split constraints; S11 evidence/storage posture; S14 Security and Secrets; S16 SPK-S14 spike dependencies; S17 trace anchors. | Does not define executable secrets policy, real credentials handling, permissions implementation, or security tooling. |
+| Spike execution and technical validations | Work domain for later planning around the ordered spike catalogue, open technical uncertainties, and validation dependency families. | S06 initial spike map; S13 environment spike dependencies; S14 security spikes; S15 pilot module spikes; S16 final ordered spike catalogue; S17 spike traceability. | No spike is executed here; SP-04/SP-05 remain open uncertainties, and Band D / post-V1-gated spikes remain separated unless owner-approved later. |
+| Traceability and quality gates | Work domain for preserving bidirectional traceability, acceptance-gate evidence, non-self-closure, validation coverage, and quality-control boundaries. | S01 scope; S02 AP-01 and control principles; S09 SCH-02 trace fields; S10 validator categories; S11 evidence posture; S17 bidirectional traceability matrix. | Does not approve sections, close gates, replace owner approval, or create final validators or gate automation. |
+| Owner / governance workflows | Work domain for later planning around owner approvals, blocker registration, conflict handling, deferred/post-V1 owner decisions, and governance handoffs. | S01 conflict and non-goal guardrails; S02 governance principles; S03 V1/post-V1 boundary; S12 Knowledge Governance; S16 conditional spike handling; S17 owner-approval trace notes. | Does not grant approval, close the iteration, resolve owner-decision blockers, or move post-V1 capabilities into V1 core. |
+
+##### 5. Handoff to S19
+
+S18 hands these category-level outputs to S19 as input for final Blueprint acceptance criteria. S19 may use the categories to confirm that:
+
+- every post-Blueprint planning domain remains traceable to S01-S17 and S17 trace anchors;
+- backlog-facing outputs preserve RULE-08 by staying at category level only;
+- RULE-09 and global non-goals remain intact;
+- conditional, open-uncertainty, and post-V1-gated areas remain visibly separated from approved V1 core scope;
+- owner approval remains required for any future scope movement, implementation authorization, or final Blueprint approval.
+
+This handoff does not authorize backlog creation or implementation.
+
+##### 6. Open Questions / Owner Decisions
+
+No new blocking owner decision is introduced by this section.
+
+The following items remain governed by upstream decisions and must not be resolved inside S18:
+
+- Conditional-open uncertainties from S16, especially SP-04 and SP-05, remain open until handled by the appropriate future validation and owner governance process.
+- Band D and other post-V1-gated spike categories remain outside V1 core unless a future explicit owner decision changes their status.
+- Any future attempt to expand source policy, pilot scope, SDK/server role, RAG/vector base, broad ingestion, advanced curation, or other post-V1 capability requires explicit owner decision before backlog elaboration can treat it as V1 work.
+
+##### 7. Acceptance Criteria
+
+S18 is acceptable when all of the following hold:
+
+- The section lists only conceptual backlog categories and does not list detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, or execution plans.
+- Each category is traceable to S01-S17 outputs through context summaries, S16 spike catalogue handoffs, or S17 traceability anchors.
+- RULE-08 and RULE-09 are preserved.
+- Global non-goals remain preserved: no runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, final PRD/SDD, or implementation is created.
+- V1 core boundaries remain intact, including Odoo-only / Odoo 18, internal requests / simple approvals pilot scope, minimal source policy, SDK/server outside core V1, and post-V1 capabilities deferred unless explicitly owner-approved later.
+- The section hands category-level outputs to S19 without declaring final acceptance, closing the iteration, or requesting owner approval.
+
+##### 8. Section Output
+
+S18 delivers a traceable, non-executable set of post-Blueprint backlog categories derived from S01-S17. These categories provide a controlled bridge into later backlog planning while preserving the Blueprint's non-goals, V1/post-V1 boundary, spike uncertainty handling, traceability requirements, and owner-governance constraints.
 
 #### 19. Acceptance Criteria
 
-Status: not-started
+Status: closed
 
-Inputs esperados:
+Owner approval: approved
 
-- Secciones 1 a 18 elaboradas y aprobadas.
-- Acceptance criteria globales de este working contract.
+##### 1. Purpose
 
-Outputs esperados:
+S19 defines the final acceptance criteria for owner review of the complete CAFL V1 Implementation Blueprint. These criteria verify that S01-S18 satisfy the global acceptance criteria (AC-G01..AC-G09), preserve RULE-04..RULE-09, and keep the Blueprint non-executable until explicit owner approval and later authorized planning.
 
-- Acceptance criteria finales del Blueprint completo para aprobacion owner.
+This section does not approve the Blueprint, close Iteration 5, authorize implementation, create backlog, or convert any conceptual design into runtime artifacts.
 
-Restricciones especificas:
+##### 2. Inputs And Preconditions
 
-- No declarar el Blueprint approved sin aprobacion owner explicita.
+S19 relies on the following approved upstream inputs:
 
-Acceptance criteria minimos:
+- S01-S15: approved Blueprint sections covering scope/non-goals, architecture principles, V1/post-V1 boundary, runtime/source structure, initial spike map, OpenCode operating design, artifact split, schemas, validators, state/evidence, source policy, Odoo 18 execution environment, security/secrets, and pilot module blueprint.
+- S16: approved consolidated spike catalogue and execution order, with explicit dependencies, SP-04/SP-05 as conditional-open uncertainties, Band D spikes (SP-11..SP-13) separated and post-V1-gated, and no spike executed or result closed.
+- S17: approved bidirectional traceability matrix covering TOM-01..TOM-14 to Blueprint and Blueprint to authority, including schema/validator/spike traceability, with no approval or closure implied.
+- S18: approved conceptual post-Blueprint backlog categories only: Runtime/OpenCode coordination setup, Mechanism implementation boundaries, Control and evidence infrastructure, Source policy and Knowledge Governance, Odoo 18 pilot environment and module, Security and secrets, Spike execution and technical validations, Traceability and quality gates, and Owner/governance workflows.
+- Global acceptance criteria AC-G01..AC-G09 and rules RULE-04..RULE-09.
 
-- Los criterios finales cubren trazabilidad, respaldo, spikes, non-goals y aprobacion owner.
+##### 3. Final Acceptance Criteria
+
+The complete CAFL V1 Implementation Blueprint is ready to be presented for owner approval only when all criteria below hold.
+
+| ID | Final criterion | Verifies | Evidence source |
+| --- | --- | --- | --- |
+| FAC-01 | All 19 Blueprint sections are authored, verified, and eligible for owner review; no section is treated as approved or closed by S19 itself. | AC-G01, AC-G09 | Blueprint state, status summary, S01-S18 approved summaries, S19 verification handoff |
+| FAC-02 | Every Blueprint component has traceable support in TOM anchors, CRIT-approved content, or accepted decisions; no component relies on hidden or undocumented technical decisions. | AC-G02, AC-G04, RULE-04 | S17 traceability matrix, S01-S18 context summaries |
+| FAC-03 | Bidirectional traceability from TOM-01..TOM-14 to Blueprint outputs and from Blueprint outputs back to authority is complete without known gaps. | AC-G03, RULE-05 | S17 TOM-to-Blueprint and Blueprint-to-authority matrices |
+| FAC-04 | The consolidated spike order is explicit, dependency-aware, and preserves unresolved uncertainty boundaries, including SP-04/SP-05 and post-V1-gated Band D spikes. | AC-G05, RULE-06 | S16 spike catalogue and S17 spike traceability |
+| FAC-05 | The Pilot Module Blueprint remains at component and boundary level only; it does not contain PRD, SDD, functional backlog, implementation plan, estimates, or executable instructions. | AC-G06, RULE-07 | S15 approved output and S17 traceability anchors |
+| FAC-06 | Blueprint Outputs to Backlog remains limited to conceptual categories and does not create tasks, tickets, sequencing, owners, estimates, detailed backlog, or implementation authorization. | AC-G07, RULE-08 | S18 approved backlog categories and handoff |
+| FAC-07 | The Blueprint has not created runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, technical backlog, PRD/SDD, source code, or implementation artifacts. | AC-G08, RULE-09 | S01-S18 approved non-goals, S18 non-goals preservation, repository change scope |
+| FAC-08 | Owner approval remains explicit and external to S19; until owner approval is recorded by the authorized governance process, the Blueprint remains pending owner approval and Iteration 5 remains not closed by this section. | AC-G01, AC-G09 | Blueprint state and owner approval fields |
+
+##### 4. Rule Coverage
+
+| Rule | Final acceptance requirement |
+| --- | --- |
+| RULE-04 | S17 must show that every Blueprint component is backed by TOM, approved CRIT content, or accepted decisions; S19 adds no new component. |
+| RULE-05 | S17 must remain the controlling bidirectional traceability matrix with no known gaps for S01-S16 and their authority anchors. |
+| RULE-06 | S16 must remain the controlling spike execution order; S19 accepts only an ordered, dependency-justified spike catalogue, not a flat list. |
+| RULE-07 | S15 must remain a pilot module blueprint only, with no PRD/SDD/backlog functional expansion. |
+| RULE-08 | S18 must remain category-level only, with no detailed backlog items or execution plan. |
+| RULE-09 | No forbidden executable, physical, backlog, RAG/vector, script, schema, validator, runtime, or implementation artifact may be created by the Blueprint process. |
+
+##### 5. Non-Goals And Forbidden Outcomes
+
+Final acceptance fails if any of the following is introduced or implied:
+
+- Approval of the complete Blueprint without explicit owner approval.
+- Closure of Iteration 5 or transition of S19 to approved/closed by this section.
+- Authorization to implement, create runtime, configure executable agents, write commands, create scripts, generate schemas or validators, build RAG/vector infrastructure, or create source code.
+- Creation of PRD, SDD, functional backlog, detailed technical backlog, task list, estimates, owners, or execution schedule.
+- Reopening of CRIT-01..CRIT-07, TOM, or approved S01-S18 content.
+- Merging of SP-04/SP-05 open uncertainties or Band D post-V1-gated spikes into core V1 without later owner-governed decision.
+
+##### 6. Acceptance Review Checklist
+
+Before owner approval can be requested through the authorized governance process, the verifier/owner review should confirm:
+
+- [ ] S01-S18 are approved and have context summaries sufficient to support final review.
+- [ ] S19 has been verified without open blocking issues.
+- [ ] FAC-01..FAC-08 each have supporting evidence in S01-S18 and operational state.
+- [ ] AC-G01..AC-G09 are each covered by at least one final criterion.
+- [ ] RULE-04..RULE-09 are each preserved.
+- [ ] S16 spike uncertainty handling remains open where required and not falsely resolved.
+- [ ] S17 traceability remains the authority for bidirectional coverage and has no known gaps.
+- [ ] S18 backlog outputs remain categories only and do not authorize backlog creation.
+- [ ] No forbidden artifact or implementation output has been created.
+- [ ] Owner approval is recorded only by the authorized process, not by this section.
+
+##### 7. Section Output
+
+S19 delivers the final acceptance criteria for reviewing the complete CAFL V1 Implementation Blueprint against AC-G01..AC-G09 and RULE-04..RULE-09. It prepares the Blueprint for verifier and owner review while preserving pending owner approval, keeping Iteration 5 open until authorized governance closure, and avoiding any implementation or backlog authorization.
 
 ## Blueprint Status Summary
 
@@ -2623,7 +2950,7 @@ Acceptance criteria minimos:
 | Iteration 4 | 13 | Odoo 18 Execution Environment | closed | approved | none |
 | Iteration 4 | 14 | Security and Secrets | closed | approved | none |
 | Iteration 4 | 15 | Pilot Module Blueprint | closed | approved | none |
-| Iteration 5 | 16 | Spikes and Technical Validations final order | approved | approved | none |
-| Iteration 5 | 17 | Bidirectional Traceability Matrix | not-started | not-requested | none |
-| Iteration 5 | 18 | Blueprint Outputs to Backlog | not-started | not-requested | none |
-| Iteration 5 | 19 | Acceptance Criteria | not-started | not-requested | none |
+| Iteration 5 | 16 | Spikes and Technical Validations final order | closed | approved | none |
+| Iteration 5 | 17 | Bidirectional Traceability Matrix | closed | approved | none |
+| Iteration 5 | 18 | Blueprint Outputs to Backlog | closed | approved | none |
+| Iteration 5 | 19 | Acceptance Criteria | closed | approved | none |
