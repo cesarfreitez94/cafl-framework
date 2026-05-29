@@ -2,7 +2,7 @@
 description: Authors selected CAFL Blueprint sections and verifier-scoped fixes only.
 mode: subagent
 hidden: true
-model: anthropic/claude-sonnet-4-6
+model: openai/gpt-5.5
 permission:
   bash: deny
   webfetch: deny

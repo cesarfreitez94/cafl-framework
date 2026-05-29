@@ -2,7 +2,7 @@
 description: Verifies selected CAFL Blueprint sections without fixing, approving, or closing them.
 mode: subagent
 hidden: true
-model: openai/gpt-5.5
+model: anthropic/claude-sonnet-4-6
 permission:
   bash: deny
   webfetch: deny
