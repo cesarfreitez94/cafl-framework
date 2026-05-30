@@ -1,5 +1,7 @@
 # CAFL Blueprint Automation Loop
 
+Status: loop-completed (blueprint-closed, all iterations closed, all sections approved). Retained as governance reference only.
+
 ## 1. Current Source-Of-Truth Files
 
 - `project-truth/implementation-blueprint.md` is the primary working contract and Blueprint artifact. If any automation rule conflicts with it, this file wins.

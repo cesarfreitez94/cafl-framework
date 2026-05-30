@@ -1,6 +1,6 @@
 # Accepted Decisions
 
-Status: TOM_APPROVED_READY_FOR_IMPLEMENTATION_BLUEPRINT
+Status: BLUEPRINT_CLOSED_BACKLOG_CANDIDATES_GENERATED_VERIFIED_PLANNING_PENDING
 
 | ID | Decision | Source | Truth status | Notes |
 | --- | --- | --- | --- | --- |

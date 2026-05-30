@@ -8,8 +8,10 @@ CAFL es un framework/plataforma operativo sobre OpenCode para desarrollar soluci
 - CRIT-01..CRIT-07 estan completos y aprobados segun `project-truth/`.
 - Consolidated Truth Review quedo completado.
 - Target Operating Model esta approved (2026-05-27) en `project-truth/TOM.md`. Decision registrada en DEC-ACCEPTED-161.
-- El siguiente paso es Implementation Blueprint (no aprobado, no iniciado).
-- Este repo no contiene runtime implementado, agentes finales, commands finales, contratos finales, gates finales, schemas finales, validators reales, RAG/base vectorial V1 ni backlog tecnico aprobado.
+- Implementation Blueprint esta closed y approved (5 iteraciones, 19 secciones). Verificacion deterministica: PASS.
+- Backlog candidates generados y verificados (9 epics, 30 capabilities). No son paquetes de trabajo ejecutables.
+- Roadmap, hallazgos post-Blueprint, triage, spikes y planificacion de ejecucion estan pendientes.
+- Este repo no contiene runtime implementado, agentes finales, commands finales, contratos finales, gates finales, schemas finales, validators reales, RAG/base vectorial V1 ni backlog tecnico ejecutable aprobado.
 
 ## Autoridad
 

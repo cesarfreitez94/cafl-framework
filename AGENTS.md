@@ -18,7 +18,9 @@ Estas reglas aplican a cualquier agente que trabaje en este repo. Su objetivo es
 - CRIT-01..CRIT-07 estan completos y aprobados.
 - Consolidated Truth Review esta completado.
 - Target Operating Model esta approved (2026-05-27) en `project-truth/TOM.md`. Decision registrada en DEC-ACCEPTED-161.
-- El siguiente trabajo es Implementation Blueprint. Ejecutarlo solo cuando el prompt lo solicite explicitamente y con los limites definidos en `project-truth/`.
+- Implementation Blueprint esta closed y approved. No ejecutar trabajo de Blueprint salvo solicitud explicita para auditoria historica.
+- Backlog candidates generados y verificados. No son paquetes de trabajo ejecutables ni autorizacion de implementacion.
+- Roadmap, hallazgos, triage, spikes y planificacion de ejecucion estan pendientes. Ejecutar solo cuando el prompt lo solicite explicitamente.
 
 ## Modo De Trabajo
 
