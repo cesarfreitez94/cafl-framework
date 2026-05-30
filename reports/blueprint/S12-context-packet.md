@@ -24,7 +24,7 @@ VAL-01 (Authority Source validation) and VAL-09 (Source Policy validation) deliv
 ## Hard Inherited Constraints
 
 1. **Source policy minima** (DEC-ACCEPTED-163): Only official Odoo docs + github.com/odoo/odoo are pre-authorized. Any other source requires Curation Request + owner approval.
-2. **No RAG/vector base** (DEC-ACCEPTED-164): RAG deferred to V2/post-V1.
+2. **No RAG/vector base** (DEC-ACCEPTED-148): RAG deferred to V2/post-V1.
 3. **project-truth/ is sole authority**: Runtime outputs never become authority.
 4. **V1 scope**: Odoo-only, Odoo 18, internal requests / simple approvals pilot.
 5. **framework/ excluded** as input/reference (RULE-10).
@@ -36,7 +36,7 @@ VAL-01 (Authority Source validation) and VAL-09 (Source Policy validation) deliv
 
 - **TOM Knowledge Governance**: Knowledge Gap triggers, Curation Request flow, source policy enforcement.
 - **DEC-ACCEPTED-163**: Source policy minima.
-- **DEC-ACCEPTED-164**: SDK/server and RAG deferral decisions.
+- **DEC-ACCEPTED-148 / DEC-ACCEPTED-164**: RAG/base vectorial deferral and SDK/server exclusion decisions.
 - **CRIT-06, CRIT-07**: Traceability and control requirements.
 - **AP-01, AP-04, AP-06, AP-09**: Architecture principles (authority, deterministic control, context routing, storage/evidence).
 - **BR-01 (S03)**: V1/Post-V1 boundary.

@@ -49,12 +49,12 @@ iterations:
     status: closed
     owner_gate: approved
     depends_on: [I3]
-   I5:
-      name: "Cierre del Blueprint"
-      sections: [S16, S17, S18, S19]
-      status: closed
-      owner_gate: approved
-      depends_on: [I4]
+  I5:
+    name: "Cierre del Blueprint"
+    sections: [S16, S17, S18, S19]
+    status: closed
+    owner_gate: approved
+    depends_on: [I4]
 
 sections:
   S01:
@@ -520,11 +520,11 @@ sections:
       Odoo-only, Odoo 18, minimal source policy (docs.odoo.com +
       github.com/odoo/odoo), framework/ excluded, no forbidden artifacts."
 
-   S16:
-     title: "Spikes and Technical Validations final order"
-     iteration: I5
-     status: closed
-     owner_approval: approved
+  S16:
+    title: "Spikes and Technical Validations final order"
+    iteration: I5
+    status: closed
+    owner_approval: approved
     iteration_position: 16
     depends_on: [S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11, S12, S13, S14, S15]
     fix_iterations: 1
@@ -552,71 +552,71 @@ sections:
       AP-02/AP-04/AP-06/AP-10/AP-11/AP-12, CRIT-01/02/03, BR-01/BR-02,
       RISK-059/021/027/040/010/061/063, and TOM spikes."
 
-   S17:
-      title: "Bidirectional Traceability Matrix"
-      iteration: I5
-      status: closed
-      owner_approval: approved
-     iteration_position: 17
-     depends_on: [S16]
-     fix_iterations: 0
-     last_author_report: reports/blueprint/S17-author-report.md
-     last_fix_report: null
-     last_verification_report: reports/blueprint/S17-verification-report.md
-     open_issues: []
-     context_summary: >
-       Defines the conceptual bidirectional traceability matrix for CAFL V1
-       Blueprint, satisfying RULE-04 and RULE-05. §17.6 provides TOM→Blueprint
-       matrix (TOM-01..TOM-14 mapped to S01-S16, AP, BR, SCH, VAL, CRIT,
-       decisions, risks, S13-S15 subcomponents). §17.7 provides Blueprint→
-       Authority matrix (S01-S16 each mapped to TOM anchors). §17.8 covers
-       SCH-01..SCH-10 and VAL-01..VAL-10 individually. §17.9 covers all 23
-       spike entries (SP-01..SP-13 + SPK-Snn) from the S16 authoritative
-       catalogue. All links follow SCH-02 9-field structure. SP-04/SP-05 remain
-       conditional-open-uncertainty; Band D spikes (SP-11..SP-13) remain
-       conditional-post-V1/owner-gated. The matrix does not approve or close
-       anything; owner approval is mandatory. Handoffs: spike catalogue + trace
-       anchors to S18 (backlog categories) and S19 (acceptance criteria).
-       Traces to RULE-04, RULE-05, SCH-02, TOM-01..TOM-14, CRIT-01..CRIT-07,
-       AP-01..AP-12, BR-01..BR-04, S01-S16 context summaries, S16 consolidated
-       spike catalogue, and all applicable accepted decisions and risks.
+  S17:
+    title: "Bidirectional Traceability Matrix"
+    iteration: I5
+    status: closed
+    owner_approval: approved
+    iteration_position: 17
+    depends_on: [S16]
+    fix_iterations: 0
+    last_author_report: reports/blueprint/S17-author-report.md
+    last_fix_report: null
+    last_verification_report: reports/blueprint/S17-verification-report.md
+    open_issues: []
+    context_summary: >
+      Defines the conceptual bidirectional traceability matrix for CAFL V1
+      Blueprint, satisfying RULE-04 and RULE-05. §17.6 provides TOM→Blueprint
+      matrix (TOM-01..TOM-14 mapped to S01-S16, AP, BR, SCH, VAL, CRIT,
+      decisions, risks, S13-S15 subcomponents). §17.7 provides Blueprint→
+      Authority matrix (S01-S16 each mapped to TOM anchors). §17.8 covers
+      SCH-01..SCH-10 and VAL-01..VAL-10 individually. §17.9 covers all 23
+      spike entries (SP-01..SP-13 + SPK-Snn) from the S16 authoritative
+      catalogue. All links follow SCH-02 9-field structure. SP-04/SP-05 remain
+      conditional-open-uncertainty; Band D spikes (SP-11..SP-13) remain
+      conditional-post-V1/owner-gated. The matrix does not self-approve the
+      Blueprint; owner approval is recorded externally. Handoffs: spike
+      catalogue + trace anchors to S18 (backlog categories) and S19
+      (acceptance criteria). Traces to RULE-04, RULE-05, SCH-02,
+      TOM-01..TOM-14, CRIT-01..CRIT-07, AP-01..AP-12, BR-01..BR-04,
+      S01-S16 context summaries, S16 consolidated spike catalogue, and all
+      applicable accepted decisions and risks.
 
-   S18:
-       title: "Blueprint Outputs to Backlog"
-       iteration: I5
-        status: closed
-        owner_approval: approved
-       iteration_position: 18
-       depends_on: [S17]
-       fix_iterations: 1
-      last_author_report: reports/blueprint/S18-author-report.md
-      last_fix_report: reports/blueprint/S18-fix-report.md
-      last_verification_report: reports/blueprint/S18-verification-report.md
-      open_issues: []
-      context_summary: >
-        Defines conceptual post-Blueprint backlog categories derived from
-        S01-S17 outputs. Lists 8 categories at domain level only, complying
-        with RULE-08 (no detailed tasks) and RULE-09 (no implementation
-        authorization): Runtime/OpenCode coordination setup, Mechanism
-        implementation boundaries, Control and evidence infrastructure, Source
-        policy and Knowledge Governance, Odoo 18 pilot environment and module,
-        Security and secrets, Spike execution and technical validations,
-        Traceability and quality gates, and Owner/governance workflows. Each
-        category traces to upstream sections, S16 spike catalogue, and S17
-        traceability matrix. Conditional/open-uncertainty items (SP-04/SP-05)
-        and post-V1-gated Band D spikes remain separated and owner-governed.
-        Global non-goals preserved: no runtime, executable agents, real
-        commands, physical schemas, real validators, scripts, RAG/vector base,
-        detailed technical backlog, final PRD/SDD, or implementation. Handoff
-        to S19 delivers category-level outputs for acceptance criteria without
-        authorizing backlog creation or closing the iteration. Owner approval
-        confirmed 2026-05-29.
+  S18:
+    title: "Blueprint Outputs to Backlog"
+    iteration: I5
+    status: closed
+    owner_approval: approved
+    iteration_position: 18
+    depends_on: [S17]
+    fix_iterations: 1
+    last_author_report: reports/blueprint/S18-author-report.md
+    last_fix_report: reports/blueprint/S18-fix-report.md
+    last_verification_report: reports/blueprint/S18-verification-report.md
+    open_issues: []
+    context_summary: >
+      Defines conceptual post-Blueprint backlog categories derived from
+      S01-S17 outputs. Lists 9 categories at domain level only, complying
+      with RULE-08 (no detailed tasks) and RULE-09 (no implementation
+      authorization): Runtime/OpenCode coordination setup, Mechanism
+      implementation boundaries, Control and evidence infrastructure, Source
+      policy and Knowledge Governance, Odoo 18 pilot environment and module,
+      Security and secrets, Spike execution and technical validations,
+      Traceability and quality gates, and Owner/governance workflows. Each
+      category traces to upstream sections, S16 spike catalogue, and S17
+      traceability matrix. Conditional/open-uncertainty items (SP-04/SP-05)
+      and post-V1-gated Band D spikes remain separated and owner-governed.
+      Global non-goals preserved: no runtime, executable agents, real
+      commands, physical schemas, real validators, scripts, RAG/vector base,
+      detailed technical backlog, final PRD/SDD, or implementation. Handoff
+      to S19 delivers category-level outputs for acceptance criteria without
+      authorizing backlog creation. Owner approval confirmed 2026-05-29.
 
-   S19:
-      title: "Acceptance Criteria"
-      iteration: I5
-      status: closed
-      owner_approval: approved
+  S19:
+    title: "Acceptance Criteria"
+    iteration: I5
+    status: closed
+    owner_approval: approved
     iteration_position: 19
     depends_on: [S18]
     fix_iterations: 0
@@ -624,19 +624,18 @@ sections:
     last_fix_report: null
     last_verification_report: reports/blueprint/S19-verification-report.md
     open_issues: []
-     context_summary: >
-       Defines the final acceptance criteria (FAC-01..FAC-08) for owner review of
-       the complete CAFL V1 Implementation Blueprint. Verifies that S01-S18 satisfy
-       global acceptance criteria AC-G01..AC-G09 and preserve RULE-04..RULE-09.
-       Every criterion maps to evidence sources in S01-S18, S17 traceability
-       matrix, S16 spike catalogue, S15 pilot module, and S18 backlog categories.
-       Preserves SP-04/SP-05 as conditional-open uncertainties and Band D spikes
-       as post-V1/owner-gated. S19 does not approve the Blueprint, close Iteration
-       5, authorize implementation, create backlog, or convert any conceptual
-       design into runtime artifacts. Owner approval is explicit and external;
-       until owner gate approval is recorded, Iteration 5 remains pending. Handoffs
-       provide final acceptance criteria to owner review and gatekeeper context
-       without self-closure or auto-approval. Traces to AC-G01..AC-G09, RULE-04..
-       RULE-09, S01-S18 approved context summaries, S16 spike catalogue, S17
-       traceability matrix, S18 backlog categories, CRIT-01..CRIT-07, TOM, and all
-       applicable accepted decisions.
+    context_summary: >
+      Defines the final acceptance criteria (FAC-01..FAC-08) for owner review of
+      the complete CAFL V1 Implementation Blueprint. Verifies that S01-S18 satisfy
+      global acceptance criteria AC-G01..AC-G09 and preserve RULE-04..RULE-09.
+      Every criterion maps to evidence sources in S01-S18, S17 traceability
+      matrix, S16 spike catalogue, S15 pilot module, and S18 backlog categories.
+      Preserves SP-04/SP-05 as conditional-open uncertainties and Band D spikes
+      as post-V1/owner-gated. S19 does not self-approve the Blueprint, authorize
+      implementation, create backlog, or convert any conceptual design into
+      runtime artifacts. Owner approval and Iteration 5 closure are recorded by
+      the external governance state. Handoffs provide final acceptance criteria
+      to owner review and gatekeeper context without self-approval. Traces to
+      AC-G01..AC-G09, RULE-04..RULE-09, S01-S18 approved context summaries, S16
+      spike catalogue, S17 traceability matrix, S18 backlog categories,
+      CRIT-01..CRIT-07, TOM, and all applicable accepted decisions.

@@ -57,7 +57,7 @@
 ## Traceability Anchors Used
 
 - `[DEC-ACCEPTED-163]` — source policy minima (docs.odoo.com + github.com/odoo/odoo)
-- `[DEC-ACCEPTED-164]` — RAG/vector base deferred to V2
+- `[DEC-ACCEPTED-148]` — RAG/vector base deferred to V2
 - `[TOM Knowledge Governance]` — Knowledge Gap triggers, Curation Request flow, source policy enforcement
 - `[CRIT-06]` — traceability, control, evidence, source governance
 - `[CRIT-07]` — minimal schemas/validators, non-permanent
