@@ -1,0 +1,53 @@
+{
+  "overall_result": "PASS",
+  "run_results": [
+    {
+      "script": "blueprint_indexer.py",
+      "output": "generated/blueprint/blueprint-index.json",
+      "success": true,
+      "error": ""
+    },
+    {
+      "script": "blueprint_state_check.py",
+      "output": "generated/blueprint/state-check.json",
+      "success": true,
+      "error": ""
+    },
+    {
+      "script": "blueprint_rule_check.py",
+      "output": "generated/blueprint/rule-check.json",
+      "success": true,
+      "error": ""
+    },
+    {
+      "script": "blueprint_traceability_index.py",
+      "output": "generated/blueprint/traceability-map.json",
+      "success": true,
+      "error": ""
+    }
+  ],
+  "check_summaries": {
+    "state_check": {
+      "total_passed": 53,
+      "total_findings": 0,
+      "critical": 0,
+      "warning": 0,
+      "result": "PASS"
+    },
+    "rule_check": {
+      "total_passed": 5,
+      "total_findings": 0,
+      "critical": 0,
+      "warning": 0,
+      "info": 0,
+      "result": "PASS"
+    }
+  },
+  "findings": [],
+  "summary": {
+    "critical": 0,
+    "warning": 0,
+    "info": 0,
+    "total": 0
+  }
+}

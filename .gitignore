@@ -1,0 +1,4 @@
+generated/blueprint/
+tools/blueprint/__pycache__/
+**/__pycache__/
+*.pyc
