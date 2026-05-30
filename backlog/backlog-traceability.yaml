@@ -1,0 +1,256 @@
+# CAFL V1 Backlog Traceability
+# Candidate-to-source mapping derived from S18 categories and S17 matrix.
+# Do not modify manually.
+
+generated_at: "2026-05-30T06:45:47.273115+00:00"
+total_traceability_links: 39
+
+links:
+  - category_id: CAT-01
+    category_title: "Runtime / OpenCode coordination setup"
+    source_blueprint_section: S18
+    source_sections: [S01, S02, S04, S05, S07, S17]
+    items:
+      - id: EPIC-BACKLOG-001
+        type: epic
+        title: "Runtime / OpenCode coordination setup"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-001
+        type: capability
+        title: "OpenCode coordination model specification"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-002
+        type: capability
+        title: "Contract-driven progression discipline"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-003
+        type: capability
+        title: "Gate discipline and non-authoritative runtime boundary"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-02
+    category_title: "Mechanism implementation boundaries"
+    source_blueprint_section: S18
+    source_sections: [S07, S08, S10, S16, S17]
+    items:
+      - id: EPIC-BACKLOG-002
+        type: epic
+        title: "Mechanism implementation boundaries"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-004
+        type: capability
+        title: "Agent conceptual elaboration boundaries"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-005
+        type: capability
+        title: "Command candidate standardisation"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-006
+        type: capability
+        title: "Script/CLI/validator boundary definition"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-007
+        type: capability
+        title: "LLM reasoning vs deterministic control separation"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-03
+    category_title: "Control and evidence infrastructure"
+    source_blueprint_section: S18
+    source_sections: [S02, S09, S10, S11, S17]
+    items:
+      - id: EPIC-BACKLOG-003
+        type: epic
+        title: "Control and evidence infrastructure"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-008
+        type: capability
+        title: "State management specification"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-009
+        type: capability
+        title: "Logs capture and append-only audit trail"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-010
+        type: capability
+        title: "Evidence lifecycle and storage posture"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-011
+        type: capability
+        title: "Gate evidence and auditability boundary"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-04
+    category_title: "Source policy and Knowledge Governance"
+    source_blueprint_section: S18
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    items:
+      - id: EPIC-BACKLOG-004
+        type: epic
+        title: "Source policy and Knowledge Governance"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-012
+        type: capability
+        title: "Source policy minima boundary"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-013
+        type: capability
+        title: "Knowledge Gap detection and handling"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-014
+        type: capability
+        title: "Curation Request governance flow"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-05
+    category_title: "Odoo 18 pilot environment and module"
+    source_blueprint_section: S18
+    source_sections: [S03, S13, S15, S16, S17]
+    items:
+      - id: EPIC-BACKLOG-005
+        type: epic
+        title: "Odoo 18 pilot environment and module"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-015
+        type: capability
+        title: "Odoo 18 environment readiness specification"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-016
+        type: capability
+        title: "Pilot module candidate boundary definition"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-017
+        type: capability
+        title: "Internal requests / approvals evidence boundary"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-06
+    category_title: "Security and secrets"
+    source_blueprint_section: S18
+    source_sections: [S02, S08, S11, S14, S16, S17]
+    items:
+      - id: EPIC-BACKLOG-006
+        type: epic
+        title: "Security and secrets"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-018
+        type: capability
+        title: "Secrets handling posture specification"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-019
+        type: capability
+        title: "Permissions boundary model specification"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-020
+        type: capability
+        title: "Security/risk triage boundary in gates"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-07
+    category_title: "Spike execution and technical validations"
+    source_blueprint_section: S18
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    items:
+      - id: EPIC-BACKLOG-007
+        type: epic
+        title: "Spike execution and technical validations"
+        readiness: post-v1
+        owner_decision_required: yes
+      - id: CAP-BACKLOG-021
+        type: capability
+        title: "Spike sequencing readiness specification"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-022
+        type: capability
+        title: "Technical validation dependency tracking"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-023
+        type: capability
+        title: "Open uncertainty tracking (SP-04/SP-05)"
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-024
+        type: capability
+        title: "Post-V1 gated spike separation (SP-11..SP-13)"
+        readiness: post-v1
+        owner_decision_required: yes
+
+  - category_id: CAT-08
+    category_title: "Traceability and quality gates"
+    source_blueprint_section: S18
+    source_sections: [S01, S02, S09, S10, S11, S17]
+    items:
+      - id: EPIC-BACKLOG-008
+        type: epic
+        title: "Traceability and quality gates"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-025
+        type: capability
+        title: "Bidirectional traceability preservation"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-026
+        type: capability
+        title: "Acceptance-gate evidence boundary"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-027
+        type: capability
+        title: "Non-self-closure and validation coverage tracking"
+        readiness: candidate
+        owner_decision_required: none
+
+  - category_id: CAT-09
+    category_title: "Owner / governance workflows"
+    source_blueprint_section: S18
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    items:
+      - id: EPIC-BACKLOG-009
+        type: epic
+        title: "Owner / governance workflows"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-028
+        type: capability
+        title: "Owner approval workflow boundary"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-029
+        type: capability
+        title: "Blocker registration and conflict classification"
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-030
+        type: capability
+        title: "Deferred/post-V1 owner decision registry"
+        readiness: candidate
+        owner_decision_required: yes

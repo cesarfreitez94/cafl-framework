@@ -1,0 +1,521 @@
+# CAFL V1 Backlog Candidates
+# Generated deterministically from S18 Blueprint categories.
+# Do not modify manually. Regenerate via blueprint_to_backlog.py.
+
+generated_at: "2026-05-30T06:45:47.272678+00:00"
+generated_by: tools/blueprint/blueprint_to_backlog.py
+total_epics: 9
+total_capabilities: 30
+readiness_summary:
+  candidate: 27
+  conditional: 10
+  post-v1: 2
+
+epics:
+  - id: EPIC-BACKLOG-001
+    type: epic
+    title: "Runtime / OpenCode coordination setup"
+    source_category: "Runtime / OpenCode coordination setup"
+    source_sections: [S01, S02, S04, S05, S07, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, BR-01, BR-02, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-028, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, RISK-020, RISK-023, RISK-024, RISK-055, S01, S02, S04, S05, S07, S17, SP-04, SP-05, TOM-01, TOM-04, TOM-07]
+    rationale: "Derived from S18 category 'Runtime / OpenCode coordination setup'. Work domain for representing the CAFL V1 operating arrangement around OpenCode coordination, contract-driven progression, gate discipline, and non-authoritative runtime support."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: EPIC-BACKLOG-002
+    type: epic
+    title: "Mechanism implementation boundaries"
+    source_category: "Mechanism implementation boundaries"
+    source_sections: [S07, S08, S10, S16, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, CRIT-03, CRIT-07, DEC-ACCEPTED-056, DEC-ACCEPTED-069, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, DEC-ACCEPTED-145, S07, S08, S10, S16, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-04, SP-05, SP-07, SP-08, TOM-04, TOM-05, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Derived from S18 category 'Mechanism implementation boundaries'. Work domain for later elaboration of the conceptual split between agents, commands, scripts/CLI, validators, deterministic controls, and LLM reasoning boundaries."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: EPIC-BACKLOG-003
+    type: epic
+    title: "Control and evidence infrastructure"
+    source_category: "Control and evidence infrastructure"
+    source_sections: [S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-04, AP-05, AP-09, CRIT-06, CRIT-07, DEC-ACCEPTED-107, DEC-ACCEPTED-146, RISK-006, RISK-010, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-09, SP-10, TOM-01, TOM-06, TOM-07, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Derived from S18 category 'Control and evidence infrastructure'. Work domain for later planning around state, logs, evidence capture, evidence lifecycle, storage posture, gate evidence, and auditability."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: EPIC-BACKLOG-004
+    type: epic
+    title: "Source policy and Knowledge Governance"
+    source_category: "Source policy and Knowledge Governance"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-01, AP-06, AP-12, BR-01, BR-02, CRIT-06, CRIT-07, DEC-ACCEPTED-126, DEC-ACCEPTED-148, DEC-ACCEPTED-163, RISK-006, RISK-043, RISK-044, RISK-052, RISK-062, S01, S02, S03, S12, S16, S17, SCH-01, SCH-08, SCH-09, SP-01, SP-03, TOM-01, TOM-08, TOM-13, VAL-01, VAL-09]
+    rationale: "Derived from S18 category 'Source policy and Knowledge Governance'. Work domain for preserving source policy minima, Knowledge Gap handling, Curation Request handling, routing of source evidence, and governance of accepted knowledge boundaries."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: EPIC-BACKLOG-005
+    type: epic
+    title: "Odoo 18 pilot environment and module"
+    source_category: "Odoo 18 pilot environment and module"
+    source_sections: [S03, S13, S15, S16, S17]
+    upstream_refs: [AP-07, AP-08, AP-09, BR-01, CRIT-01, CRIT-06, CRIT-07, DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-162, DEC-ACCEPTED-163, RISK-010, RISK-039, RISK-059, S03, S13, S15, S16, S17, SCH-05, SCH-06, SCH-10, SP-06, SP-10, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-02, TOM-03, TOM-11, TOM-12, VAL-05, VAL-06, VAL-10]
+    rationale: "Derived from S18 category 'Odoo 18 pilot environment and module'. Work domain for later planning around the Odoo-only, Odoo 18 pilot environment and internal requests / simple approvals pilot module boundary."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: EPIC-BACKLOG-006
+    type: epic
+    title: "Security and secrets"
+    source_category: "Security and secrets"
+    source_sections: [S02, S08, S11, S14, S16, S17]
+    upstream_refs: [AP-10, AP-11, AP-12, CRIT-02, CRIT-03, CRIT-04, CRIT-05, DEC-ACCEPTED-045, DEC-ACCEPTED-064, DEC-ACCEPTED-076, DEC-ACCEPTED-092, DEC-ACCEPTED-101, RISK-021, RISK-027, RISK-040, RISK-061, RISK-063, S02, S08, S11, S14, S16, S17, SCH-04, SCH-05, SCH-10, SP-02, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, TOM-09, TOM-10, VAL-04, VAL-10]
+    rationale: "Derived from S18 category 'Security and secrets'. Work domain for later planning around security posture, secrets handling, permissions boundaries, credential exposure risks, and security-related validation needs."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: EPIC-BACKLOG-007
+    type: epic
+    title: "Spike execution and technical validations"
+    source_category: "Spike execution and technical validations"
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    upstream_refs: [AP-11, BR-01, BR-02, CRIT-01, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-142, DEC-ACCEPTED-143, DEC-ACCEPTED-149, DEC-ACCEPTED-153, DEC-ACCEPTED-158, DEC-ACCEPTED-164, RISK-059, RISK-061, RISK-063, RISK-065, S06, S13, S14, S15, S16, S17, SP-01, SP-02, SP-03, SP-04, SP-05, SP-06, SP-07, SP-08, SP-09, SP-10, SP-11, SP-12, SP-13, SPK-S13, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S14, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, SPK-S15, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-08, TOM-09, TOM-13, TOM-14]
+    rationale: "Derived from S18 category 'Spike execution and technical validations'. Work domain for later planning around the ordered spike catalogue, open technical uncertainties, and validation dependency families."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: "yes"
+    readiness: post-v1
+
+  - id: EPIC-BACKLOG-008
+    type: epic
+    title: "Traceability and quality gates"
+    source_category: "Traceability and quality gates"
+    source_sections: [S01, S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-05, CRIT-06, CRIT-07, RISK-006, RULE-04, RULE-05, S01, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, TOM-01, TOM-05, TOM-06, TOM-07, TOM-10, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07, VAL-08]
+    rationale: "Derived from S18 category 'Traceability and quality gates'. Work domain for preserving bidirectional traceability, acceptance-gate evidence, non-self-closure, validation coverage, and quality-control boundaries."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: EPIC-BACKLOG-009
+    type: epic
+    title: "Owner / governance workflows"
+    source_category: "Owner / governance workflows"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-05, BR-03, BR-04, CRIT-05, DEC-ACCEPTED-059, DEC-ACCEPTED-148, DEC-ACCEPTED-149, DEC-ACCEPTED-157, RISK-004, RISK-005, RISK-013, RULE-01, RULE-02, S01, S02, S03, S12, S16, S17, SCH-03, SCH-04, SP-11, SP-12, SP-13, TOM-07, TOM-10, TOM-13, VAL-03, VAL-04]
+    rationale: "Derived from S18 category 'Owner / governance workflows'. Work domain for later planning around owner approvals, blocker registration, conflict handling, deferred/post-V1 owner decisions, and governance handoffs."
+    boundary: "This Epic preserves the V1/Post-V1 boundary defined in S03. All work remains within Odoo-only, Odoo 18, internal requests / simple approvals pilot scope. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, detailed technical backlog, PRD, SDD, or implementation is created."
+    acceptance_criteria: [Epic preserves RULE-08 by staying at category level only, Epic preserves RULE-09 and global Blueprint non-goals, Epic is traceable to S17 traceability matrix, Conditional, open-uncertainty, and post-V1-gated areas remain visibly separated]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts, runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD."
+    owner_decision_required: "none"
+    readiness: candidate
+
+capabilities:
+  - id: CAP-BACKLOG-001
+    type: capability
+    title: "OpenCode coordination model specification"
+    source_category: "Runtime / OpenCode coordination setup"
+    source_sections: [S01, S02, S04, S05, S07, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, BR-01, BR-02, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-028, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, RISK-020, RISK-023, RISK-024, RISK-055, S01, S02, S04, S05, S07, S17, SP-04, SP-05, TOM-01, TOM-04, TOM-07]
+    rationale: "Specify the OpenCode coordination model preserving AP-02/AP-03/AP-05: OpenCode as primary runtime and coordination hub, not as authoritative state, gate owner, storage, source policy engine, or sufficient evidence by itself."
+    boundary: "Derived from Epic EPIC-BACKLOG-001. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-001 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-002
+    type: capability
+    title: "Contract-driven progression discipline"
+    source_category: "Runtime / OpenCode coordination setup"
+    source_sections: [S01, S02, S04, S05, S07, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, BR-01, BR-02, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-028, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, RISK-020, RISK-023, RISK-024, RISK-055, S01, S02, S04, S05, S07, S17, SP-04, SP-05, TOM-01, TOM-04, TOM-07]
+    rationale: "Define the contract-driven progression mechanism: section-level contracts, gates, handoffs, and non-self-closure discipline per S05 source-vs-runtime separation."
+    boundary: "Derived from Epic EPIC-BACKLOG-001. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-001 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-003
+    type: capability
+    title: "Gate discipline and non-authoritative runtime boundary"
+    source_category: "Runtime / OpenCode coordination setup"
+    source_sections: [S01, S02, S04, S05, S07, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, BR-01, BR-02, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-028, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, RISK-020, RISK-023, RISK-024, RISK-055, S01, S02, S04, S05, S07, S17, SP-04, SP-05, TOM-01, TOM-04, TOM-07]
+    rationale: "Bound gate discipline: OpenCode coordinates but does not close gates, approve sections, change owner approval, or replace project-truth/ as source of truth."
+    boundary: "Derived from Epic EPIC-BACKLOG-001. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-001 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-004
+    type: capability
+    title: "Agent conceptual elaboration boundaries"
+    source_category: "Mechanism implementation boundaries"
+    source_sections: [S07, S08, S10, S16, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, CRIT-03, CRIT-07, DEC-ACCEPTED-056, DEC-ACCEPTED-069, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, DEC-ACCEPTED-145, S07, S08, S10, S16, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-04, SP-05, SP-07, SP-08, TOM-04, TOM-05, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Describe the conceptual agent split from S08: reasoning/analysis agents that are not executable, not self-verifying, and not self-approving."
+    boundary: "Derived from Epic EPIC-BACKLOG-002. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-002 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-005
+    type: capability
+    title: "Command candidate standardisation"
+    source_category: "Mechanism implementation boundaries"
+    source_sections: [S07, S08, S10, S16, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, CRIT-03, CRIT-07, DEC-ACCEPTED-056, DEC-ACCEPTED-069, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, DEC-ACCEPTED-145, S07, S08, S10, S16, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-04, SP-05, SP-07, SP-08, TOM-04, TOM-05, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Define command candidates as repeatable inputs per S08: parameters, expected outputs, and DoR context without creating real commands or permissions. SP-05 remains unresolved."
+    boundary: "Derived from Epic EPIC-BACKLOG-002. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-002 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-006
+    type: capability
+    title: "Script/CLI/validator boundary definition"
+    source_category: "Mechanism implementation boundaries"
+    source_sections: [S07, S08, S10, S16, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, CRIT-03, CRIT-07, DEC-ACCEPTED-056, DEC-ACCEPTED-069, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, DEC-ACCEPTED-145, S07, S08, S10, S16, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-04, SP-05, SP-07, SP-08, TOM-04, TOM-05, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Bound the deterministic control boundary for script/CLI/validator candidates per S08 and S10: control structure, traceability, evidence, and source policy. SP-07/SP-08 remain unresolved."
+    boundary: "Derived from Epic EPIC-BACKLOG-002. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-002 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-007
+    type: capability
+    title: "LLM reasoning vs deterministic control separation"
+    source_category: "Mechanism implementation boundaries"
+    source_sections: [S07, S08, S10, S16, S17]
+    upstream_refs: [AP-02, AP-03, AP-04, AP-05, CRIT-03, CRIT-07, DEC-ACCEPTED-056, DEC-ACCEPTED-069, DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138, DEC-ACCEPTED-140, DEC-ACCEPTED-145, S07, S08, S10, S16, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-04, SP-05, SP-07, SP-08, TOM-04, TOM-05, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Classify the separation of LLM reasoning from deterministic control per AP-04: agents reason, validators verify, owner approves."
+    boundary: "Derived from Epic EPIC-BACKLOG-002. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-002 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-008
+    type: capability
+    title: "State management specification"
+    source_category: "Control and evidence infrastructure"
+    source_sections: [S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-04, AP-05, AP-09, CRIT-06, CRIT-07, DEC-ACCEPTED-107, DEC-ACCEPTED-146, RISK-006, RISK-010, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-09, SP-10, TOM-01, TOM-06, TOM-07, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Specify state management per S11/SCH-03/VAL-03: state transitions, status lifecycle, and the L1-L4 authority hierarchy."
+    boundary: "Derived from Epic EPIC-BACKLOG-003. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-003 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-009
+    type: capability
+    title: "Logs capture and append-only audit trail"
+    source_category: "Control and evidence infrastructure"
+    source_sections: [S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-04, AP-05, AP-09, CRIT-06, CRIT-07, DEC-ACCEPTED-107, DEC-ACCEPTED-146, RISK-006, RISK-010, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-09, SP-10, TOM-01, TOM-06, TOM-07, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Describe append-only logs per S11: state transition logs, gate prerequisite logs, validator result logs, and execution context logs."
+    boundary: "Derived from Epic EPIC-BACKLOG-003. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-003 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-010
+    type: capability
+    title: "Evidence lifecycle and storage posture"
+    source_category: "Control and evidence infrastructure"
+    source_sections: [S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-04, AP-05, AP-09, CRIT-06, CRIT-07, DEC-ACCEPTED-107, DEC-ACCEPTED-146, RISK-006, RISK-010, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-09, SP-10, TOM-01, TOM-06, TOM-07, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Describe the S11 6-step evidence lifecycle: origin, capture, validation, eligibility evaluation, governed registration, authoritative reference. All storage Git-compatible per AP-09."
+    boundary: "Derived from Epic EPIC-BACKLOG-003. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-003 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-011
+    type: capability
+    title: "Gate evidence and auditability boundary"
+    source_category: "Control and evidence infrastructure"
+    source_sections: [S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-04, AP-05, AP-09, CRIT-06, CRIT-07, DEC-ACCEPTED-107, DEC-ACCEPTED-146, RISK-006, RISK-010, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, SP-09, SP-10, TOM-01, TOM-06, TOM-07, TOM-12, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07]
+    rationale: "Bound gate evidence with storage: VAL-04 gate prerequisite checking, VAL-05 evidence record validation, and governed L2 registration."
+    boundary: "Derived from Epic EPIC-BACKLOG-003. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-003 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-012
+    type: capability
+    title: "Source policy minima boundary"
+    source_category: "Source policy and Knowledge Governance"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-01, AP-06, AP-12, BR-01, BR-02, CRIT-06, CRIT-07, DEC-ACCEPTED-126, DEC-ACCEPTED-148, DEC-ACCEPTED-163, RISK-006, RISK-043, RISK-044, RISK-052, RISK-062, S01, S02, S03, S12, S16, S17, SCH-01, SCH-08, SCH-09, SP-01, SP-03, TOM-01, TOM-08, TOM-13, VAL-01, VAL-09]
+    rationale: "Bound source policy minima: docs.odoo.com + github.com/odoo/odoo only, per DEC-ACCEPTED-163, AP-06, AP-12. No auto-expansion."
+    boundary: "Derived from Epic EPIC-BACKLOG-004. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-004 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-013
+    type: capability
+    title: "Knowledge Gap detection and handling"
+    source_category: "Source policy and Knowledge Governance"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-01, AP-06, AP-12, BR-01, BR-02, CRIT-06, CRIT-07, DEC-ACCEPTED-126, DEC-ACCEPTED-148, DEC-ACCEPTED-163, RISK-006, RISK-043, RISK-044, RISK-052, RISK-062, S01, S02, S03, S12, S16, S17, SCH-01, SCH-08, SCH-09, SP-01, SP-03, TOM-01, TOM-08, TOM-13, VAL-01, VAL-09]
+    rationale: "Describe Knowledge Gap mechanism per S12: VAL-01/VAL-09 triggers, gap-open/gap-resolved/gap-discarded states, and owner-gated resolution."
+    boundary: "Derived from Epic EPIC-BACKLOG-004. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-004 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-014
+    type: capability
+    title: "Curation Request governance flow"
+    source_category: "Source policy and Knowledge Governance"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-01, AP-06, AP-12, BR-01, BR-02, CRIT-06, CRIT-07, DEC-ACCEPTED-126, DEC-ACCEPTED-148, DEC-ACCEPTED-163, RISK-006, RISK-043, RISK-044, RISK-052, RISK-062, S01, S02, S03, S12, S16, S17, SCH-01, SCH-08, SCH-09, SP-01, SP-03, TOM-01, TOM-08, TOM-13, VAL-01, VAL-09]
+    rationale: "Define Curation Request flow per S12: request, owner gate, approve/reject, L1 registration. Only path for source policy expansion."
+    boundary: "Derived from Epic EPIC-BACKLOG-004. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-004 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-015
+    type: capability
+    title: "Odoo 18 environment readiness specification"
+    source_category: "Odoo 18 pilot environment and module"
+    source_sections: [S03, S13, S15, S16, S17]
+    upstream_refs: [AP-07, AP-08, AP-09, BR-01, CRIT-01, CRIT-06, CRIT-07, DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-162, DEC-ACCEPTED-163, RISK-010, RISK-039, RISK-059, S03, S13, S15, S16, S17, SCH-05, SCH-06, SCH-10, SP-06, SP-10, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-02, TOM-03, TOM-11, TOM-12, VAL-05, VAL-06, VAL-10]
+    rationale: "Specify the Odoo 18 execution environment per S13: three logical environment categories (development, validation, authority reference) and seven logical components. Physical form remains spike-dependent."
+    boundary: "Derived from Epic EPIC-BACKLOG-005. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-005 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-016
+    type: capability
+    title: "Pilot module candidate boundary definition"
+    source_category: "Odoo 18 pilot environment and module"
+    source_sections: [S03, S13, S15, S16, S17]
+    upstream_refs: [AP-07, AP-08, AP-09, BR-01, CRIT-01, CRIT-06, CRIT-07, DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-162, DEC-ACCEPTED-163, RISK-010, RISK-039, RISK-059, S03, S13, S15, S16, S17, SCH-05, SCH-06, SCH-10, SP-06, SP-10, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-02, TOM-03, TOM-11, TOM-12, VAL-05, VAL-06, VAL-10]
+    rationale: "Define candidate boundary for the pilot module per S15: InternalRequest, ApprovalRecord, form/list/search views, four-state workflow. No PRD, SDD, or final module."
+    boundary: "Derived from Epic EPIC-BACKLOG-005. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-005 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-017
+    type: capability
+    title: "Internal requests / approvals evidence boundary"
+    source_category: "Odoo 18 pilot environment and module"
+    source_sections: [S03, S13, S15, S16, S17]
+    upstream_refs: [AP-07, AP-08, AP-09, BR-01, CRIT-01, CRIT-06, CRIT-07, DEC-ACCEPTED-135, DEC-ACCEPTED-153, DEC-ACCEPTED-162, DEC-ACCEPTED-163, RISK-010, RISK-039, RISK-059, S03, S13, S15, S16, S17, SCH-05, SCH-06, SCH-10, SP-06, SP-10, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-02, TOM-03, TOM-11, TOM-12, VAL-05, VAL-06, VAL-10]
+    rationale: "Bound pilot evidence with the S11 evidence lifecycle: classify Odoo 18 pilot execution evidence as candidate evidence (L3), identify promotion path to governed evidence (L2) on validation."
+    boundary: "Derived from Epic EPIC-BACKLOG-005. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-005 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-018
+    type: capability
+    title: "Secrets handling posture specification"
+    source_category: "Security and secrets"
+    source_sections: [S02, S08, S11, S14, S16, S17]
+    upstream_refs: [AP-10, AP-11, AP-12, CRIT-02, CRIT-03, CRIT-04, CRIT-05, DEC-ACCEPTED-045, DEC-ACCEPTED-064, DEC-ACCEPTED-076, DEC-ACCEPTED-092, DEC-ACCEPTED-101, RISK-021, RISK-027, RISK-040, RISK-061, RISK-063, S02, S08, S11, S14, S16, S17, SCH-04, SCH-05, SCH-10, SP-02, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, TOM-09, TOM-10, VAL-04, VAL-10]
+    rationale: "Specify secrets handling posture per S14 CA-1: identify controls to prevent tokens, credentials, and Odoo secrets from entering repo, logs, or evidence. SP-02 remains unresolved."
+    boundary: "Derived from Epic EPIC-BACKLOG-006. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-006 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-019
+    type: capability
+    title: "Permissions boundary model specification"
+    source_category: "Security and secrets"
+    source_sections: [S02, S08, S11, S14, S16, S17]
+    upstream_refs: [AP-10, AP-11, AP-12, CRIT-02, CRIT-03, CRIT-04, CRIT-05, DEC-ACCEPTED-045, DEC-ACCEPTED-064, DEC-ACCEPTED-076, DEC-ACCEPTED-092, DEC-ACCEPTED-101, RISK-021, RISK-027, RISK-040, RISK-061, RISK-063, S02, S08, S11, S14, S16, S17, SCH-04, SCH-05, SCH-10, SP-02, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, TOM-09, TOM-10, VAL-04, VAL-10]
+    rationale: "Define the permissions boundary model per S14 CA-2/SP-04: minimum-access, OpenCode permissions that do not convert OpenCode into authority or policy engine."
+    boundary: "Derived from Epic EPIC-BACKLOG-006. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-006 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-020
+    type: capability
+    title: "Security/risk triage boundary in gates"
+    source_category: "Security and secrets"
+    source_sections: [S02, S08, S11, S14, S16, S17]
+    upstream_refs: [AP-10, AP-11, AP-12, CRIT-02, CRIT-03, CRIT-04, CRIT-05, DEC-ACCEPTED-045, DEC-ACCEPTED-064, DEC-ACCEPTED-076, DEC-ACCEPTED-092, DEC-ACCEPTED-101, RISK-021, RISK-027, RISK-040, RISK-061, RISK-063, S02, S08, S11, S14, S16, S17, SCH-04, SCH-05, SCH-10, SP-02, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, TOM-09, TOM-10, VAL-04, VAL-10]
+    rationale: "Describe security/risk triage per S14 CA-4: security criteria in gates, risk escalation, and compliance cross-checking."
+    boundary: "Derived from Epic EPIC-BACKLOG-006. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-006 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-021
+    type: capability
+    title: "Spike sequencing readiness specification"
+    source_category: "Spike execution and technical validations"
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    upstream_refs: [AP-11, BR-01, BR-02, CRIT-01, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-142, DEC-ACCEPTED-143, DEC-ACCEPTED-149, DEC-ACCEPTED-153, DEC-ACCEPTED-158, DEC-ACCEPTED-164, RISK-059, RISK-061, RISK-063, RISK-065, S06, S13, S14, S15, S16, S17, SP-01, SP-02, SP-03, SP-04, SP-05, SP-06, SP-07, SP-08, SP-09, SP-10, SP-11, SP-12, SP-13, SPK-S13, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S14, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, SPK-S15, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-08, TOM-09, TOM-13, TOM-14]
+    rationale: "Specify spike sequencing readiness per S16: Band A before Band B before Band C with justified dependencies. No spike is executed at this level."
+    boundary: "Derived from Epic EPIC-BACKLOG-007. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-007 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-022
+    type: capability
+    title: "Technical validation dependency tracking"
+    source_category: "Spike execution and technical validations"
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    upstream_refs: [AP-11, BR-01, BR-02, CRIT-01, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-142, DEC-ACCEPTED-143, DEC-ACCEPTED-149, DEC-ACCEPTED-153, DEC-ACCEPTED-158, DEC-ACCEPTED-164, RISK-059, RISK-061, RISK-063, RISK-065, S06, S13, S14, S15, S16, S17, SP-01, SP-02, SP-03, SP-04, SP-05, SP-06, SP-07, SP-08, SP-09, SP-10, SP-11, SP-12, SP-13, SPK-S13, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S14, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, SPK-S15, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-08, TOM-09, TOM-13, TOM-14]
+    rationale: "Track technical validation dependencies across S13/S14/S15 spike families: environment, security, and pilot module spike ordering."
+    boundary: "Derived from Epic EPIC-BACKLOG-007. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-007 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-023
+    type: capability
+    title: "Open uncertainty tracking (SP-04/SP-05)"
+    source_category: "Spike execution and technical validations"
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    upstream_refs: [AP-11, BR-01, BR-02, CRIT-01, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-142, DEC-ACCEPTED-143, DEC-ACCEPTED-149, DEC-ACCEPTED-153, DEC-ACCEPTED-158, DEC-ACCEPTED-164, RISK-059, RISK-061, RISK-063, RISK-065, S06, S13, S14, S15, S16, S17, SP-01, SP-02, SP-03, SP-04, SP-05, SP-06, SP-07, SP-08, SP-09, SP-10, SP-11, SP-12, SP-13, SPK-S13, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S14, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, SPK-S15, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-08, TOM-09, TOM-13, TOM-14]
+    rationale: "Track open uncertainties SP-04 (OpenCode permissions) and SP-05 (commands/skills design). These remain conditional-open-uncertainty; resolution requires owner decision."
+    boundary: "Derived from Epic EPIC-BACKLOG-007. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-007 and S17 traceability matrix, Capability readiness (conditional) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: pending-spike-result
+    readiness: conditional
+
+  - id: CAP-BACKLOG-024
+    type: capability
+    title: "Post-V1 gated spike separation (SP-11..SP-13)"
+    source_category: "Spike execution and technical validations"
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    upstream_refs: [AP-11, BR-01, BR-02, CRIT-01, CRIT-02, CRIT-03, CRIT-07, DEC-ACCEPTED-049, DEC-ACCEPTED-050, DEC-ACCEPTED-142, DEC-ACCEPTED-143, DEC-ACCEPTED-149, DEC-ACCEPTED-153, DEC-ACCEPTED-158, DEC-ACCEPTED-164, RISK-059, RISK-061, RISK-063, RISK-065, S06, S13, S14, S15, S16, S17, SP-01, SP-02, SP-03, SP-04, SP-05, SP-06, SP-07, SP-08, SP-09, SP-10, SP-11, SP-12, SP-13, SPK-S13, SPK-S13-DB, SPK-S13-ENV, SPK-S13-EVIDENCE, SPK-S13-RUNNER, SPK-S13-TRACE, SPK-S14, SPK-S14-01, SPK-S14-02, SPK-S14-03, SPK-S14-04, SPK-S15, SPK-S15-ACCESS, SPK-S15-INSTALL, SPK-S15-TEST, TOM-08, TOM-09, TOM-13, TOM-14]
+    rationale: "Classify Band D / post-V1-gated spikes: SP-11 (SDK/server), SP-12 (OpenAPI/PDF), SP-13 (Frontend/OWL/Playwright). Not V1 core. Activation requires explicit future owner decision."
+    boundary: "Derived from Epic EPIC-BACKLOG-007. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-007 and S17 traceability matrix, Capability readiness (post-v1) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "yes"
+    readiness: post-v1
+
+  - id: CAP-BACKLOG-025
+    type: capability
+    title: "Bidirectional traceability preservation"
+    source_category: "Traceability and quality gates"
+    source_sections: [S01, S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-05, CRIT-06, CRIT-07, RISK-006, RULE-04, RULE-05, S01, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, TOM-01, TOM-05, TOM-06, TOM-07, TOM-10, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07, VAL-08]
+    rationale: "Describe bidirectional traceability per S17/RULE-05: TOM-to-Blueprint and Blueprint-to-authority links must remain complete without gaps."
+    boundary: "Derived from Epic EPIC-BACKLOG-008. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-008 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-026
+    type: capability
+    title: "Acceptance-gate evidence boundary"
+    source_category: "Traceability and quality gates"
+    source_sections: [S01, S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-05, CRIT-06, CRIT-07, RISK-006, RULE-04, RULE-05, S01, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, TOM-01, TOM-05, TOM-06, TOM-07, TOM-10, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07, VAL-08]
+    rationale: "Bound acceptance-gate evidence: FAC-01..FAC-08 traceability, gate prerequisite checking, and evidence registration for owner review."
+    boundary: "Derived from Epic EPIC-BACKLOG-008. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-008 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-027
+    type: capability
+    title: "Non-self-closure and validation coverage tracking"
+    source_category: "Traceability and quality gates"
+    source_sections: [S01, S02, S09, S10, S11, S17]
+    upstream_refs: [AP-01, AP-05, CRIT-06, CRIT-07, RISK-006, RULE-04, RULE-05, S01, S02, S09, S10, S11, S17, SCH-01, SCH-02, SCH-03, SCH-04, SCH-05, SCH-06, SCH-07, TOM-01, TOM-05, TOM-06, TOM-07, TOM-10, VAL-01, VAL-02, VAL-03, VAL-04, VAL-05, VAL-06, VAL-07, VAL-08]
+    rationale: "Track non-self-closure: verify that no gate is self-closed, all approvals require explicit owner action, and validation coverage is complete."
+    boundary: "Derived from Epic EPIC-BACKLOG-008. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-008 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-028
+    type: capability
+    title: "Owner approval workflow boundary"
+    source_category: "Owner / governance workflows"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-05, BR-03, BR-04, CRIT-05, DEC-ACCEPTED-059, DEC-ACCEPTED-148, DEC-ACCEPTED-149, DEC-ACCEPTED-157, RISK-004, RISK-005, RISK-013, RULE-01, RULE-02, S01, S02, S03, S12, S16, S17, SCH-03, SCH-04, SP-11, SP-12, SP-13, TOM-07, TOM-10, TOM-13, VAL-03, VAL-04]
+    rationale: "Define owner approval workflow boundary: owner-gated section approval, iteration closure, and governance state tracking per S01/S02/blueprint-state.yaml."
+    boundary: "Derived from Epic EPIC-BACKLOG-009. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-009 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-029
+    type: capability
+    title: "Blocker registration and conflict classification"
+    source_category: "Owner / governance workflows"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-05, BR-03, BR-04, CRIT-05, DEC-ACCEPTED-059, DEC-ACCEPTED-148, DEC-ACCEPTED-149, DEC-ACCEPTED-157, RISK-004, RISK-005, RISK-013, RULE-01, RULE-02, S01, S02, S03, S12, S16, S17, SCH-03, SCH-04, SP-11, SP-12, SP-13, TOM-07, TOM-10, TOM-13, VAL-03, VAL-04]
+    rationale: "Classify blocker registration and conflict handling per S01: needs-owner-decision and open-question registration, conflict escalation, and retroactive blocker detection."
+    boundary: "Derived from Epic EPIC-BACKLOG-009. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-009 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "none"
+    readiness: candidate
+
+  - id: CAP-BACKLOG-030
+    type: capability
+    title: "Deferred/post-V1 owner decision registry"
+    source_category: "Owner / governance workflows"
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_refs: [AP-05, BR-03, BR-04, CRIT-05, DEC-ACCEPTED-059, DEC-ACCEPTED-148, DEC-ACCEPTED-149, DEC-ACCEPTED-157, RISK-004, RISK-005, RISK-013, RULE-01, RULE-02, S01, S02, S03, S12, S16, S17, SCH-03, SCH-04, SP-11, SP-12, SP-13, TOM-07, TOM-10, TOM-13, VAL-03, VAL-04]
+    rationale: "Track the deferred/post-V1 owner decision registry: identify conditional and post-V1-gated items that require explicit future owner decision before movement into V1 core."
+    boundary: "Derived from Epic EPIC-BACKLOG-009. Respects V1/Post-V1 boundary. No runtime, executable agents, real commands, physical schemas, real validators, scripts, RAG/vector base, PRD, SDD, or implementation."
+    acceptance_criteria: [Capability preserves RULE-08 by staying at capability level only, Capability preserves RULE-09 and global Blueprint non-goals, Capability is traceable to EPIC-BACKLOG-009 and S17 traceability matrix, Capability readiness (candidate) is correctly declared]
+    excluded_scope: "Detailed tasks, work items, tickets, implementation steps, sequencing, estimates, owners, acceptance tests, deliverable artifacts."
+    owner_decision_required: "yes"
+    readiness: candidate

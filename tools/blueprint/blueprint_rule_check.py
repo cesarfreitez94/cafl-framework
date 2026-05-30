@@ -60,6 +60,14 @@ ALLOWED_DIRS = {
     ".git",
 }
 
+# Specific backlog files allowed as post-Blueprint deterministic outputs.
+# Any other backlog/** file must be scanned against forbidden artifact patterns.
+ALLOWED_BACKLOG_FILES = {
+    "backlog/backlog-contract.yaml",
+    "backlog/backlog-candidates.yaml",
+    "backlog/backlog-traceability.yaml",
+}
+
 # Directories pruned from traversal (heavy, generated, or virtual-env dirs)
 PRUNE_DIRS = {
     "node_modules",
@@ -188,6 +196,11 @@ def scan_filesystem(repo_root: Path) -> list:
         if top in ALLOWED_DIRS or top2 in ALLOWED_DIRS:
             continue
 
+        # Allow specific backlog files as authorized deterministic outputs;
+        # any other backlog/** file must still be scanned.
+        if rel_str in ALLOWED_BACKLOG_FILES:
+            continue
+
         # Allow Blueprint-authoring infrastructure under .opencode/agents and .opencode/commands
         if top2 in OPNECODE_ALLOWED_SUBDIRS or top3 in OPNECODE_ALLOWED_SUBDIRS:
             continue
@@ -306,11 +319,14 @@ def check_crit08_absent() -> list:
 def check_forbidden_dirs() -> list:
     """Check for forbidden directory patterns."""
     findings = []
+    # backlog/ itself is allowed, but files inside it are checked individually
+    # (only backlog-contract.yaml, backlog-candidates.yaml, backlog-traceability.yaml
+    # are authorized; see ALLOWED_BACKLOG_FILES in scan_filesystem).
     forbidden_dir_patterns = [
         (r"(historical|archive|legacy)", "historical_archive_dir",
          "Forbidden directory type per AGENTS.md (no historical/archive/legacy)"),
-        (r"(backlog|sprint)", "backlog_dir",
-         "Backlog directory signals detailed implementation planning — RULE-09"),
+        (r"sprint", "sprint_dir",
+         "Sprint directory signals detailed implementation planning — RULE-09"),
     ]
     for path in sorted(REPO_ROOT.rglob("*"), key=str):
         if not path.is_dir():
@@ -377,11 +393,13 @@ def main():
         passed.append({"check": "forbidden_dirs", "detail": "No forbidden directory patterns found"})
 
     # 5. No detailed backlog files check
+    # backlog/ and reports/backlog/ are authorized post-Blueprint deterministic output dirs
     backlog_files = list(REPO_ROOT.rglob("backlog*.md")) + list(REPO_ROOT.rglob("backlog*.json"))
-    # Exclude project-truth references within blueprint text (those are conceptual)
+    # Exclude project-truth references, .git, and authorized post-Blueprint dirs
     real_backlog = [
         f for f in backlog_files
         if "project-truth" not in str(f) and ".git" not in str(f)
+        and "reports/backlog" not in str(f) and "backlog/" not in str(f.parent)
     ]
     if real_backlog:
         for f in real_backlog:

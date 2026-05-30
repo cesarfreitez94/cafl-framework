@@ -1,0 +1,710 @@
+contract_id: cafl-backlog-candidate-generation-contract
+version: 0.2.0
+derived_from: project-truth/implementation-blueprint.md
+blueprint_section: S18 Blueprint Outputs to Backlog
+note: >
+  This contract governs deterministic backlog candidate generation from the
+  completed CAFL V1 Implementation Blueprint. It does NOT create detailed
+  tasks, authorize implementation, reopen Blueprint content, or modify
+  approved decisions. The contract is consumed by blueprint_to_backlog.py
+  and validated by backlog_verify.py.
+
+scope:
+  purpose: >
+    Generate traceable backlog candidates (Epics and Capabilities only)
+    from the S18 category domains using deterministic inputs. Backlog
+    candidates provide a bridge from the Blueprint to later planning
+    without creating detailed tasks, sequencing, estimates, owners,
+    acceptance tests, or deliverable artifacts.
+  source_of_truth: project-truth/
+  blueprint_path: project-truth/implementation-blueprint.md
+  traceability_map_path: generated/blueprint/traceability-map.json
+  blueprint_index_path: generated/blueprint/blueprint-index.json
+
+generation_rules:
+  rule_s18_categories_sole_source:
+    description: >
+      S18 categories are the only direct source of backlog domains.
+      Each Epic maps to exactly one S18 category.
+    enforcement: deterministic
+
+  rule_s17_traceability_attach:
+    description: >
+      S17 traceability matrix and the generated traceability-map.json
+      are used only to attach source references (upstream_refs) to
+      each candidate. They do not create new categories.
+    enforcement: deterministic
+
+  rule_epics_and_capabilities_only:
+    description: >
+      Only Epics and Capabilities are generated. No detailed
+      implementation tasks, user stories, tickets, execution steps,
+      sequencing, estimates, or owners are generated.
+    enforcement: deterministic
+
+  rule_every_item_has_required_fields:
+    description: >
+      Every item (Epic or Capability) must include: id, type, title,
+      source_category, source_sections, upstream_refs, rationale,
+      boundary, acceptance_criteria, excluded_scope,
+      owner_decision_required, readiness.
+    enforcement: deterministic
+
+  rule_v1_post_v1_boundary_preserved:
+    description: >
+      V1/Post-V1 and conditional boundaries from the Blueprint must
+      be preserved. Items touching conditional, open-uncertainty, or
+      post-V1-gated areas must be visibly separated with
+      readiness: conditional or post-v1.
+    enforcement: deterministic
+
+  rule_spike_dependent_visible:
+    description: >
+      Items that depend on unresolved spikes (SP-04, SP-05) or
+      post-V1-gated spikes (SP-11..SP-13) must be marked with
+      appropriate readiness and spike dependency annotations.
+    enforcement: deterministic
+
+  rule_no_external_tooling:
+    description: >
+      No external project-management tooling is introduced or
+      referenced. All outputs are YAML/Markdown within the
+      repository.
+    enforcement: deterministic
+
+  rule_no_forbidden_verbs:
+    description: >
+      Backlog candidate titles and rationale must not use execution-
+      oriented verbs: Implement, Provision, Enforce, Integrate,
+      Scaffold, Resolve. Preferred verbs: Define, Specify, Describe,
+      Bound, Classify, Track, Identify, Validate readiness for.
+    enforcement: deterministic
+    forbidden_verbs:
+      - Implement
+      - Provision
+      - Enforce
+      - Integrate
+      - Scaffold
+      - Resolve
+
+item_schema:
+  required_fields:
+    - id
+    - type
+    - title
+    - source_category
+    - source_sections
+    - upstream_refs
+    - rationale
+    - boundary
+    - acceptance_criteria
+    - excluded_scope
+    - owner_decision_required
+    - readiness
+
+  allowed_types:
+    - epic
+    - capability
+
+  allowed_readiness:
+    - candidate
+    - conditional
+    - post-v1
+
+  field_definitions:
+    id:
+      description: Unique stable identifier (EPIC-BACKLOG-NNN or CAP-BACKLOG-NNN).
+      format: EPIC-BACKLOG-{seq:03d} or CAP-BACKLOG-{seq:03d}
+    type:
+      description: Item type, either epic or capability.
+      values: [epic, capability]
+    title:
+      description: Short, descriptive title derived from the S18 category domain.
+    source_category:
+      description: The S18 category name from which this item is derived.
+    source_sections:
+      description: Blueprint section IDs referenced by the S18 category (e.g. S07, S11, S17).
+    upstream_refs:
+      description: >
+        Traceability anchors from S17 and the traceability-map.json
+        that support this item (e.g. TOM-04, SP-04, VAL-01, SCH-01,
+        DEC-ACCEPTED-136, RISK-059).
+    rationale:
+      description: Why this item exists, derived from the S18 category scope.
+    boundary:
+      description: >
+        Explicit boundaries of the item, preserving V1/Post-V1 limits,
+        non-goals, and the item's specific constraints.
+    acceptance_criteria:
+      description: >
+        High-level criteria the item must satisfy, derived from upstream
+        acceptance criteria and category scope.
+    excluded_scope:
+      description: What this item explicitly excludes (non-goals, deferred, post-V1).
+    owner_decision_required:
+      description: >
+        Whether the item requires owner decision before further elaboration.
+        Values: none, yes, pending-spike-result.
+      values: [none, yes, pending-spike-result]
+    readiness:
+      description: >
+        Readiness state. candidate = ready for backlog planning.
+        conditional = depends on unresolved spike or owner decision.
+        post-v1 = deferred beyond V1 core.
+      values: [candidate, conditional, post-v1]
+
+outputs:
+  generated_files:
+    - backlog/backlog-candidates.yaml
+    - backlog/backlog-traceability.yaml
+  report_files:
+    - reports/backlog/backlog-generation-report.md
+  verification:
+    - reports/backlog/backlog-verification-report.md
+
+forbidden_actions:
+  - modifying Blueprint content (implementation-blueprint.md)
+  - modifying blueprint-state.yaml
+  - modifying blueprints approvals or statuses
+  - modifying historical reports under reports/blueprint/
+  - creating runtime or executable artifacts
+  - creating detailed implementation tasks
+  - introducing external project-management tooling
+  - expanding V1 scope beyond approved boundaries
+  - reopening CRIT-01..CRIT-07, TOM, or accepted decisions
+
+s18_categories:
+  - id: CAT-01
+    title: Runtime / OpenCode coordination setup
+    source_sections: [S01, S02, S04, S05, S07, S17]
+    upstream_ref_patterns:
+      - AP-02
+      - AP-03
+      - AP-04
+      - AP-05
+      - TOM-01
+      - TOM-04
+      - TOM-07
+      - DEC-ACCEPTED-028
+      - DEC-ACCEPTED-136
+      - DEC-ACCEPTED-137
+      - DEC-ACCEPTED-138
+      - DEC-ACCEPTED-140
+      - RISK-020
+      - RISK-023
+      - RISK-024
+      - RISK-055
+      - SP-04
+      - SP-05
+      - CRIT-02
+      - CRIT-03
+      - CRIT-07
+      - BR-01
+      - BR-02
+    capabilities:
+      - id: CAP-BACKLOG-001
+        title: OpenCode coordination model specification
+        rationale: >
+          Specify the OpenCode coordination model preserving AP-02/AP-03/AP-05:
+          OpenCode as primary runtime and coordination hub, not as authoritative state,
+          gate owner, storage, source policy engine, or sufficient evidence by itself.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-002
+        title: Contract-driven progression discipline
+        rationale: >
+          Define the contract-driven progression mechanism: section-level contracts,
+          gates, handoffs, and non-self-closure discipline per S05 source-vs-runtime separation.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-003
+        title: Gate discipline and non-authoritative runtime boundary
+        rationale: >
+          Bound gate discipline: OpenCode coordinates but does not close gates,
+          approve sections, change owner approval, or replace project-truth/ as source of truth.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-02
+    title: Mechanism implementation boundaries
+    source_sections: [S07, S08, S10, S16, S17]
+    upstream_ref_patterns:
+      - AP-02
+      - AP-03
+      - AP-04
+      - AP-05
+      - TOM-04
+      - TOM-05
+      - TOM-12
+      - SCH-01
+      - SCH-02
+      - SCH-03
+      - SCH-04
+      - SCH-05
+      - SCH-06
+      - SCH-07
+      - VAL-01
+      - VAL-02
+      - VAL-03
+      - VAL-04
+      - VAL-05
+      - VAL-06
+      - VAL-07
+      - SP-04
+      - SP-05
+      - SP-07
+      - SP-08
+      - DEC-ACCEPTED-056
+      - DEC-ACCEPTED-068
+      - DEC-ACCEPTED-069
+      - DEC-ACCEPTED-136
+      - DEC-ACCEPTED-137
+      - DEC-ACCEPTED-138
+      - DEC-ACCEPTED-140
+      - DEC-ACCEPTED-145
+      - CRIT-03
+      - CRIT-07
+    capabilities:
+      - id: CAP-BACKLOG-004
+        title: Agent conceptual elaboration boundaries
+        rationale: >
+          Describe the conceptual agent split from S08: reasoning/analysis agents
+          that are not executable, not self-verifying, and not self-approving.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-005
+        title: Command candidate standardisation
+        rationale: >
+          Define command candidates as repeatable inputs per S08: parameters,
+          expected outputs, and DoR context without creating real commands or permissions.
+          SP-05 remains unresolved.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-006
+        title: Script/CLI/validator boundary definition
+        rationale: >
+          Bound the deterministic control boundary for script/CLI/validator candidates
+          per S08 and S10: control structure, traceability, evidence, and source policy.
+          SP-07/SP-08 remain unresolved.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-007
+        title: LLM reasoning vs deterministic control separation
+        rationale: >
+          Classify the separation of LLM reasoning from deterministic control per AP-04:
+          agents reason, validators verify, owner approves.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-03
+    title: Control and evidence infrastructure
+    source_sections: [S02, S09, S10, S11, S17]
+    upstream_ref_patterns:
+      - AP-01
+      - AP-04
+      - AP-05
+      - AP-09
+      - TOM-01
+      - TOM-06
+      - TOM-07
+      - TOM-12
+      - SCH-01
+      - SCH-02
+      - SCH-03
+      - SCH-04
+      - SCH-05
+      - SCH-06
+      - SCH-07
+      - VAL-01
+      - VAL-02
+      - VAL-03
+      - VAL-04
+      - VAL-05
+      - VAL-06
+      - VAL-07
+      - SP-09
+      - SP-10
+      - DEC-ACCEPTED-107
+      - DEC-ACCEPTED-111
+      - DEC-ACCEPTED-114
+      - DEC-ACCEPTED-115
+      - DEC-ACCEPTED-146
+      - CRIT-06
+      - CRIT-07
+      - RISK-006
+      - RISK-010
+    capabilities:
+      - id: CAP-BACKLOG-008
+        title: State management specification
+        rationale: >
+          Specify state management per S11/SCH-03/VAL-03: state transitions,
+          status lifecycle, and the L1-L4 authority hierarchy.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-009
+        title: Logs capture and append-only audit trail
+        rationale: >
+          Describe append-only logs per S11: state transition logs, gate prerequisite
+          logs, validator result logs, and execution context logs.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-010
+        title: Evidence lifecycle and storage posture
+        rationale: >
+          Describe the S11 6-step evidence lifecycle: origin, capture, validation,
+          eligibility evaluation, governed registration, authoritative reference.
+          All storage Git-compatible per AP-09.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-011
+        title: Gate evidence and auditability boundary
+        rationale: >
+          Bound gate evidence with storage: VAL-04 gate prerequisite checking,
+          VAL-05 evidence record validation, and governed L2 registration.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-04
+    title: Source policy and Knowledge Governance
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_ref_patterns:
+      - AP-01
+      - AP-06
+      - AP-12
+      - TOM-01
+      - TOM-08
+      - TOM-13
+      - SCH-01
+      - SCH-08
+      - SCH-09
+      - VAL-01
+      - VAL-09
+      - SP-01
+      - SP-03
+      - DEC-ACCEPTED-126
+      - DEC-ACCEPTED-127
+      - DEC-ACCEPTED-128
+      - DEC-ACCEPTED-148
+      - DEC-ACCEPTED-150
+      - DEC-ACCEPTED-163
+      - CRIT-06
+      - CRIT-07
+      - BR-01
+      - BR-02
+      - RISK-006
+      - RISK-043
+      - RISK-044
+      - RISK-052
+      - RISK-054
+      - RISK-062
+    capabilities:
+      - id: CAP-BACKLOG-012
+        title: Source policy minima boundary
+        rationale: >
+          Bound source policy minima: docs.odoo.com + github.com/odoo/odoo only,
+          per DEC-ACCEPTED-163, AP-06, AP-12. No auto-expansion.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-013
+        title: Knowledge Gap detection and handling
+        rationale: >
+          Describe Knowledge Gap mechanism per S12: VAL-01/VAL-09 triggers,
+          gap-open/gap-resolved/gap-discarded states, and owner-gated resolution.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-014
+        title: Curation Request governance flow
+        rationale: >
+          Define Curation Request flow per S12: request, owner gate, approve/reject,
+          L1 registration. Only path for source policy expansion.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-05
+    title: Odoo 18 pilot environment and module
+    source_sections: [S03, S13, S15, S16, S17]
+    upstream_ref_patterns:
+      - AP-07
+      - AP-08
+      - AP-09
+      - TOM-02
+      - TOM-03
+      - TOM-11
+      - TOM-12
+      - SCH-05
+      - SCH-06
+      - SCH-10
+      - VAL-05
+      - VAL-06
+      - VAL-10
+      - SP-06
+      - SP-10
+      - SPK-S13-ENV
+      - SPK-S13-DB
+      - SPK-S13-RUNNER
+      - SPK-S13-EVIDENCE
+      - SPK-S13-TRACE
+      - SPK-S15-INSTALL
+      - SPK-S15-TEST
+      - SPK-S15-ACCESS
+      - DEC-ACCEPTED-135
+      - DEC-ACCEPTED-153
+      - DEC-ACCEPTED-156
+      - DEC-ACCEPTED-162
+      - DEC-ACCEPTED-163
+      - CRIT-01
+      - CRIT-06
+      - CRIT-07
+      - BR-01
+      - RISK-059
+      - RISK-010
+      - RISK-039
+    capabilities:
+      - id: CAP-BACKLOG-015
+        title: Odoo 18 environment readiness specification
+        rationale: >
+          Specify the Odoo 18 execution environment per S13: three logical
+          environment categories (development, validation, authority reference)
+          and seven logical components. Physical form remains spike-dependent.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-016
+        title: Pilot module candidate boundary definition
+        rationale: >
+          Define candidate boundary for the pilot module per S15: InternalRequest,
+          ApprovalRecord, form/list/search views, four-state workflow. No PRD, SDD, or final module.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-017
+        title: Internal requests / approvals evidence boundary
+        rationale: >
+          Bound pilot evidence with the S11 evidence lifecycle: classify Odoo 18
+          pilot execution evidence as candidate evidence (L3), identify promotion
+          path to governed evidence (L2) on validation.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-06
+    title: Security and secrets
+    source_sections: [S02, S08, S11, S14, S16, S17]
+    upstream_ref_patterns:
+      - AP-10
+      - AP-11
+      - AP-12
+      - TOM-09
+      - TOM-10
+      - SCH-04
+      - SCH-05
+      - SCH-10
+      - VAL-04
+      - VAL-10
+      - SP-02
+      - SPK-S14-01
+      - SPK-S14-02
+      - SPK-S14-03
+      - SPK-S14-04
+      - DEC-ACCEPTED-045
+      - DEC-ACCEPTED-064
+      - DEC-ACCEPTED-076
+      - DEC-ACCEPTED-092
+      - DEC-ACCEPTED-101
+      - CRIT-02
+      - CRIT-03
+      - CRIT-04
+      - CRIT-05
+      - RISK-021
+      - RISK-027
+      - RISK-040
+      - RISK-061
+      - RISK-063
+    capabilities:
+      - id: CAP-BACKLOG-018
+        title: Secrets handling posture specification
+        rationale: >
+          Specify secrets handling posture per S14 CA-1: identify controls to prevent tokens,
+          credentials, and Odoo secrets from entering repo, logs, or evidence.
+          SP-02 remains unresolved.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-019
+        title: Permissions boundary model specification
+        rationale: >
+          Define the permissions boundary model per S14 CA-2/SP-04: minimum-access,
+          OpenCode permissions that do not convert OpenCode into authority or policy engine.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-020
+        title: Security/risk triage boundary in gates
+        rationale: >
+          Describe security/risk triage per S14 CA-4: security criteria in gates,
+          risk escalation, and compliance cross-checking.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-07
+    title: Spike execution and technical validations
+    source_sections: [S06, S13, S14, S15, S16, S17]
+    upstream_ref_patterns:
+      - AP-11
+      - TOM-08
+      - TOM-09
+      - TOM-13
+      - TOM-14
+      - SP-
+      - SPK-
+      - DEC-ACCEPTED-049
+      - DEC-ACCEPTED-050
+      - DEC-ACCEPTED-142
+      - DEC-ACCEPTED-143
+      - DEC-ACCEPTED-149
+      - DEC-ACCEPTED-153
+      - DEC-ACCEPTED-158
+      - DEC-ACCEPTED-164
+      - CRIT-01
+      - CRIT-02
+      - CRIT-03
+      - CRIT-07
+      - RISK-059
+      - RISK-061
+      - RISK-063
+      - RISK-065
+      - BR-01
+      - BR-02
+    capabilities:
+      - id: CAP-BACKLOG-021
+        title: Spike sequencing readiness specification
+        rationale: >
+          Specify spike sequencing readiness per S16: Band A before Band B before
+          Band C with justified dependencies. No spike is executed at this level.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-022
+        title: Technical validation dependency tracking
+        rationale: >
+          Track technical validation dependencies across S13/S14/S15 spike families:
+          environment, security, and pilot module spike ordering.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-023
+        title: Open uncertainty tracking (SP-04/SP-05)
+        rationale: >
+          Track open uncertainties SP-04 (OpenCode permissions) and SP-05 (commands/skills
+          design). These remain conditional-open-uncertainty; resolution requires owner decision.
+        readiness: conditional
+        owner_decision_required: pending-spike-result
+      - id: CAP-BACKLOG-024
+        title: Post-V1 gated spike separation (SP-11..SP-13)
+        rationale: >
+          Classify Band D / post-V1-gated spikes: SP-11 (SDK/server),
+          SP-12 (OpenAPI/PDF), SP-13 (Frontend/OWL/Playwright). Not V1 core.
+          Activation requires explicit future owner decision.
+        readiness: post-v1
+        owner_decision_required: "yes"
+
+  - id: CAT-08
+    title: Traceability and quality gates
+    source_sections: [S01, S02, S09, S10, S11, S17]
+    upstream_ref_patterns:
+      - AP-01
+      - AP-05
+      - TOM-01
+      - TOM-05
+      - TOM-06
+      - TOM-07
+      - TOM-10
+      - SCH-01
+      - SCH-02
+      - SCH-03
+      - SCH-04
+      - SCH-05
+      - SCH-06
+      - SCH-07
+      - VAL-01
+      - VAL-02
+      - VAL-03
+      - VAL-04
+      - VAL-05
+      - VAL-06
+      - VAL-07
+      - VAL-08
+      - CRIT-06
+      - CRIT-07
+      - RULE-04
+      - RULE-05
+      - RISK-006
+    capabilities:
+      - id: CAP-BACKLOG-025
+        title: Bidirectional traceability preservation
+        rationale: >
+          Describe bidirectional traceability per S17/RULE-05: TOM-to-Blueprint and
+          Blueprint-to-authority links must remain complete without gaps.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-026
+        title: Acceptance-gate evidence boundary
+        rationale: >
+          Bound acceptance-gate evidence: FAC-01..FAC-08 traceability, gate
+          prerequisite checking, and evidence registration for owner review.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-027
+        title: Non-self-closure and validation coverage tracking
+        rationale: >
+          Track non-self-closure: verify that no gate is self-closed,
+          all approvals require explicit owner action, and validation coverage is complete.
+        readiness: candidate
+        owner_decision_required: none
+
+  - id: CAT-09
+    title: Owner / governance workflows
+    source_sections: [S01, S02, S03, S12, S16, S17]
+    upstream_ref_patterns:
+      - AP-05
+      - TOM-07
+      - TOM-10
+      - TOM-13
+      - SCH-03
+      - SCH-04
+      - VAL-03
+      - VAL-04
+      - SP-11
+      - SP-12
+      - SP-13
+      - DEC-ACCEPTED-059
+      - DEC-ACCEPTED-094
+      - DEC-ACCEPTED-104
+      - DEC-ACCEPTED-148
+      - DEC-ACCEPTED-149
+      - DEC-ACCEPTED-157
+      - CRIT-05
+      - RISK-004
+      - RISK-005
+      - RISK-013
+      - BR-03
+      - BR-04
+      - RULE-01
+      - RULE-02
+    capabilities:
+      - id: CAP-BACKLOG-028
+        title: Owner approval workflow boundary
+        rationale: >
+          Define owner approval workflow boundary: owner-gated section approval,
+          iteration closure, and governance state tracking per S01/S02/blueprint-state.yaml.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-029
+        title: Blocker registration and conflict classification
+        rationale: >
+          Classify blocker registration and conflict handling per S01:
+          needs-owner-decision and open-question registration, conflict escalation,
+          and retroactive blocker detection.
+        readiness: candidate
+        owner_decision_required: none
+      - id: CAP-BACKLOG-030
+        title: Deferred/post-V1 owner decision registry
+        rationale: >
+          Track the deferred/post-V1 owner decision registry: identify conditional
+          and post-V1-gated items that require explicit future owner decision before
+          movement into V1 core.
+        readiness: candidate
+        owner_decision_required: "yes"
