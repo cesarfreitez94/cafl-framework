@@ -1,0 +1,674 @@
+# CAFL V1 Framework Definition — Stage 1 Extraction
+# Generated: 2026-05-31
+# Status: proposed
+# Authority: derived, non-authoritative until approved
+# Scope: current framework definition extracted from repo evidence only
+# Non-goals: no alignment verdict, no roadmap, no backlog triage, no spike plan,
+#   no work packages, no findings promotion, no implementation authorization
+
+metadata:
+  stage: 1
+  title: "Current Framework Definition Extraction"
+  status: proposed
+  source_of_truth: project-truth/
+  authority_order:
+    1: project-truth/decisions/accepted.md
+    2: project-truth/TOM.md
+    3: project-truth/decisions/rejected.md
+    4: project-truth/decisions/superseded.md
+    5: project-truth/critical-map.md
+    6: project-truth/decisions/pending.md
+    7: project-truth/risks.md
+  supporting_sources:
+    - project-truth/glossary.md
+    - project-truth/implementation-blueprint.md
+    - project-truth/blueprint-state.yaml
+    - project-truth/blueprint-contract.yaml
+    - reports/blueprint/deterministic-verification-report.md
+    - reports/backlog/backlog-generation-report.md
+    - reports/backlog/backlog-verification-report.md
+    - backlog/backlog-candidates.yaml
+    - backlog/backlog-traceability.yaml
+    - backlog/backlog-contract.yaml
+    - generated/blueprint/blueprint-index.json
+  context_only_sources:
+    - reports/findings/post-blueprint-findings-register.md
+    - reports/findings/post-blueprint-findings-executive-summary.md
+  excluded_as_authority:
+    - framework/         # discarded as contaminated input (CRIT-07, DEC-ACCEPTED-133)
+    - root README.md     # status mirror only; project-truth/ wins on conflict
+    - .opencode/         # Blueprint automation governance only, not final CAFL agents/commands
+    - docs/coordination/  # coordination reference only, not source of truth
+
+framework:
+  definition: >
+    CAFL es un framework/plataforma operativo sobre OpenCode para desarrollar
+    soluciones empresariales Odoo con asistencia de IA durante el ciclo de vida
+    de desarrollo.
+  source: DEC-ACCEPTED-013
+  classification: >
+    Framework operativo especializado en Odoo. No es un framework generico
+    multi-stack ni una plataforma general para desarrollo en cualquier
+    tecnologia.
+  domain: Odoo
+  domain_scope: Odoo-only for V1
+  target_version: Odoo 18
+  runtime_principal: OpenCode
+  runtime_direction: >
+    Hybrid progressive operating model: OpenCode + commands + scripts/CLI/
+    validators locales + storage simple y auditable. V1 is not agents-only
+    and cannot be purely manual or narrative-only.
+  source_runtime: DEC-ACCEPTED-136, DEC-ACCEPTED-137, DEC-ACCEPTED-138
+  pilot: >
+    Solicitudes internas / aprobaciones simples (internal requests /
+    simple approvals). Confirmed by owner via DEC-ACCEPTED-162.
+    Closed selection; Blueprint must not reopen it.
+  v1_goal: >
+    Demonstrate an end-to-end verifiable flow from owner idea to Odoo 18
+    module technically ready for production.
+  readiness_definition: >
+    Functional, installable/loadable in Odoo, tested, documented, secure
+    within scope, auditable, reviewable, and with sufficient evidence.
+    Does not mean deployed to production server.
+  autonomy_principle: >
+    Complete autonomy within the Odoo development lifecycle, with human
+    control reserved for critical decisions, not micro-management.
+  planning_horizon: 2 months as scope constraint (CRIT-01)
+
+problem:
+  statement: >
+    Permitir que un propietario individual opere con capacidades
+    equivalentes a un equipo de ingenieria especializado para construir
+    soluciones empresariales Odoo.
+  source: DEC-ACCEPTED-014
+  context: >
+    The owner operates as a single-worker enterprise. CAFL should close
+    the gap between a solo owner and a full engineering team for Odoo
+    module development.
+
+intended_user:
+  description: >
+    El usuario inicial de CAFL es el owner. V1 no esta definido para
+    clientes, equipos externos o desarrolladores externos.
+  source: DEC-ACCEPTED-015
+
+roles:
+  owner:
+    role: "Human decision gate for critical matters"
+    responsibilities:
+      - "Define intent and respond to critical decisions"
+      - "Approve scope changes, significant exceptions, significant debt"
+      - "Approve deadline-driven scope reductions"
+      - "Grant final module acceptance"
+    limits:
+      - "Does not micro-manage normal tasks"
+      - "Does not replace QA, gates, or evidence"
+    mechanism: "Exclusively human for critical decisions"
+    approval_required_for:
+      - "Scope change"
+      - "Unresolvable critical context lack"
+      - "Legal/compliance critical risk"
+      - "Normative contradiction"
+      - "High security/data risk"
+      - "Irreversible architectural decision"
+      - "Testing/DoD exception"
+      - "Repeated rework beyond limit"
+      - "Final module acceptance"
+      - "Deadline-based scope reduction"
+    sources:
+      - DEC-ACCEPTED-019
+      - DEC-ACCEPTED-059
+      - TOM Roles Y Capacidades
+  agents:
+    role: "LLM-assisted reasoning and judgment"
+    mechanism_description: >
+      Agents are suitable for judgment, reasoning, analysis, design,
+      generation, diagnosis, review, and drafting. They are NOT
+      executable, not self-verifying, and not self-approving.
+    responsibilities:
+      - "Functional analysis (PRD drafting)"
+      - "Odoo technical design (SDD drafting)"
+      - "Backend construction"
+      - "QA planning and diagnosis"
+      - "Risk review and documentation drafting"
+    limits:
+      - "Cannot approve gates"
+      - "Cannot self-close"
+      - "Cannot convert narrative into authoritative state"
+      - "Cannot replace deterministic evidence"
+    sources:
+      - DEC-ACCEPTED-055
+      - DEC-ACCEPTED-056
+      - DEC-ACCEPTED-062
+      - DEC-ACCEPTED-063
+      - TOM Roles Y Capacidades
+  orchestration:
+    role: "Flow coordination and gate decision for normal cases"
+    mechanism: "Mixed (assisted + future deterministic control)"
+    responsibilities:
+      - "Coordinate flow, handoffs, conceptual state"
+      - "Manage blocking, rework, escalation"
+      - "Decide normal gates based on evidence"
+    limits:
+      - "Cannot convert LLM narrative into real state"
+      - "Cannot decide critical decisions or final module closure"
+    sources:
+      - DEC-ACCEPTED-058
+      - TOM Matriz Operativa De Capacidades
+  deterministic_controls:
+    role: "Verifiable, reproducible validation not dependent on LLM reasoning"
+    mechanism: "Scripts/CLI/validators candidates, rules/config, skills/playbooks"
+    expected_scope_v1:
+      - "Structural validation of packets/contracts/gates/evidence"
+      - "DoR structural checks"
+      - "Minimum traceability"
+      - "Logs/state/evidence recording"
+      - "Odoo 18 install/update/test execution"
+      - "Evidence capture"
+      - "Source policy / Knowledge Gap basics"
+    limits:
+      - "Do not replace technical judgment, gate decision, or owner acceptance"
+    sources:
+      - DEC-ACCEPTED-069
+      - DEC-ACCEPTED-140
+      - DEC-ACCEPTED-145
+      - TOM Automatico Asistido Y Exclusivamente Humano
+  mechanism_split_summary:
+    categories:
+      - type: "Conceptual agents"
+        responsibility: "Reasoning, analysis, design, generation, review"
+        constraints: "Not executable, not self-closing, not self-approving"
+      - type: "Command candidates"
+        responsibility: "Repeatable inputs to structure phases/tasks"
+        constraints: "Not real commands, not final gate authority"
+      - type: "Script/CLI/validator candidates"
+        responsibility: "Deterministic structural validation and evidence capture"
+        constraints: "Not implemented; language and toolchain remain spike-dependent"
+      - type: "Rules/config"
+        responsibility: "Minimum invariants"
+        constraints: "Conceptual only"
+      - type: "Skills/playbooks"
+        responsibility: "On-demand operational knowledge"
+        constraints: "Conceptual only"
+      - type: "Human/owner"
+        responsibility: "Critical decisions and gate closure"
+        constraints: "Exclusively human; no agent delegation"
+    source_blueprint_section: S08
+
+contracts:
+  role: >
+    Formal internal agreement between phases, responsibilities, mechanisms,
+    or artifacts that defines inputs, outputs, context, token budget,
+    evidence, producer, consumer, validator, sufficiency criteria, rejection
+    criteria, and handoff.
+  source: CRIT-04, DEC-ACCEPTED-072
+  base_envelope_fields:
+    - proposito
+    - unidad_de_control
+    - producer
+    - consumer
+    - validator
+    - inputs
+    - outputs
+    - contexto
+    - token_budget
+    - restricciones
+    - criterios_de_suficiencia
+    - criterios_de_rechazo
+    - evidencia
+    - blockers
+    - handoff
+    - version
+    - trazabilidad
+  always_required_contracts:
+    - "Base Contract Envelope"
+    - "Idea -> PRD"
+    - "PRD -> SDD"
+    - "SDD -> Task/Context Packet"
+    - "Task/Context Packet + DoR"
+    - "Task Execution"
+    - "QA/Testing"
+    - "Evidence/Closure"
+    - "Context Routing / Token Budget"
+  conditional_required_contracts:
+    - "Security/Risk/Compliance Review"
+    - "Rework"
+    - "Escalation/Owner Decision"
+    - "Mechanism Execution Profile"
+  source_contracts: DEC-ACCEPTED-074, DEC-ACCEPTED-075
+
+gates:
+  role: >
+    Internal decision points that verify criteria and evidence to continue,
+    block, rework, accept debt, or escalate.
+  source: CRIT-05, DEC-ACCEPTED-090
+  separation_principle: "Gate recommendation, gate verification, and gate decision are separated"
+  decision_authority: "Orchestration decides normal gates based on evidence; owner decides critical decisions and final module closure"
+  independent_gates:
+    - "PRD Sufficiency Gate"
+    - "SDD Sufficiency Gate"
+    - "Task Packet / DoR Gate"
+    - "QA/Testing Gate"
+    - "Evidence/Closure Gate"
+    - "Module Technical Readiness Gate"
+  transversal_checks:
+    - "Context Routing / Token Budget"
+    - "Security/Risk/Compliance Triage"
+  conditional_gates:
+    - "Security/Data/Access Gate"
+    - "Debt Acceptance Gate"
+    - "Rework Limit Gate"
+  severity_scale:
+    - blocker
+    - critical
+    - high
+    - medium
+    - low
+    - warning/info
+  actions:
+    - continue
+    - continue_with_warning
+    - rework
+    - block
+    - escalate_to_owner
+    - reject/stop
+    - accept_technical_debt
+    - replan/reduce_scope
+  rework_default_limit: 2 cycles per task under same scope
+  sources:
+    - DEC-ACCEPTED-091
+    - DEC-ACCEPTED-092
+    - DEC-ACCEPTED-093
+    - DEC-ACCEPTED-094
+    - DEC-ACCEPTED-095
+    - DEC-ACCEPTED-096
+    - DEC-ACCEPTED-104
+
+evidence:
+  role: >
+    Documentary or technical proof that supports a decision, result,
+    verification, or deliverable.
+  principle: "Evidence must be reproducible; LLM narrative alone is not sufficient"
+  minimum_v1_evidence:
+    - "Traceable PRD and SDD"
+    - "Contract/packet registry"
+    - "Context/source usage logs"
+    - "Gate logs with recommendation, verification, decision, severity, action, evidence"
+    - "Evidence logs of changes, tests, install/update/test execution, results, documentation, closure"
+    - "Rework history if applicable"
+    - "Debt log with accepted debt or none declaration"
+    - "Approval log for owner decisions, exceptions, and final acceptance"
+  sources:
+    - DEC-ACCEPTED-100
+    - DEC-ACCEPTED-115
+    - TOM Evidencia Minima Del Piloto
+
+state:
+  role: >
+    Authoritative state lives in traceable, versionable, logical records.
+    LLM narrative is not authoritative state.
+  source: DEC-ACCEPTED-107
+  required_logs_always:
+    - "State/Status Change Log"
+    - "Decision Log"
+    - "Contract/Packet Registry"
+    - "Gate Log"
+    - "Evidence Log"
+    - "Source Registry/Source Log"
+    - "Context Log"
+    - "Rework History"
+    - "Approval Log"
+  required_logs_conditional:
+    - "Source Snapshot Log"
+    - "Source Usage Log"
+    - "Excluded/Prohibited Context Log"
+    - "Token/Context Usage Log"
+    - "Debt Log"
+    - "Knowledge Registry Log"
+    - "Integration Source Log"
+  authority_hierarchy:
+    L1: "project-truth/ — authoritative governed records"
+    L2: "Governed registered evidence"
+    L3: "Candidate evidence"
+    L4: "Ephemeral"
+  storage_direction: "Simple, auditable, Git-compatible (Markdown, JSON/YAML, JSONL append-only)"
+  sources:
+    - DEC-ACCEPTED-108
+    - DEC-ACCEPTED-111
+    - DEC-ACCEPTED-112
+    - DEC-ACCEPTED-146
+
+traceability:
+  principle: "Bidirectional: TOM requirement -> Blueprint component and Blueprint component -> TOM requirement"
+  control_unit_hierarchy: "module -> capability/feature -> task"
+  required_paths:
+    - "contract -> gate -> evidence"
+    - "module -> capability/feature -> task"
+    - "TOM anchors -> Blueprint components -> backlog categories"
+  always_required_ids:
+    - module_id
+    - capability_feature_id
+    - task_id
+    - contract_id
+    - packet_id
+    - gate_result_id
+    - evidence_id
+    - decision_id
+    - risk_id
+    - source_id
+    - context_event_id
+    - status_change_id
+  conditional_ids:
+    - source_snapshot_id
+    - source_usage_id
+    - knowledge_artifact_id
+    - integration_pack_id
+    - pattern_id
+    - anti_pattern_id
+    - example_id
+    - token_usage_id
+    - rework_cycle_id
+    - debt_id
+    - owner_approval_id
+    - blocker_id
+  sources:
+    - DEC-ACCEPTED-109
+    - DEC-ACCEPTED-110
+    - DEC-ACCEPTED-113
+    - DEC-ACCEPTED-114
+    - RULE-04, RULE-05
+
+knowledge_governance:
+  mode: "Minimum mode by default in V1"
+  minimum_source_policy:
+    authorized:
+      - "docs.odoo.com"
+      - "github.com/odoo/odoo"
+    expansion_path: "Curation Request -> owner gate -> approve/reject -> L1 registration"
+    prohibited:
+      - "Free web search as direct implementation source"
+      - "Wikipedia as direct technical source"
+      - "Unauthorized blogs"
+      - "StackOverflow as authoritative source"
+      - "Copying third-party solutions without validation"
+  knowledge_gap: "Block implementation until authorized source/artifact/pack is sufficient"
+  curation_mode: "Activated by Knowledge Gap; requires owner approval or prior source policy"
+  deferred_from_v1:
+    - "RAG / vector base"
+    - "Broad automated documentation ingestion"
+  sources:
+    - DEC-ACCEPTED-163
+    - DEC-ACCEPTED-126
+    - DEC-ACCEPTED-127
+    - DEC-ACCEPTED-128
+    - DEC-ACCEPTED-148
+    - DEC-ACCEPTED-150
+
+operating_flow:
+  control_unit: "module -> capability/feature -> task (verifiable)"
+  phases:
+    - id: 1
+      name: "Idea intake"
+      executor: "Owner + functional analysis + orchestration"
+      validator: "Orchestration"
+      output: "Traced intake, initial objective, questions, required context"
+      blocks_if: "Ambiguous critical objective, impossible scope, context gap preventing elicitation"
+      advance_condition: "Sufficient basis to elicit PRD without inventing"
+    - id: 2
+      name: "PRD light"
+      executor: "Assisted functional analysis"
+      validator: "Technical receptor/orchestration; owner if critical scope"
+      output: "Light PRD with scope in/out, actors, rules, acceptance criteria, risks, blocking questions"
+      blocks_if: "Missing scope, critical rule, acceptance, legal/compliance/security/data risk, or owner decision"
+      advance_condition: "PRD Sufficiency Gate can verify"
+    - id: 3
+      name: "PRD Sufficiency Gate"
+      executor: "Functional analysis recommendation"
+      validator: "Orchestration/technical receptor; owner if critical decision"
+      output: "Gate decision: continue, rework, block, or escalate"
+      blocks_if: "PRD does not allow designing without inventing or contains critical blocker"
+      advance_condition: "Gate decides continue"
+    - id: 4
+      name: "SDD light"
+      executor: "Assisted Odoo technical design"
+      validator: "QA/risk/technical receptor"
+      output: "Light SDD, minimum ADR if applicable, technical strategy and tests, risks"
+      blocks_if: "Insufficient Odoo source, critical technical ambiguity, security/data/compliance risk, irreversible architectural decision without owner"
+      advance_condition: "SDD Sufficiency Gate can verify"
+    - id: 5
+      name: "SDD Sufficiency Gate"
+      executor: "Architect recommendation"
+      validator: "QA/risk/receptor; orchestration decides normal, owner if irreversible"
+      output: "Gate decision: continue, rework, block, escalate, or replan"
+      blocks_if: "Not implementable design, insufficient sources, critical risks, untestable plan"
+      advance_condition: "Gate decides continue"
+    - id: 6
+      name: "Capabilities/tasks + task/context packets"
+      executor: "Architect + orchestration + context routing"
+      validator: "Receptor/validator of each packet"
+      output: "Hierarchy module -> capability/feature -> task and candidate packets"
+      blocks_if: "Unverifiable tasks, mixed scope, insufficient context, undeclared blockers"
+      advance_condition: "Each task has a validatable packet"
+    - id: 7
+      name: "Task Packet / DoR Gate"
+      executor: "Producer/orchestration recommendation"
+      validator: "Receptor or validator; orchestration decides"
+      output: "Packet ready or DoR rejection"
+      blocks_if: "Missing minimum fields, consumer cannot execute without inventing, expected evidence not verifiable"
+      advance_condition: "Gate decides continue and packet is ready"
+    - id: 8
+      name: "Task execution"
+      executor: "Builder/executing capability"
+      validator: "QA, architect, or applicable reviewer"
+      output: "Expected technical/documentary change and execution report"
+      blocks_if: "Scope creep, insufficient source, ambiguous permissions, Knowledge Gap, critical risk, or scope change"
+      advance_condition: "Output meets packet and can be tested"
+    - id: 9
+      name: "QA/Testing Gate"
+      executor: "QA + reproducible future execution/capture"
+      validator: "Independent QA/orchestration; owner if critical exception"
+      output: "QA result, failures, recommendations, rework or advance"
+      blocks_if: "Minimum testing not executed, absent evidence, critical failure, builder self-closure"
+      advance_condition: "Gate decides continue, or continue with warning allowed"
+    - id: 10
+      name: "Evidence/Closure Gate per task/capability"
+      executor: "Evidence/closure + orchestration"
+      validator: "QA/orchestration; owner conditional"
+      output: "Operational closure package for task/capability"
+      blocks_if: "DoD not demonstrated, minimum evidence/documentation absent, functional debt, open blocker"
+      advance_condition: "Gate decides closure or non-blocking warning allowed"
+    - id: 11
+      name: "Controlled rework"
+      executor: "Orchestration + QA/reviewer + executor"
+      validator: "QA/reviewer and orchestration; owner on third significant cycle or scope change"
+      output: "Correction, new evidence, rework log, or escalation"
+      blocks_if: "Third significant cycle without owner, hidden scope change, undiagnosed cause"
+      advance_condition: "Failure corrected within limit or owner decides exception/replan"
+    - id: 12
+      name: "Module Technical Readiness Gate"
+      executor: "QA/orchestration/evidence closure recommendation"
+      validator: "QA, security/risk/compliance, and owner"
+      output: "Final technical production decision: ready, block, rework, reject/stop, or replan/reduce scope"
+      blocks_if: "Minimum testing/evidence/documentation absent, functional debt, critical risk, installation/loading not validated"
+      advance_condition: "Owner accepts final module as technically ready for production"
+    - id: 13
+      name: "Knowledge governance transversal"
+      executor: "Knowledge governance/curation + owner/source policy if applicable"
+      validator: "Source policy, steward, owner when no approved source exists"
+      output: "Source usage, authorized artifact, or Knowledge Gap + Curation Request"
+      blocks_if: "Insufficient authorized knowledge, prohibited source needed, insufficient source policy"
+      advance_condition: "Sufficient authorized knowledge or owner/source policy approves curation"
+  invariants:
+    - "PRD and SDD are mandatory in light version"
+    - "No operational unit starts without task/context packet and minimum DoR"
+    - "Context routing and token budget are mandatory per contract and packet"
+    - "Gate recommendation, verification, and decision are separated"
+    - "Owner decides critical decisions and final module closure"
+  sources:
+    - CRIT-02
+    - TOM Flujo Operativo Punta A Punta
+    - DEC-ACCEPTED-036 through DEC-ACCEPTED-053
+
+designed:
+  target_operating_model:
+    status: approved
+    approval: DEC-ACCEPTED-161
+    date: "2026-05-27"
+    content: "Full operational model: roles, flow, gates, control, evidence, knowledge governance, pilot instantiation, Blueprint handoff"
+  blueprint:
+    status: closed
+    iterations: 5
+    sections: 19
+    sections_list:
+      - "S01: Blueprint Scope and Non-Goals"
+      - "S02: Architecture Principles (AP-01..AP-12)"
+      - "S03: V1 / Post-V1 Boundary (BR-01..BR-04)"
+      - "S04: Runtime Layout Candidate (9 conceptual zones)"
+      - "S05: Source-vs-Runtime Structure"
+      - "S06: Initial Spike Map (SP-01..SP-13, bands A/B/C/D)"
+      - "S07: OpenCode Operating Design"
+      - "S08: Agents / Commands / Scripts / Validators Split"
+      - "S09: Schemas V1 Minimum Set (SCH-01..SCH-10)"
+      - "S10: Validators V1 Minimum Set (VAL-01..VAL-10)"
+      - "S11: State / Logs / Evidence Storage (L1-L4 hierarchy, 6-step evidence lifecycle)"
+      - "S12: Knowledge Base and Source Policy Implementation"
+      - "S13: Odoo 18 Execution Environment (3 categories, 7 logical components)"
+      - "S14: Security and Secrets (CA-1..CA-4 control areas)"
+      - "S15: Pilot Module Blueprint (InternalRequest, ApprovalRecord, 4-state workflow)"
+      - "S16: Spikes and Technical Validations final order"
+      - "S17: Bidirectional Traceability Matrix"
+      - "S18: Blueprint Outputs to Backlog (9 categories)"
+      - "S19: Acceptance Criteria (FAC-01..FAC-08, AC-G01..AC-G09)"
+    architecture_principles: 12
+    boundary_rules: 4
+    conceptual_schemas: 10
+    conceptual_validators: 10
+    spikes_catalogued:
+      primary: 13
+      detail: "SP-01..SP-13 primary spikes, plus additional section-specific spike families for environment, security, and pilot validation where applicable"
+    pilot_models: ["InternalRequest", "ApprovalRecord"]
+    pilot_workflow_states: ["draft", "submitted", "approved", "rejected"]
+    traceability_references: 233
+
+generated:
+  blueprint_deterministic:
+    - "generated/blueprint/blueprint-index.json"
+    - "generated/blueprint/state-check.json"
+    - "generated/blueprint/rule-check.json"
+    - "generated/blueprint/traceability-map.json"
+  backlog_candidates:
+    total_items: 39
+    epics: 9
+    capabilities: 30
+    readiness_distribution:
+      scope: "across total backlog items (39)"
+      candidate: 27
+      conditional: 10
+      post_v1: 2
+    files:
+      - "backlog/backlog-candidates.yaml"
+      - "backlog/backlog-traceability.yaml"
+  reports:
+    blueprint_verification: "reports/blueprint/deterministic-verification-report.md"
+    backlog_generation: "reports/backlog/backlog-generation-report.md"
+    backlog_verification: "reports/backlog/backlog-verification-report.md"
+
+validated:
+  blueprint_deterministic_verification:
+    result: "PASS"
+    findings: 0
+    checks:
+      state_check: "PASS (53 checks)"
+      rule_check: "PASS (5 checks)"
+      traceability_index: "PASS"
+      section_index: "PASS"
+    report: "reports/blueprint/deterministic-verification-report.md"
+  backlog_verification:
+    result: "PASS"
+    contract_checks: "PASS (9 checks)"
+    candidate_checks: "PASS (46 checks)"
+    traceability_checks: "PASS (3 checks)"
+    report: "reports/backlog/backlog-verification-report.md"
+
+pending:
+  roadmap:
+    status: "Not started"
+  triage:
+    status: "Not started"
+  spikes_execution:
+    status: "Not started"
+    description: "13 primary spikes (SP-01..SP-13) plus environment, security, and pilot spike families catalogued but not executed"
+  work_packages:
+    status: "Not started"
+    description: "Backlog candidates are conceptual only; capability-to-work-package decomposition not demonstrated"
+  implementation:
+    status: "Not authorized"
+  owner_decisions_outstanding:
+    status: "Not yet formally registered"
+    context: >
+      Post-Blueprint findings register (FND-POSTBP-REG-001, proposed, 15 findings)
+      identifies 4 findings requiring owner decision (FND-POSTBP-06, FND-POSTBP-11,
+      FND-POSTBP-12, FND-POSTBP-15). These are proposed only, not approved.
+  findings:
+    status: "proposed"
+    count: 15
+    severity_distribution:
+      critical: 4
+      high: 8
+      medium: 3
+    register: "reports/findings/post-blueprint-findings-register.md"
+    executive_summary: "reports/findings/post-blueprint-findings-executive-summary.md"
+
+not_authorized:
+  runtime:
+    - "Creating runtime skeleton or executable runtime"
+    - "Installing or configuring Odoo 18"
+    - "Executing Odoo install/update/test"
+    - "Running the pilot module"
+  agents_commands:
+    - "Creating final executable agents"
+    - "Creating real OpenCode commands"
+    - "Creating final agent prompts"
+    - "Creating final permissions configuration"
+  schemas_validators_scripts:
+    - "Creating physical final schemas"
+    - "Creating real validators"
+    - "Creating executable scripts"
+    - "Deciding scripts/CLI language (reserved for spike)"
+    - "Creating final storage/log paths"
+  rag_vector:
+    - "Creating RAG infrastructure"
+    - "Creating vector database"
+    - "Automated broad documentation ingestion"
+  other:
+    - "Creating SDK/server as V1 core (DEC-ACCEPTED-164)"
+    - "Creating final PRD or SDD for the pilot"
+    - "Creating detailed technical backlog"
+    - "Creating CI/CD pipeline"
+    - "Creating dashboard/UI for the framework"
+    - "Reopening CRIT-01..CRIT-07"
+    - "Reopening TOM"
+    - "Using framework/ as input or reference"
+    - "Recreating framework/"
+    - "Creating CRIT-08"
+    - "Committing or pushing"
+    - "Expanding source policy beyond DEC-ACCEPTED-163 minima"
+
+theoretical_behavior_if_implemented:
+  - "Owner provides a brief idea for an Odoo 18 module"
+  - "CAFL elicits scope, actors, rules, and acceptance criteria to produce a light PRD"
+  - "PRD passes PRD Sufficiency Gate with evidence"
+  - "CAFL translates approved PRD into a light SDD with Odoo-specific technical design"
+  - "SDD passes SDD Sufficiency Gate"
+  - "CAFL decomposes the module into capabilities and verifiable tasks"
+  - "Each task receives a task/context packet with DoR validated by the consumer"
+  - "OpenCode coordinates agents to build backend, views, security, and data"
+  - "QA/Testing Gate verifies outputs with reproducible evidence (not just LLM narrative)"
+  - "Evidence/Closure Gate per task consolidates evidence, docs, and traceability"
+  - "Module Technical Readiness Gate validates aggregated evidence, tests, and pilot execution"
+  - "Owner reviews and accepts the module as technically ready for production"
+  - "Knowledge governance runs transversally: source policy enforced, Knowledge Gaps blocked and curated, Curation Requests owner-gated"
+  - "All state, decisions, evidence, gates, sources, rework, and approvals are logged in append-only, Git-compatible records"
+  - "Rework is bounded to 2 cycles per task; third cycle escalates to owner"
+  - "13 primary spikes (SP-01..SP-13) plus additional section-specific spike families resolve open uncertainties where applicable (permissions, commands/skills, Odoo 18 environment, secrets, toolchain) before committing to physical implementations"
+  - "SDK/server, RAG/vector base, dashboard/UI, CI/CD, and broad integrations remain post-V1 pending future explicit owner decisions"
