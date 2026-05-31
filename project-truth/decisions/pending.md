@@ -1,6 +1,6 @@
 # Pending Decisions
 
-IMPLEMENTATION_BLUEPRINT_WORKING_CONTRACT_CREATED
+STAGE2_OWNER_ALIGNMENT_CONFIRMED_ROADMAP_CONDITIONS_ACCEPTED
 
 ## CRIT-01: Intent And Scope
 
@@ -55,10 +55,12 @@ IMPLEMENTATION_BLUEPRINT_WORKING_CONTRACT_CREATED
 - [accepted] Piloto V1 confirmado por owner como solicitudes internas / aprobaciones simples. Decision registrada en DEC-ACCEPTED-162; Blueprint debe instanciar el flujo sin reabrir seleccion ni crear PRD/SDD/backlog aqui.
 - [accepted] Source policy minima base pre-autorizada por owner: documentacion oficial Odoo y repositorio oficial GitHub `odoo/odoo`. Decision registrada en DEC-ACCEPTED-163; enforcement fisico queda pendiente para Blueprint/technical validation.
 - [accepted] SDK/server queda fuera de core V1. Decision registrada en DEC-ACCEPTED-164; cualquier inclusion posterior requiere spike favorable y decision explicita del owner.
-- [accepted] Implementation Blueprint working contract creado en `project-truth/implementation-blueprint.md`; Iteration 1 no esta iniciada y requiere elaboracion posterior bajo aprobacion owner entre iteraciones.
-- [pending] Implementation Blueprint debe elaborarse iterativamente desde el working contract, sin usar `framework/` como input, tomando como entradas el piloto V1 confirmado, la source policy minima pre-autorizada y SDK/server fuera de core V1, sin convertir recomendaciones en implementacion prematura.
-- [pending] Diseno fisico de source policy enforcement, Knowledge Gap y Curation Request queda para Implementation Blueprint/technical validation; no esta implementado aqui.
-- [pending] Technical validations/spikes deben definirse formalmente.
-- [pending] Backlog tecnico debe definirse formalmente.
-- [pending] Implementacion controlada debe ejecutarse solo despues de los pasos formales que correspondan y con scope V1 aprobado.
+- [accepted] Implementation Blueprint working contract creado en `project-truth/implementation-blueprint.md`. Blueprint elaborado iterativamente (5 iteraciones, 19 secciones, todas closed/approved). No uso framework/ como input. Blueprint cerrado y aprobado; no requiere elaboracion adicional.
+- [accepted] Diseno logico de source policy enforcement, Knowledge Gap y Curation Request completado en Blueprint S12. Enforcement fisico queda pendiente para V1 execution (DEC-ACCEPTED-170).
+- [accepted] Technical validations/spikes definidos formalmente en Blueprint S06 y S16: 13 primary spikes (SP-01..SP-13) mas familias de spikes por seccion. Ejecucion de spikes pendiente (ver condicion RC-04/DEC-ACCEPTED-168).
+- [accepted] Backlog candidates generados y verificados (9 epics, 30 capabilities). Backlog tecnico ejecutable pendiente condicionado a demostracion capability->work package (DEC-ACCEPTED-169).
+- [accepted] Stage 2 Owner Alignment Review completado y confirmado por owner (2026-05-31). Veredicto: ALIGNED_WITH_ADJUSTMENTS. Decisiones RC-01..RC-06 registradas en DEC-ACCEPTED-165..DEC-ACCEPTED-170.
+- [pending] Roadmap / backlog triage: planificacion autorizada ahora que RC-01..RC-06 estan resueltos. Autorizacion es de planificacion solamente; no autoriza ejecucion de spikes, implementacion ni trabajo tecnico. Debe incorporar: spike integration model (DEC-ACCEPTED-168), demostracion capability->work package (DEC-ACCEPTED-169), source authorization gate progresivo (DEC-ACCEPTED-170), self-coordination minima (DEC-ACCEPTED-167), priorizacion de ejecucion real sobre documentacion adicional (DEC-ACCEPTED-166).
+- [pending] Spike execution: planificacion autorizada como parte de roadmap/triage. Ejecucion de spikes no esta autorizada hasta que roadmap sea aprobado y spike integration model (DEC-ACCEPTED-168) este definido.
+- [pending] Implementacion controlada: no autorizada. Requiere roadmap aprobado, spike integration model definido y demostracion capability->work package completada antes de cualquier autorizacion de implementacion.
 - [accepted] Esta lista no impone una secuencia detallada post-CRIT-07 ni crea CRIT-08.

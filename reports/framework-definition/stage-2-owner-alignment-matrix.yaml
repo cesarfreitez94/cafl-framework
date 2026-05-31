@@ -1,0 +1,546 @@
+# CAFL V1 Stage 2 Owner Alignment Matrix
+# Generated: 2026-05-31
+# Status: owner_confirmed (2026-05-31)
+# Authority: owner_confirmed. Stage 2 closed. Decisions DEC-ACCEPTED-165..170 recorded.
+# Non-goals: no roadmap, no backlog triage, no spike plan, no work packages,
+#   no findings promotion, no implementation authorization, no commit
+
+status: owner_confirmed
+stage: 2
+authority: owner_confirmed
+owner_confirmation_date: "2026-05-31"
+decision_ids_recorded: [DEC-ACCEPTED-165, DEC-ACCEPTED-166, DEC-ACCEPTED-167, DEC-ACCEPTED-168, DEC-ACCEPTED-169, DEC-ACCEPTED-170]
+
+owner_expectation_summary:
+  statement: >
+    CAFL debe ser una herramienta agentica sobre OpenCode que cubra el ciclo
+    idea → elicitacion → PRD → SDD → desarrollo → testing → documentacion →
+    evidencia → modulo listo para instalacion real en cliente, desde perspectiva
+    de calidad de software. Debe funcionar como equipo de ingenieros para un
+    owner individual, convertir ideas vagas en blueprints solidos bloqueando en
+    lugar de asumir, optimizar tokens agresivamente moviendo validacion
+    deterministica a scripts/validators, y producir en V1 mecanismos reales
+    funcionando para al menos un flujo piloto acotado.
+  requirements:
+    OE-01: "Agentic tool built on OpenCode"
+    OE-02: "Full lifecycle coverage: idea → elicitation → PRD → SDD → development → testing → documentation → evidence → module ready"
+    OE-03: "Functions as engineering team equivalent for solo owner"
+    OE-04: "Converts vague idea into solid blueprint; blocks on missing info, no assumptions"
+    OE-05: "Technical/legal/normative validation as risk/coherence analysis, not formal certification"
+    OE-06: "Progressive curated knowledge base; critical Odoo decisions require authorized source"
+    OE-07: "Aggressive token optimization; deterministic validation moves to scripts/validators"
+    OE-08: "V1 must have real working agents, commands, scripts, or validators for at least one bounded pilot flow"
+    OE-09: "Ready-for-installation definition: installable, tests passing, security defined, no critical defects, docs, evidence package"
+    OE-10: "Clear exclusions from ready-for-installation: no production deploy, no infra, no migration, no training, no post-prod support"
+    OE-11: "Critical Odoo technical decisions must not be approved without sufficient authorized source"
+    OE-12: "Scope is Odoo 18 Community only"
+
+verdict:
+  value: ALIGNED_WITH_ADJUSTMENTS
+  rationale: >
+    The CAFL V1 framework definition is directionally aligned with all twelve
+    owner requirements. The full lifecycle is covered (OE-02), the team-equivalent
+    intent is explicit (OE-03), elicitation-block principle is designed (OE-04),
+    knowledge governance is defined (OE-06, OE-11), and the readiness/exclusion
+    boundary matches owner definition (OE-09, OE-10). Two material adjustments
+    are required: (1) OE-08 gap — zero runtime artifacts exist; the owner requires
+    real working mechanisms for at least one V1 pilot flow and the design is
+    currently theory-only; (2) OE-07 partial gap — token optimization is designed
+    as a principle but has no structural enforcement, and observed behavior
+    (FND-POSTBP-01, FND-POSTBP-03) shows violations. These gaps do not require
+    re-opening elicitation or re-scoping the framework. They require explicit
+    conditions before a roadmap can be responsibly created.
+    A verdict of ALIGNED is not warranted: findings register evidence shows
+    observable material gaps, not theoretical risks only.
+    A verdict of PARTIAL_SCOPE_ADJUSTMENT_REQUIRED is not warranted: the
+    lifecycle, domain, readiness definition, and knowledge governance are
+    substantially aligned and no fundamental conflict exists.
+
+alignment_items:
+
+  - id: OE-01
+    expectation: "Agentic tool built on OpenCode"
+    repo_definition: >
+      CAFL is defined as an operational framework/platform on OpenCode
+      (DEC-ACCEPTED-013). OpenCode is the declared runtime principal.
+      Hybrid progressive operating model: agents + commands + scripts/validators
+      + rules/config + skills/playbooks, designed in Blueprint S07-S08 and
+      approved in TOM.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-013
+      - project-truth/TOM.md (Alcance Operativo V1)
+      - project-truth/implementation-blueprint.md (S07, S08)
+    risk: None material. OpenCode runtime principal is unambiguous.
+    recommended_adjustment: None required.
+
+  - id: OE-02
+    expectation: "Full lifecycle: idea → elicitation → PRD → SDD → development → testing → documentation → evidence → module ready"
+    repo_definition: >
+      13-phase operating flow covers: Idea intake → PRD light → PRD Sufficiency Gate
+      → SDD light → SDD Sufficiency Gate → capabilities/tasks + context packets →
+      Task Packet/DoR Gate → Task execution → QA/Testing Gate → Evidence/Closure Gate
+      → Module Technical Readiness Gate, with Knowledge Governance transversal.
+      Each phase has defined executor, validator, blocking condition, and advance condition.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-036 through DEC-ACCEPTED-053
+      - project-truth/TOM.md (Flujo Operativo Punta A Punta)
+      - CRIT-02
+      - stage-1-framework-definition.yaml (operating_flow.phases)
+    risk: >
+      Phase design is conceptual only; no phase has been executed end-to-end
+      on a real Odoo 18 module. Risk is execution-time, not design-time.
+    recommended_adjustment: >
+      Roadmap must include at least one end-to-end execution demonstration
+      to validate that all 13 phases work as designed.
+
+  - id: OE-03
+    expectation: "Functions as engineering team equivalent for solo owner"
+    repo_definition: >
+      DEC-ACCEPTED-014 explicitly states: 'Enable a single owner to operate
+      with capabilities equivalent to a specialized engineering team for
+      building enterprise Odoo solutions.' Owner operates as single-worker
+      enterprise; CAFL closes the gap.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-014
+      - project-truth/TOM.md (Roles Y Capacidades)
+      - stage-1-framework-definition.yaml (problem.statement)
+    risk: >
+      FND-POSTBP-12 (high): observed behavior shows heavy owner/ChatGPT coordination;
+      the team-equivalent autonomy claim is not demonstrated. Alignment is at
+      design level; execution demonstration is required for alignment to hold.
+    recommended_adjustment: >
+      RC-03: Owner must confirm required V1 autonomy level.
+      Self-coordination model must be defined before roadmap.
+
+  - id: OE-04
+    expectation: "Converts vague idea into solid blueprint; blocks on missing info, no assumptions allowed"
+    repo_definition: >
+      Phase 1 blocks on ambiguous critical objective, impossible scope, or context gap.
+      Phase 2 blocks on missing scope, critical rule, acceptance, legal/compliance/security
+      or owner decision. DoR principle: consumer may reject insufficient contracts
+      (DEC-ACCEPTED-080). Knowledge Gap blocks implementation until authorized source
+      exists (DEC-ACCEPTED-150). The 'no assumptions' principle is formalized in gate
+      and contract model.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-080
+      - DEC-ACCEPTED-150
+      - project-truth/TOM.md (Flujo Operativo Punta A Punta phases 1-2)
+      - CRIT-04
+    risk: >
+      FND-POSTBP-05 (high): agents infer hidden fallbacks rather than blocking when
+      contracts are incomplete. The design intends blocking; observed behavior does not
+      enforce it structurally. Enforcement is prompt-based, not deterministic.
+    recommended_adjustment: >
+      FND-POSTBP-05 rule candidate (no hidden fallbacks) must be enacted before
+      any V1 execution. Deterministic contract completeness check is strongly recommended.
+
+  - id: OE-05
+    expectation: "Technical/legal/normative validation as risk/coherence analysis, not formal legal certification"
+    repo_definition: >
+      Security/Risk/Compliance Triage defined as transversal check applied within
+      all gates. Conditional Security/Data/Access Gate handles risk, coherence, and
+      compliance assessment. DEC-ACCEPTED-095 explicitly scopes this as risk/coherence
+      analysis, not legal certification — matching owner intent exactly.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-095
+      - project-truth/TOM.md (transversal checks)
+      - stage-1-framework-definition.yaml (gates.transversal_checks)
+    risk: >
+      Scope of legal/normative analysis is conceptual only; no validated
+      template or criteria set exists for what constitutes a 'sufficient' risk
+      coherence review in practice.
+    recommended_adjustment: >
+      Pilot execution should demonstrate at least one Security/Risk/Compliance
+      Triage output to validate that the conceptual design is workable.
+
+  - id: OE-06
+    expectation: "Progressive curated KB; critical Odoo decisions require authorized source"
+    repo_definition: >
+      DEC-ACCEPTED-163 authorizes docs.odoo.com and github.com/odoo/odoo as
+      pre-authorized sources. Knowledge Gap blocks implementation when authorized
+      source is insufficient. Curation Requests require owner approval. 'Progressive
+      in V1' intent reflected in minimum-mode governance. Blueprint S12 defines
+      source policy implementation.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-163
+      - DEC-ACCEPTED-126 through DEC-ACCEPTED-129
+      - DEC-ACCEPTED-148
+      - DEC-ACCEPTED-150
+      - project-truth/implementation-blueprint.md (S12)
+    risk: >
+      FND-POSTBP-09 (critical): no curated artifact set exists; no gate prevents
+      implementation from using LLM training data as source. Knowledge governance
+      is policy-declared but not enforced structurally.
+    recommended_adjustment: >
+      RC-06: Source authorization gate enforcement must be in V1 scope.
+      See roadmap conditions.
+
+  - id: OE-07
+    expectation: "Aggressive token optimization; deterministic validation moves to scripts/validators; agents reason/create only"
+    repo_definition: >
+      AP-10 defines token optimization as an architecture principle. Context routing
+      contracts (CRIT-04) define structured context access. Mechanism split (Blueprint S08)
+      separates agent reasoning from deterministic validation. Scripts/CLI/validator
+      candidates are defined for structural validation. All scripts/validators are
+      currently conceptual and spike-dependent.
+    alignment_level: partial
+    evidence:
+      - AP-10 (architecture principle)
+      - CRIT-04
+      - DEC-ACCEPTED-069
+      - project-truth/implementation-blueprint.md (S08)
+      - FND-POSTBP-01 (high): context routing enforcement absent
+      - FND-POSTBP-03 (high): verification re-reads full context each time
+      - FND-POSTBP-05 (high): agents infer instead of blocking
+    risk: >
+      Structural enforcement of token optimization is entirely absent.
+      All deterministic controls are conceptual. Observed behavior violates
+      the principle three independent ways (FND-01, -03, -05).
+      Owner expectation is 'aggressive optimization'; current state is
+      'optimization as aspiration.'
+    recommended_adjustment: >
+      V1 scope must include at least one real deterministic validation replacing
+      an LLM-based check. Context routing enforcement must be structural, not
+      prompt-based. Incremental verification model must be defined before V1 execution.
+
+  - id: OE-08
+    expectation: "V1 must have real working agents, commands, scripts, or validators for at least one bounded pilot flow"
+    repo_definition: >
+      Mechanism split designed (Blueprint S08). 13 primary spikes (SP-01..SP-13)
+      catalogued. Pilot module designed (Blueprint S15: InternalRequest/ApprovalRecord,
+      4-state workflow). 10 conceptual schemas and 10 conceptual validators defined.
+      Zero runtime artifacts exist. No agent is deployed. No command is real.
+      No script is executable. No validator runs.
+    alignment_level: partial
+    evidence:
+      - project-truth/implementation-blueprint.md (S08, S15)
+      - stage-1-framework-definition.yaml (not_authorized, pending)
+      - FND-POSTBP-07 (high): backlog candidates unproven for work packages
+      - FND-POSTBP-13 (high): capability-to-work-package bridge missing
+      - FND-POSTBP-12 (high): owner/ChatGPT as external coordinator
+      - FND-POSTBP-06 (critical): documentation factory risk
+    risk: >
+      Most material gap in the entire alignment review. The owner explicitly
+      requires real working mechanisms for V1. The design is complete but no
+      execution bridge exists. 13 spikes are unexecuted. The backlog has no
+      work packages. The framework has never demonstrated an end-to-end flow
+      even in a sandboxed form. If this gap is not addressed, V1 fails owner
+      expectation regardless of documentation quality.
+    recommended_adjustment: >
+      RC-04: Spike integration model must be defined before roadmap.
+      RC-05: Capability-to-work-package demonstration must be in V1 scope.
+      Roadmap must include Band A spike execution and at least one real
+      mechanism (agent OR command OR script OR validator) as explicit deliverables.
+
+  - id: OE-09
+    expectation: "Ready-for-installation: installable, tests passing, security defined and validated, no critical defects, docs, evidence package"
+    repo_definition: >
+      Module Technical Readiness Gate includes all owner-stated criteria.
+      Blueprint S13 covers Odoo 18 execution environment. Blueprint S14 covers
+      security and secrets. Blueprint S15 covers pilot module blueprint with
+      test strategy. Evidence model defines required evidence package (9 logs + docs).
+      DEC-ACCEPTED-096 defines the gate.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-096
+      - project-truth/implementation-blueprint.md (S13, S14, S15, S19)
+      - project-truth/TOM.md (Evidencia Minima Del Piloto)
+    risk: >
+      Readiness gate is conceptual; no pilot execution has been validated.
+      The gate criteria are correctly defined but untested against a real module.
+    recommended_adjustment: >
+      Pilot execution is the validation. No design-time adjustment required;
+      execution demonstration is the proof.
+
+  - id: OE-10
+    expectation: "Exclusions: no production deploy, no infra, no data migration, no user training, no post-production support, no contractual acceptance"
+    repo_definition: >
+      DEC-ACCEPTED-003 through DEC-ACCEPTED-012 and BR-01..BR-04 define V1/post-V1
+      boundary. Not-authorized section explicitly excludes all owner-stated exclusions.
+      Stage 1 extraction confirms these exclusions are consistently maintained.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-003 through DEC-ACCEPTED-012
+      - BR-01 through BR-04
+      - stage-1-framework-definition.yaml (not_authorized)
+    risk: None. Exclusions are consistently and explicitly maintained.
+    recommended_adjustment: None required.
+
+  - id: OE-11
+    expectation: "Critical Odoo technical decisions must not be approved without sufficient authorized source"
+    repo_definition: >
+      DEC-ACCEPTED-163 establishes minimum source policy. Knowledge Gap principle
+      (DEC-ACCEPTED-150) blocks implementation until authorized source exists.
+      Blueprint S12 defines source policy implementation approach. The 'no assumption'
+      principle applies to technical decisions as well as requirements.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-163
+      - DEC-ACCEPTED-150
+      - project-truth/implementation-blueprint.md (S12)
+    risk: >
+      FND-POSTBP-09 (critical): no gate currently enforces source authorization
+      at implementation time. An agent can produce Odoo-specific design without
+      citing an authorized source and no structural check prevents this.
+      Alignment is at policy level; enforcement mechanism is absent.
+    recommended_adjustment: >
+      RC-06: Source authorization gate enforcement must be in V1 scope.
+      Equivalent to a pre-implementation check: does the agent output cite
+      an authorized source (URL, version, snapshot)? If not, block.
+
+  - id: OE-12
+    expectation: "Scope is Odoo 18 Community only"
+    repo_definition: >
+      DEC-ACCEPTED-013, domain_scope = Odoo-only for V1, target_version = Odoo 18.
+      Consistent throughout accepted decisions and 19 Blueprint sections.
+    alignment_level: aligned
+    evidence:
+      - DEC-ACCEPTED-013
+      - project-truth/implementation-blueprint.md (S01)
+      - stage-1-framework-definition.yaml (framework.domain, framework.target_version)
+    risk: None. Scope boundary is consistently maintained.
+    recommended_adjustment: None required.
+
+findings_impact:
+  critical_impact:
+    - id: FND-POSTBP-06
+      severity: critical
+      classification: SCOPE_CHANGE_RISK
+      alignment_threat: OE-08
+      description: >
+        Documentation factory risk directly threatens V1 operational delivery.
+        If the framework remains documentation-only, V1 fails owner expectation
+        regardless of internal coherence. Requires owner decision on ratio.
+    - id: FND-POSTBP-09
+      severity: critical
+      classification: GATE
+      alignment_threat: "OE-06, OE-11"
+      description: >
+        No gate enforces source authorization at implementation time.
+        Knowledge governance is policy-declared but structurally unenforced.
+    - id: FND-POSTBP-11
+      severity: critical
+      classification: SCOPE_CHANGE_RISK
+      alignment_threat: All OE items (meta risk)
+      description: >
+        Blueprint internal coherence does not guarantee owner-intent alignment.
+        Stage 2 directly addresses this finding. Partially resolved by this review;
+        not fully resolved until owner confirms Stage 2 verdict.
+    - id: FND-POSTBP-14
+      severity: critical
+      classification: GATE
+      alignment_threat: OE-09 (evidence package integrity)
+      description: >
+        Generated artifacts can contaminate commits and degrade audit trail.
+        Does not affect design alignment direction but threatens evidence
+        package integrity required by OE-09.
+  high_impact:
+    - id: FND-POSTBP-01
+      severity: high
+      classification: RULE
+      alignment_threat: OE-07
+      description: >
+        Context routing enforcement absent. Structural mechanism for token
+        optimization does not exist. OE-07 is aspirational without this.
+    - id: FND-POSTBP-03
+      severity: high
+      classification: RULE
+      alignment_threat: OE-07
+      description: >
+        Verification re-reads full context. Contradicts aggressive token
+        optimization requirement. Incremental verification not defined.
+    - id: FND-POSTBP-05
+      severity: high
+      classification: RULE
+      alignment_threat: OE-04
+      description: >
+        Agents help instead of blocking on incomplete contracts. Violates
+        the 'must block and ask' owner requirement structurally.
+    - id: FND-POSTBP-07
+      severity: high
+      classification: BACKLOG_IMPACT
+      alignment_threat: OE-08
+      description: >
+        Backlog candidates cannot generate work packages. Framework cannot
+        self-organize V1 execution without this bridge.
+    - id: FND-POSTBP-12
+      severity: high
+      classification: RULE
+      alignment_threat: OE-03
+      description: >
+        Owner/ChatGPT as external coordinator contradicts team-equivalent
+        autonomy claim. Self-coordination model is undefined.
+    - id: FND-POSTBP-13
+      severity: high
+      classification: BACKLOG_IMPACT
+      alignment_threat: OE-08
+      description: >
+        Capability-to-work-package execution bridge does not exist.
+        V1 cannot execute without this bridge.
+  medium_impact:
+    - id: FND-POSTBP-04
+      severity: medium
+      classification: RULE
+      alignment_threat: OE-04
+      description: >
+        Missing task-type context packet templates makes missing-info detection
+        unreliable. Indirect threat to blocking-on-assumption principle.
+    - id: FND-POSTBP-08
+      severity: medium
+      classification: ROADMAP_IMPACT
+      alignment_threat: OE-08 (sequencing)
+      description: >
+        Spikes not integrated into execution flow. Conditional capabilities
+        cannot be activated. Roadmap sequencing is blocked.
+    - id: FND-POSTBP-02
+      severity: high
+      classification: RULE
+      alignment_threat: OE-03 (autonomy)
+      description: >
+        Multi-step flows lack structured orchestration contracts.
+        Long flows remain fragile and owner-dependent.
+    - id: FND-POSTBP-10
+      severity: medium
+      classification: RULE
+      alignment_threat: Internal governance consistency
+      description: >
+        Lack of formal taxonomy creates governance ambiguity. Does not
+        directly threaten owner alignment direction but creates ambiguity
+        in how findings are acted upon.
+    - id: FND-POSTBP-15
+      severity: high
+      classification: RULE
+      alignment_threat: "OE-07, gate integrity"
+      description: >
+        No model-class policy. Cheap models could be used for critical
+        judgment tasks, undermining gate separation principle.
+
+roadmap_conditions:
+  required_conditions:
+    - id: RC-01
+      description: "Owner confirms Stage 2 alignment verdict (ALIGNED_WITH_ADJUSTMENTS or adjustment)"
+      addresses: FND-POSTBP-11
+      status: accepted
+      decision_id: DEC-ACCEPTED-165
+      owner_response: "Veredicto ALIGNED_WITH_ADJUSTMENTS confirmado."
+    - id: RC-02
+      description: "Owner confirms documentation-to-execution balance; decides whether V1 scope should prioritize executable validation"
+      addresses: FND-POSTBP-06
+      status: accepted
+      decision_id: DEC-ACCEPTED-166
+      owner_response: >
+        V1 debe priorizar ejecucion real sobre generacion adicional de documentacion.
+        La documentacion sigue siendo obligatoria, pero debe estar al servicio del
+        flujo operativo.
+    - id: RC-03
+      description: "Owner confirms required V1 autonomy level"
+      addresses: FND-POSTBP-12
+      status: accepted
+      decision_id: DEC-ACCEPTED-167
+      owner_response: >
+        V1 debe demostrar autonomia parcial: self-coordination minima dentro de
+        un flujo piloto, con owner reservado para gates criticos y aceptacion final.
+    - id: RC-04
+      description: "Spike integration model defined: spike trigger condition → result format → capability authorization gate"
+      addresses: FND-POSTBP-08
+      status: accepted
+      decision_id: DEC-ACCEPTED-168
+      owner_response: >
+        Los spikes deben integrarse al flujo con trigger, resultado esperado y gate
+        de decision. No pueden quedar como lista paralela.
+    - id: RC-05
+      description: "At least one capability-to-work-package demonstration scoped for V1"
+      addresses: "FND-POSTBP-07, FND-POSTBP-13"
+      status: accepted
+      decision_id: DEC-ACCEPTED-169
+      owner_response: >
+        Capability to work package debe demostrarse temprano y ser condicion para
+        convertir backlog candidato en ejecucion.
+    - id: RC-06
+      description: "Source authorization gate enforcement mechanism scoped for V1 (not just policy)"
+      addresses: FND-POSTBP-09
+      status: accepted
+      decision_id: DEC-ACCEPTED-170
+      owner_response: >
+        La implementacion Odoo en V1 debe tener source authorization gate progresivo.
+        El conocimiento puede crecer por etapas, pero ninguna decision tecnica critica
+        debe aprobarse sin fuente autorizada suficiente.
+  recommended_conditions:
+    - id: REC-01
+      description: "Context routing enforcement rule formalized (FND-POSTBP-01, -03, -05 rule candidates enacted)"
+      status: proposed_only
+    - id: REC-02
+      description: "Model-class policy approved (FND-POSTBP-15 rule candidate enacted)"
+      status: proposed_only
+    - id: REC-03
+      description: "Governance taxonomy formalized (FND-POSTBP-10 rule candidate enacted)"
+      status: proposed_only
+
+scope_change_risks:
+  - id: SCR-01
+    title: "V1 timeline vs. execution readiness gap"
+    description: >
+      The 2-month horizon and current theory-to-execution gap may be irreconcilable
+      without aggressive prioritization. If roadmap attempts to address all gaps
+      sequentially before executing the pilot, timeline collapses.
+    trigger: >
+      Roadmap reveals that spike execution + mechanism implementation + pilot
+      execution cannot fit within 2 months at acceptable quality.
+    required_owner_decision: >
+      Extend timeline, reduce pilot scope, or accept a V1 that demonstrates
+      only design-and-elicitation phases without full execution.
+  - id: SCR-02
+    title: "Pilot scope adequacy for full readiness criteria"
+    description: >
+      Even the simple InternalRequest/ApprovalRecord pilot must meet full readiness
+      criteria (installable, tests, security, docs, evidence). This may reveal
+      the pilot is underscoped or the criteria are over-specified for V1.
+    trigger: >
+      Pilot cannot demonstrate full readiness criteria within 2 months.
+    required_owner_decision: >
+      Adjust the scope of what constitutes a 'sufficient' V1 demonstration,
+      not the readiness criteria themselves.
+  - id: SCR-03
+    title: "Knowledge governance blocking real pilot work"
+    description: >
+      Minimum source policy (docs.odoo.com + github.com/odoo/odoo) may be
+      insufficient for the pilot module implementation, creating excessive
+      Knowledge Gap blocks.
+    trigger: >
+      Pilot reveals minimum sources are insufficient for a simple Odoo 18
+      module implementation.
+    required_owner_decision: >
+      Source expansion decision before pilot execution proceeds.
+  - id: SCR-04
+    title: "Documentation-factory continuation"
+    description: >
+      If next work cycle after Stage 2 produces additional documentation
+      rather than executable artifacts, the documentation-factory pattern
+      continues without resolution.
+    trigger: >
+      Next deliverable after Stage 2 is a new analysis or planning document
+      rather than a spike result, a real mechanism, or a pilot artifact.
+    required_owner_decision: >
+      Owner confirmation that additional documentation is acceptable,
+      or explicit instruction to pivot to execution.
+
+non_authorizations:
+  - "Creating a roadmap"
+  - "Creating, modifying, or triaging backlog candidates"
+  - "Executing any spike"
+  - "Promoting any finding to approved rule, gate, or spike status"
+  - "Modifying Blueprint content (Blueprint is closed)"
+  - "Implementing runtime, agents, commands, scripts, or validators"
+  - "Creating new decision entries in project-truth/decisions/"
+  - "Committing or pushing any artifact"
+  - "Adjusting V1 scope, pilot scope, or readiness criteria"
+  - "Simulating owner decisions (RC-01 through RC-06 require actual owner responses)"
+  - "Reopening CRIT-01 through CRIT-07"
+  - "Reopening TOM"
+  - "Creating CRIT-08"
